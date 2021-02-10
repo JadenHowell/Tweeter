@@ -36,6 +36,6 @@ public class LoginPresenter {
      */
     public LoginResponse login(LoginRequest loginRequest) throws IOException {
         LoginService loginService = new LoginService();
-        return loginService.login(loginRequest);
+        return (LoginResponse) loginService.serve(loginRequest);
     }
 }
