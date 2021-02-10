@@ -36,9 +36,9 @@ public class FollowerPresenter {
      * @param request contains the data required to fulfill the request.
      * @return the followers.
      */
-    public FollowerResponse getFollowing(FollowerRequest request) throws IOException {
+    public FollowerResponse getFollower(FollowerRequest request) throws IOException {
         FollowerService followerService = getFollowerService();
-        return followerService.getFollowers(request);
+        return (FollowerResponse) followerService.serve(request);
     }
 
     /**

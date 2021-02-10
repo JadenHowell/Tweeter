@@ -3,7 +3,7 @@ package edu.byu.cs.tweeter.model.service.request;
 /**
  * Contains all the information needed to make a login request.
  */
-public class LoginRequest {
+public class LoginRequest extends Request {
 
     private final String username;
     private final String password;

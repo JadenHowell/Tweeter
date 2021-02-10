@@ -5,13 +5,15 @@ import java.io.IOException;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.net.ServerFacade;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
+import edu.byu.cs.tweeter.model.service.request.Request;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
+import edu.byu.cs.tweeter.model.service.response.Response;
 import edu.byu.cs.tweeter.util.ByteArrayUtils;
 
 /**
  * Contains the business logic for getting the users a user is following.
  */
-public class FollowingService {
+public class FollowingService extends Service {
 
     /**
      * Returns the users that the user specified in the request is following. Uses information in
@@ -22,14 +24,14 @@ public class FollowingService {
      * @param request contains the data required to fulfill the request.
      * @return the followees.
      */
-    public FollowingResponse getFollowees(FollowingRequest request) throws IOException {
-        FollowingResponse response = getServerFacade().getFollowees(request);
+    @Override
+    Response accessFacade(Request request) {
+        return serverFacade.getFollowees((FollowingRequest) request);
+    }
 
-        if(response.isSuccess()) {
-            loadImages(response);
-        }
-
-        return response;
+    @Override
+    void onSuccess(Response response) throws IOException {
+        loadImages((FollowingResponse) response);
     }
 
     /**
@@ -42,16 +44,5 @@ public class FollowingService {
             byte [] bytes = ByteArrayUtils.bytesFromUrl(user.getImageUrl());
             user.setImageBytes(bytes);
         }
-    }
-
-    /**
-     * Returns an instance of {@link ServerFacade}. Allows mocking of the ServerFacade class for
-     * testing purposes. All usages of ServerFacade should get their ServerFacade instance from this
-     * method to allow for proper mocking.
-     *
-     * @return the instance.
-     */
-    ServerFacade getServerFacade() {
-        return new ServerFacade();
     }
 }

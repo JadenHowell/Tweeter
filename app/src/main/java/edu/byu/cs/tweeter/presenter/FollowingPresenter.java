@@ -3,6 +3,7 @@ package edu.byu.cs.tweeter.presenter;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.model.service.FollowingService;
+import edu.byu.cs.tweeter.model.service.Service;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
 
@@ -38,8 +39,8 @@ public class FollowingPresenter {
      * @return the followees.
      */
     public FollowingResponse getFollowing(FollowingRequest request) throws IOException {
-        FollowingService followingService = getFollowingService();
-        return followingService.getFollowees(request);
+        Service followingService = getFollowingService();
+        return (FollowingResponse) followingService.serve(request);
     }
 
     /**
@@ -49,7 +50,7 @@ public class FollowingPresenter {
      *
      * @return the instance.
      */
-    FollowingService getFollowingService() {
+    Service getFollowingService() {
         return new FollowingService();
     }
 }

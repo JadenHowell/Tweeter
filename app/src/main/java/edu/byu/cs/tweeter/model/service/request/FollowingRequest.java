@@ -4,7 +4,7 @@ package edu.byu.cs.tweeter.model.service.request;
  * Contains all the information needed to make a request to have the server return the next page of
  * followees for a specified follower.
  */
-public class FollowingRequest {
+public class FollowingRequest extends Request {
 
     private final String followerAlias;
     private final int limit;
