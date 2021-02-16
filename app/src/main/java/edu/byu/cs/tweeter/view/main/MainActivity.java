@@ -9,21 +9,31 @@ import com.google.android.material.tabs.TabLayout;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.model.service.request.FollowerCountRequest;
+import edu.byu.cs.tweeter.model.service.request.FollowingCountRequest;
+import edu.byu.cs.tweeter.model.service.response.FollowerCountResponse;
+import edu.byu.cs.tweeter.model.service.response.FollowingCountResponse;
+import edu.byu.cs.tweeter.presenter.CountPresenter;
+import edu.byu.cs.tweeter.view.asyncTasks.GetFollowerCountTask;
+import edu.byu.cs.tweeter.view.asyncTasks.GetFollowingCountTask;
 import edu.byu.cs.tweeter.view.util.ImageUtils;
 
 /**
  * The main activity for the application. Contains tabs for feed, story, following, and followers.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements CountPresenter.View, GetFollowerCountTask.FollowerCountObserver, GetFollowingCountTask.FollowingCountObserver {
 
     public static final String CURRENT_USER_KEY = "CurrentUser";
     public static final String AUTH_TOKEN_KEY = "AuthTokenKey";
@@ -67,11 +77,20 @@ public class MainActivity extends AppCompatActivity {
         ImageView userImageView = findViewById(R.id.userImage);
         userImageView.setImageDrawable(ImageUtils.drawableFromByteArray(user.getImageBytes()));
 
+        //Put two dummy numbers before starting the async task
         TextView followeeCount = findViewById(R.id.followeeCount);
-        followeeCount.setText(getString(R.string.followeeCount, 42));
-
+        followeeCount.setText(getString(R.string.followeeCount, 0));
         TextView followerCount = findViewById(R.id.followerCount);
-        followerCount.setText(getString(R.string.followerCount, 27));
+        followerCount.setText(getString(R.string.followerCount, 0));
+
+        //create CountPresenter and the two count tasks, execute async count tasks.
+        CountPresenter countPresenter = new CountPresenter(this);
+        GetFollowerCountTask followerCountTask = new GetFollowerCountTask(countPresenter, this);
+        FollowerCountRequest followerCountRequest = new FollowerCountRequest(user.getAlias());
+        followerCountTask.execute(followerCountRequest);
+        GetFollowingCountTask followingCountTask = new GetFollowingCountTask(countPresenter, this);
+        FollowingCountRequest followingCountRequest = new FollowingCountRequest(user.getAlias());
+        followingCountTask.execute(followingCountRequest);
     }
 
     @Override
@@ -79,5 +98,23 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
         return true;
+    }
+
+    @Override
+    public void followerCountRetrieved(FollowerCountResponse followerCountResponse) {
+        TextView followerCount = findViewById(R.id.followerCount);
+        followerCount.setText(getString(R.string.followerCount, followerCountResponse.getCount()));
+    }
+
+    @Override
+    public void followingCountRetrieved(FollowingCountResponse followingCountResponse) {
+        TextView followeeCount = findViewById(R.id.followeeCount);
+        followeeCount.setText(getString(R.string.followeeCount, followingCountResponse.getCount()));
+    }
+
+    @Override
+    public void handleException(Exception exception) {
+        Log.e("MainActivity", exception.getMessage(), exception);
+        Toast.makeText(this, exception.getMessage(), Toast.LENGTH_LONG).show();
     }
 }

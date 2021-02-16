@@ -7,10 +7,14 @@ import java.util.List;
 import edu.byu.cs.tweeter.BuildConfig;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.model.service.request.FollowerCountRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowerRequest;
+import edu.byu.cs.tweeter.model.service.request.FollowingCountRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.request.LoginRequest;
+import edu.byu.cs.tweeter.model.service.response.FollowerCountResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowerResponse;
+import edu.byu.cs.tweeter.model.service.response.FollowingCountResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
 
@@ -221,5 +225,27 @@ public class ServerFacade {
     List<User> getDummyFollowers() {
         return Arrays.asList(user2, user3, user4, user5, user10,
                 user12, user14, user16, user17, user19);
+    }
+
+    /**
+     * Returns a response based on the number of users this user is following
+     * @param request a request containing the user alias to check for
+     * @return a response containing the number of users our user is following
+     */
+    public FollowingCountResponse getFollowingCount(FollowingCountRequest request){
+        String userAlias = request.getFollowerAlias();
+        FollowingCountResponse response = new FollowingCountResponse(true, null, 7);
+        return response;
+    }
+
+    /**
+     * Returns a response based on the number of users this user is followed by
+     * @param request a request containing the user alias to check for
+     * @return a response containing the number of users our user is followed by
+     */
+    public FollowerCountResponse getFollowerCount(FollowerCountRequest request){
+        String userAlias = request.getFolloweeAlias();
+        FollowerCountResponse response = new FollowerCountResponse(true, null, 30);
+        return response;
     }
 }
