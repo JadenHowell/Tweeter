@@ -18,4 +18,6 @@
     <string name="title_activity_login">Sign in</string>
     <string name="followeeCount">Following: %d</string>
     <string name="followerCount">Followers: %d</string>
+
+    <string name="loginTitle">Tweeter</string>
 </resources>
