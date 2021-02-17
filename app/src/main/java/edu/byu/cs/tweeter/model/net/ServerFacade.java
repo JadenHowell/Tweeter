@@ -7,23 +7,28 @@ import java.util.List;
 import edu.byu.cs.tweeter.BuildConfig;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.model.service.request.ChangeFollowStateRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowerCountRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowerRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowingCountRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
+import edu.byu.cs.tweeter.model.service.request.IsFollowingRequest;
 import edu.byu.cs.tweeter.model.service.request.LoginRequest;
+import edu.byu.cs.tweeter.model.service.response.ChangeFollowStateResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowerCountResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowerResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowingCountResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
+import edu.byu.cs.tweeter.model.service.response.IsFollowingResponse;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
+import edu.byu.cs.tweeter.model.service.response.Response;
 
 /**
  * Acts as a Facade to the Tweeter server. All network requests to the server should go through
  * this class.
  */
 public class ServerFacade {
-    // This is the hard coded followee data returned by the 'getFollowees()' method
+    // This is the hard coded followee/follower data returned by the 'getFollowees()'/'getFollowers()' methods
     private static final String MALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png";
     private static final String FEMALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png";
 
@@ -223,8 +228,8 @@ public class ServerFacade {
      * @return the followers.
      */
     List<User> getDummyFollowers() {
-        return Arrays.asList(user2, user3, user4, user5, user10,
-                user12, user14, user16, user17, user19);
+        return Arrays.asList(user2, user3, user4, user5, user7, user8, user9, user10,
+                user12, user13, user14, user16, user17, user19);
     }
 
     /**
@@ -234,7 +239,15 @@ public class ServerFacade {
      */
     public FollowingCountResponse getFollowingCount(FollowingCountRequest request){
         String userAlias = request.getFollowerAlias();
-        FollowingCountResponse response = new FollowingCountResponse(true, null, 7);
+
+        int count;
+        if(userAlias.equals("@TestUser")){
+            count = 7;
+        }else{
+            count = 100;
+        }
+
+        FollowingCountResponse response = new FollowingCountResponse(true, null, count);
         return response;
     }
 
@@ -245,7 +258,33 @@ public class ServerFacade {
      */
     public FollowerCountResponse getFollowerCount(FollowerCountRequest request){
         String userAlias = request.getFolloweeAlias();
-        FollowerCountResponse response = new FollowerCountResponse(true, null, 30);
+        int count;
+        if(userAlias.equals("@TestUser")){
+            count = 30;
+        }else{
+            count = 3;
+        }
+
+        FollowerCountResponse response = new FollowerCountResponse(true, null, count);
+        return response;
+    }
+
+    public Response getIsFollowing(IsFollowingRequest request) {
+        String rootUserAlias = request.getRootUserAlias();
+        String otherUserAlias = request.getOtherUserAlias();
+        boolean didChanceFollow = true;
+        if(Math.random() < .5){
+            didChanceFollow = false;
+        }
+        IsFollowingResponse response = new IsFollowingResponse(true, null, didChanceFollow);
+        return response;
+    }
+
+    public Response changeFollowState(ChangeFollowStateRequest request) {
+        String loggedInUserAlias = request.getRootUserAlias();
+        String otherUserAlias = request.getOtherUserAlias();
+        boolean randomState = Math.random() < .5;
+        ChangeFollowStateResponse response = new ChangeFollowStateResponse(true, null, randomState);
         return response;
     }
 }

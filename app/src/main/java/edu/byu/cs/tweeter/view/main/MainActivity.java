@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity
         GetFollowerCountTask followerCountTask = new GetFollowerCountTask(countPresenter, this);
         FollowerCountRequest followerCountRequest = new FollowerCountRequest(user.getAlias());
         followerCountTask.execute(followerCountRequest);
+
         GetFollowingCountTask followingCountTask = new GetFollowingCountTask(countPresenter, this);
         FollowingCountRequest followingCountRequest = new FollowingCountRequest(user.getAlias());
         followingCountTask.execute(followingCountRequest);
