@@ -20,4 +20,9 @@
     <string name="followerCount">Followers: %d</string>
 
     <string name="loginTitle">Tweeter</string>
+    <string name="loginActivityUsername">/@username</string>
+    <string name="loginActivityPassword">password</string>
+    <string name="loginActivityLoginButton">LOGIN</string>
+    <string name="loginActivityLoginTab">LOGIN</string>
+    <string name="loginActivityRegisterTab">REGISTER</string>
 </resources>

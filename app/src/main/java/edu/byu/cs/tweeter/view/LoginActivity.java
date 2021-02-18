@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
 
         presenter = new LoginPresenter(this);
 
-        Button loginButton = findViewById(R.id.LoginButton);
+        /*Button loginButton = findViewById(R.id.LoginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
 
             /**
@@ -43,7 +43,7 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
              *
              * @param view the view object that was clicked.
              */
-            @Override
+            /*@Override
             public void onClick(View view) {
                 loginInToast = Toast.makeText(LoginActivity.this, "Logging In", Toast.LENGTH_LONG);
                 loginInToast.show();
@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
                 LoginTask loginTask = new LoginTask(presenter, LoginActivity.this);
                 loginTask.execute(loginRequest);
             }
-        });
+        });*/
     }
 
     /**
