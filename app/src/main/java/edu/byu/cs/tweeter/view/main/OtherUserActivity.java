@@ -67,7 +67,6 @@ public class OtherUserActivity extends AppCompatActivity
         tabs.setupWithViewPager(viewPager);
 
         buttonPresenter = new FollowButtonPresenter(this);
-
         Button follow_unfollowButton = findViewById(R.id.follow_unfollow_button);
         follow_unfollowButton.setOnClickListener(view ->
                 {

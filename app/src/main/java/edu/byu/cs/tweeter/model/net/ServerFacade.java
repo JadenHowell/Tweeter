@@ -280,11 +280,12 @@ public class ServerFacade {
         return response;
     }
 
+    static boolean followState = true;
     public Response changeFollowState(ChangeFollowStateRequest request) {
         String loggedInUserAlias = request.getRootUserAlias();
         String otherUserAlias = request.getOtherUserAlias();
-        boolean randomState = Math.random() < .5;
-        ChangeFollowStateResponse response = new ChangeFollowStateResponse(true, null, randomState);
+        ChangeFollowStateResponse response = new ChangeFollowStateResponse(true, null, followState);
+        followState = !followState;
         return response;
     }
 }
