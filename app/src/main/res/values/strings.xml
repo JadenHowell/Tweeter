@@ -27,4 +27,5 @@
     <string name="loginActivityRegisterTab">REGISTER</string>
     <string name="loginActivityFirstName">first name</string>
     <string name="loginActivityLastName">last name</string>
+    <string name="loginActivityTakePicture">Take Profile Picture</string>
 </resources>

@@ -2,6 +2,7 @@ package edu.byu.cs.tweeter.view.main;
 
 import android.content.Context;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -43,6 +44,13 @@ public class LoginPagerAdapter extends FragmentPagerAdapter {
         } else {
             return PlaceholderFragment.newInstance(position + 1);
         }
+    }
+
+
+    @Nullable
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return mContext.getResources().getString(TAB_TITLES[position]);
     }
 
     @Override
