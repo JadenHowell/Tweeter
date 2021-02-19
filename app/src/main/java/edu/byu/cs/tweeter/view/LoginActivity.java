@@ -48,27 +48,5 @@ public class LoginActivity extends AppCompatActivity {
         viewPager.setAdapter(loginPagerAdapter);
         TabLayout tabs = findViewById(R.id.loginTabs);
         tabs.setupWithViewPager(viewPager);
-
-        /*Button loginButton = findViewById(R.id.LoginButton);
-        loginButton.setOnClickListener(new View.OnClickListener() {
-
-            /**
-             * Makes a login request. The user is hard-coded, so it doesn't matter what data we put
-             * in the LoginRequest object.
-             *
-             * @param view the view object that was clicked.
-             */
-            /*@Override
-            public void onClick(View view) {
-                loginInToast = Toast.makeText(LoginActivity.this, "Logging In", Toast.LENGTH_LONG);
-                loginInToast.show();
-
-                // It doesn't matter what values we put here. We will be logged in with a hard-coded dummy user.
-                LoginRequest loginRequest = new LoginRequest("dummyUserName", "dummyPassword");
-                LoginTask loginTask = new LoginTask(presenter, LoginActivity.this);
-                loginTask.execute(loginRequest);
-            }
-        });*/
     }
-
 }

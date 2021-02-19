@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.main.following.FollowingFragment">
+    android:layout_height="match_parent">
 
     <Space
         android:layout_width="match_parent"
@@ -18,7 +17,8 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+        tools:ignore="UselessParent">
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"

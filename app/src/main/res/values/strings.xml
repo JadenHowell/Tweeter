@@ -25,4 +25,6 @@
     <string name="loginActivityLoginButton">LOGIN</string>
     <string name="loginActivityLoginTab">LOGIN</string>
     <string name="loginActivityRegisterTab">REGISTER</string>
+    <string name="loginActivityFirstName">first name</string>
+    <string name="loginActivityLastName">last name</string>
 </resources>
