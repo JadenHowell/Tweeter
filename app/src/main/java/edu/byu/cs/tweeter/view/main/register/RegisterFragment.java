@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,8 +25,10 @@ import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.service.request.LoginRequest;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
+import edu.byu.cs.tweeter.model.service.response.RegisterResponse;
 import edu.byu.cs.tweeter.presenter.LoginPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.LoginTask;
+import edu.byu.cs.tweeter.view.main.MainActivity;
 import edu.byu.cs.tweeter.view.main.login.LoginFragment;
 
 public class RegisterFragment extends Fragment implements LoginPresenter.View, LoginTask.Observer {
@@ -113,16 +116,24 @@ public class RegisterFragment extends Fragment implements LoginPresenter.View, L
 
     @Override
     public void loginSuccessful(LoginResponse loginResponse) {
+        Intent intent = new Intent(getContext(), MainActivity.class);
 
+        intent.putExtra(MainActivity.CURRENT_USER_KEY, loginResponse.getUser());
+        intent.putExtra(MainActivity.AUTH_TOKEN_KEY, loginResponse.getAuthToken());
+
+        registerToast.cancel();
+        startActivity(intent);
     }
 
     @Override
     public void loginUnsuccessful(LoginResponse loginResponse) {
-
+        Toast.makeText(getContext(), "Failed to register. " + loginResponse.getMessage(), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void handleException(Exception ex) {
+        Log.e(LOG_TAG, ex.getMessage(), ex);
+        Toast.makeText(getContext(), "Failed to login because of exception: " + ex.getMessage(), Toast.LENGTH_LONG).show();
 
     }
 }
