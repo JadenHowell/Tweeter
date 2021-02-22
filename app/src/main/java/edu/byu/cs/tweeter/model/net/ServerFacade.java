@@ -504,7 +504,7 @@ public class ServerFacade {
 
 
     public RegisterResponse register(RegisterRequest request) {
-        User user = new User("One", "Two", "Three");
+        User user = new User("One", "Two", "https://www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png");
         return new RegisterResponse(user, new AuthToken());
     }
 }
