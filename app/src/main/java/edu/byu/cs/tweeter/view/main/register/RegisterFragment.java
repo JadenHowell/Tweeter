@@ -1,13 +1,23 @@
 package edu.byu.cs.tweeter.view.main.register;
 
+import android.Manifest;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
+import java.util.Objects;
 
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
@@ -51,6 +61,25 @@ public class RegisterFragment extends Fragment implements LoginPresenter.View, L
 
         presenter = new LoginPresenter(this);
 
+        Button takePictureButton;
+        takePictureButton = view.findViewById(R.id.TakePictureButton);
+
+        if (ContextCompat.checkSelfPermission(Objects.requireNonNull(getContext()), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(Objects.requireNonNull(super.getActivity()),
+                    new String[]{
+                            Manifest.permission.CAMERA
+                    },
+                    100);
+        }
+        takePictureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(intent, 100);
+                }
+            });
+
+
         Button loginButton = view.findViewById(R.id.RegisterButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -73,6 +102,13 @@ public class RegisterFragment extends Fragment implements LoginPresenter.View, L
         });
 
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 100){
+            Bitmap captureImage = (Bitmap) data.getExtras().get("data");
+        }
     }
 
     @Override
