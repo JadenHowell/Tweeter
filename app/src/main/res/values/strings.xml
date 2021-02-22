@@ -18,6 +18,17 @@
     <string name="title_activity_login">Sign in</string>
     <string name="followeeCount">Following: %d</string>
     <string name="followerCount">Followers: %d</string>
+
+    <string name="loginTitle">Tweeter</string>
+    <string name="loginActivityUsername">/@username</string>
+    <string name="loginActivityPassword">password</string>
+    <string name="loginActivityLoginButton">LOGIN</string>
+    <string name="loginActivityLoginTab">LOGIN</string>
+    <string name="loginActivityRegisterTab">REGISTER</string>
+    <string name="loginActivityFirstName">first name</string>
+    <string name="loginActivityLastName">last name</string>
+    <string name="loginActivityTakePicture">Take Profile Picture</string>
+
     <string name="button_text_follow">Follow</string>
     <string name="title_activity_other_user">Other User</string>
     <!-- TODO: Remove or change this placeholder text -->
