@@ -18,6 +18,7 @@ import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.request.IsFollowingRequest;
 import edu.byu.cs.tweeter.model.service.request.LoginRequest;
 import edu.byu.cs.tweeter.model.service.request.PostRequest;
+import edu.byu.cs.tweeter.model.service.request.RegisterRequest;
 import edu.byu.cs.tweeter.model.service.request.UserRequest;
 import edu.byu.cs.tweeter.model.service.response.ChangeFollowStateResponse;
 import edu.byu.cs.tweeter.model.service.response.FeedResponse;
@@ -29,6 +30,7 @@ import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
 import edu.byu.cs.tweeter.model.service.response.IsFollowingResponse;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
 import edu.byu.cs.tweeter.model.service.response.PostResponse;
+import edu.byu.cs.tweeter.model.service.response.RegisterResponse;
 import edu.byu.cs.tweeter.model.service.response.Response;
 import edu.byu.cs.tweeter.model.service.response.StoryResponse;
 import edu.byu.cs.tweeter.model.service.response.UserResponse;
@@ -101,12 +103,12 @@ public class ServerFacade {
     public FollowingResponse getFollowees(FollowingRequest request) {
 
         // Used in place of assert statements because Android does not support them
-        if(BuildConfig.DEBUG) {
-            if(request.getLimit() < 0) {
+        if (BuildConfig.DEBUG) {
+            if (request.getLimit() < 0) {
                 throw new AssertionError();
             }
 
-            if(request.getFollowerAlias() == null) {
+            if (request.getFollowerAlias() == null) {
                 throw new AssertionError();
             }
         }
@@ -116,10 +118,10 @@ public class ServerFacade {
 
         boolean hasMorePages = false;
 
-        if(request.getLimit() > 0) {
+        if (request.getLimit() > 0) {
             int followeesIndex = getFolloweesStartingIndex(request.getLastFolloweeAlias(), allFollowees);
 
-            for(int limitCounter = 0; followeesIndex < allFollowees.size() && limitCounter < request.getLimit(); followeesIndex++, limitCounter++) {
+            for (int limitCounter = 0; followeesIndex < allFollowees.size() && limitCounter < request.getLimit(); followeesIndex++, limitCounter++) {
                 responseFollowees.add(allFollowees.get(followeesIndex));
             }
 
@@ -136,18 +138,18 @@ public class ServerFacade {
      *
      * @param lastFolloweeAlias the alias of the last followee that was returned in the previous
      *                          request or null if there was no previous request.
-     * @param allFollowees the generated list of followees from which we are returning paged results.
+     * @param allFollowees      the generated list of followees from which we are returning paged results.
      * @return the index of the first followee to be returned.
      */
     private int getFolloweesStartingIndex(String lastFolloweeAlias, List<User> allFollowees) {
 
         int followeesIndex = 0;
 
-        if(lastFolloweeAlias != null) {
+        if (lastFolloweeAlias != null) {
             // This is a paged request for something after the first page. Find the first item
             // we should return
             for (int i = 0; i < allFollowees.size(); i++) {
-                if(lastFolloweeAlias.equals(allFollowees.get(i).getAlias())) {
+                if (lastFolloweeAlias.equals(allFollowees.get(i).getAlias())) {
                     // We found the index of the last item returned last time. Increment to get
                     // to the first one we should return
                     followeesIndex = i + 1;
@@ -184,12 +186,12 @@ public class ServerFacade {
     public FollowerResponse getFollowers(FollowerRequest request) {
 
         // Used in place of assert statements because Android does not support them
-        if(BuildConfig.DEBUG) {
-            if(request.getLimit() < 0) {
+        if (BuildConfig.DEBUG) {
+            if (request.getLimit() < 0) {
                 throw new AssertionError();
             }
 
-            if(request.getFolloweeAlias() == null) {
+            if (request.getFolloweeAlias() == null) {
                 throw new AssertionError();
             }
         }
@@ -199,10 +201,10 @@ public class ServerFacade {
 
         boolean hasMorePages = false;
 
-        if(request.getLimit() > 0) {
+        if (request.getLimit() > 0) {
             int followersIndex = getFollowersStartingIndex(request.getLastFollowerAlias(), allFollowers);
 
-            for(int limitCounter = 0; followersIndex < allFollowers.size() && limitCounter < request.getLimit(); followersIndex++, limitCounter++) {
+            for (int limitCounter = 0; followersIndex < allFollowers.size() && limitCounter < request.getLimit(); followersIndex++, limitCounter++) {
                 responseFollowers.add(allFollowers.get(followersIndex));
             }
 
@@ -219,18 +221,18 @@ public class ServerFacade {
      *
      * @param lastFollowerAlias the alias of the last follower that was returned in the previous
      *                          request or null if there was no previous request.
-     * @param allFollowers the generated list of followers from which we are returning paged results.
+     * @param allFollowers      the generated list of followers from which we are returning paged results.
      * @return the index of the first follower to be returned.
      */
     private int getFollowersStartingIndex(String lastFollowerAlias, List<User> allFollowers) {
 
         int followersIndex = 0;
 
-        if(lastFollowerAlias != null) {
+        if (lastFollowerAlias != null) {
             // This is a paged request for something after the first page. Find the first item
             // we should return
             for (int i = 0; i < allFollowers.size(); i++) {
-                if(lastFollowerAlias.equals(allFollowers.get(i).getAlias())) {
+                if (lastFollowerAlias.equals(allFollowers.get(i).getAlias())) {
                     // We found the index of the last item returned last time. Increment to get
                     // to the first one we should return
                     followersIndex = i + 1;
@@ -255,16 +257,17 @@ public class ServerFacade {
 
     /**
      * Returns a response based on the number of users this user is following
+     *
      * @param request a request containing the user alias to check for
      * @return a response containing the number of users our user is following
      */
-    public FollowingCountResponse getFollowingCount(FollowingCountRequest request){
+    public FollowingCountResponse getFollowingCount(FollowingCountRequest request) {
         String userAlias = request.getFollowerAlias();
 
         int count;
-        if(userAlias.equals("@TestUser")){
+        if (userAlias.equals("@TestUser")) {
             count = 7;
-        }else{
+        } else {
             count = 100;
         }
 
@@ -274,15 +277,16 @@ public class ServerFacade {
 
     /**
      * Returns a response based on the number of users this user is followed by
+     *
      * @param request a request containing the user alias to check for
      * @return a response containing the number of users our user is followed by
      */
-    public FollowerCountResponse getFollowerCount(FollowerCountRequest request){
+    public FollowerCountResponse getFollowerCount(FollowerCountRequest request) {
         String userAlias = request.getFolloweeAlias();
         int count;
-        if(userAlias.equals("@TestUser")){
+        if (userAlias.equals("@TestUser")) {
             count = 30;
-        }else{
+        } else {
             count = 3;
         }
 
@@ -294,7 +298,7 @@ public class ServerFacade {
         String rootUserAlias = request.getRootUserAlias();
         String otherUserAlias = request.getOtherUserAlias();
         boolean didChanceFollow = true;
-        if(Math.random() < .5){
+        if (Math.random() < .5) {
             didChanceFollow = false;
         }
         IsFollowingResponse response = new IsFollowingResponse(true, null, didChanceFollow);
@@ -302,6 +306,7 @@ public class ServerFacade {
     }
 
     static boolean followState = true;
+
     public Response changeFollowState(ChangeFollowStateRequest request) {
         String loggedInUserAlias = request.getRootUserAlias();
         String otherUserAlias = request.getOtherUserAlias();
@@ -324,12 +329,12 @@ public class ServerFacade {
     public StoryResponse getStory(StoryRequest request) {
 
         // Used in place of assert statements because Android does not support them
-        if(BuildConfig.DEBUG) {
-            if(request.getLimit() < 0) {
+        if (BuildConfig.DEBUG) {
+            if (request.getLimit() < 0) {
                 throw new AssertionError();
             }
 
-            if(request.getUserAlias() == null) {
+            if (request.getUserAlias() == null) {
                 throw new AssertionError();
             }
         }
@@ -339,10 +344,10 @@ public class ServerFacade {
 
         boolean hasMorePages = false;
 
-        if(request.getLimit() > 0) {
+        if (request.getLimit() > 0) {
             int statusesIndex = getStoryStartingIndex(request.getLastStatus(), allStatuses);
 
-            for(int limitCounter = 0; statusesIndex < allStatuses.size() && limitCounter < request.getLimit(); statusesIndex++, limitCounter++) {
+            for (int limitCounter = 0; statusesIndex < allStatuses.size() && limitCounter < request.getLimit(); statusesIndex++, limitCounter++) {
                 responseStatuses.add(allStatuses.get(statusesIndex));
             }
 
@@ -357,8 +362,8 @@ public class ServerFacade {
      * be returned in the current request. This will be the index of the next statuses after the
      * specified 'lastStatus'.
      *
-     * @param lastStatus the alias of the last status that was returned in the previous
-     *                          request or null if there was no previous request.
+     * @param lastStatus  the alias of the last status that was returned in the previous
+     *                    request or null if there was no previous request.
      * @param allStatuses the generated list of statuses from which we are returning paged results.
      * @return the index of the first status to be returned.
      */
@@ -366,11 +371,11 @@ public class ServerFacade {
 
         int statusesIndex = 0;
 
-        if(lastStatus != null) {
+        if (lastStatus != null) {
             // This is a paged request for something after the first page. Find the first item
             // we should return
             for (int i = 0; i < allStatuses.size(); i++) {
-                if(lastStatus.equals(allStatuses.get(i).getUser().getAlias())) {
+                if (lastStatus.equals(allStatuses.get(i).getUser().getAlias())) {
                     // We found the index of the last item returned last time. Increment to get
                     // to the first one we should return
                     statusesIndex = i + 1;
@@ -391,7 +396,7 @@ public class ServerFacade {
     List<Status> getDummyStory(String userAlias) {
         List<Status> allStatus = Arrays.asList(status1, status5, status2, status3, status4, status1, status2, status3, status4);
         List<Status> returnList = new ArrayList<>();
-        for(int i = 0; i < allStatus.size(); i++) {
+        for (int i = 0; i < allStatus.size(); i++) {
             if (allStatus.get(i).getUser().getAlias().equals(userAlias)) {
                 returnList.add(allStatus.get(i));
             }
@@ -412,12 +417,12 @@ public class ServerFacade {
     public FeedResponse getFeed(FeedRequest request) {
 
         // Used in place of assert statements because Android does not support them
-        if(BuildConfig.DEBUG) {
-            if(request.getLimit() < 0) {
+        if (BuildConfig.DEBUG) {
+            if (request.getLimit() < 0) {
                 throw new AssertionError();
             }
 
-            if(request.getUserAlias() == null) {
+            if (request.getUserAlias() == null) {
                 throw new AssertionError();
             }
         }
@@ -427,10 +432,10 @@ public class ServerFacade {
 
         boolean hasMorePages = false;
 
-        if(request.getLimit() > 0) {
+        if (request.getLimit() > 0) {
             int statusesIndex = getFeedStartingIndex(request.getLastStatus(), allStatuses);
 
-            for(int limitCounter = 0; statusesIndex < allStatuses.size() && limitCounter < request.getLimit(); statusesIndex++, limitCounter++) {
+            for (int limitCounter = 0; statusesIndex < allStatuses.size() && limitCounter < request.getLimit(); statusesIndex++, limitCounter++) {
                 responseStatuses.add(allStatuses.get(statusesIndex));
             }
 
@@ -445,8 +450,8 @@ public class ServerFacade {
      * be returned in the current request. This will be the index of the next status after the
      * specified 'lastStatus'.
      *
-     * @param lastStatus the alias of the last status that was returned in the previous
-     *                          request or null if there was no previous request.
+     * @param lastStatus  the alias of the last status that was returned in the previous
+     *                    request or null if there was no previous request.
      * @param allStatuses the generated list of statuses from which we are returning paged results.
      * @return the index of the first status to be returned.
      */
@@ -454,11 +459,11 @@ public class ServerFacade {
 
         int statusesIndex = 0;
 
-        if(lastStatus != null) {
+        if (lastStatus != null) {
             // This is a paged request for something after the first page. Find the first item
             // we should return
             for (int i = 0; i < allStatuses.size(); i++) {
-                if(lastStatus.equals(allStatuses.get(i).getUser().getAlias())) {
+                if (lastStatus.equals(allStatuses.get(i).getUser().getAlias())) {
                     // We found the index of the last item returned last time. Increment to get
                     // to the first one we should return
                     statusesIndex = i + 1;
@@ -495,5 +500,11 @@ public class ServerFacade {
             }
         }
         return new UserResponse(false, "User \"" + request.getUserAlias() + "\" not found");
+    }
+
+
+    public RegisterResponse register(RegisterRequest request) {
+        User user = new User("One", "Two", "Three");
+        return new RegisterResponse(user, new AuthToken());
     }
 }

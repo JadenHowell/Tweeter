@@ -80,8 +80,8 @@ public class RegisterFragment extends Fragment implements LoginPresenter.View, L
             });
 
 
-        Button loginButton = view.findViewById(R.id.RegisterButton);
-        loginButton.setOnClickListener(new View.OnClickListener() {
+        Button registerButton = view.findViewById(R.id.RegisterButton);
+        registerButton.setOnClickListener(new View.OnClickListener() {
 
             /**
              * Makes a login request. The user is hard-coded, so it doesn't matter what data we put
