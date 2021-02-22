@@ -13,8 +13,10 @@ import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.view.main.follower.FollowerFragment;
 import edu.byu.cs.tweeter.view.main.following.FollowingFragment;
+import edu.byu.cs.tweeter.view.main.story.StoryFragment;
 
 public class OtherUserSectionsPagerAdapter extends FragmentPagerAdapter {
+    private static final int STORY_FRAGMENT_POSITION = 0;
     private static final int FOLLOWING_FRAGMENT_POSITION = 1;
     private static final int FOLLOWERS_FRAGMENT_POSITION = 2;
 
@@ -38,6 +40,8 @@ public class OtherUserSectionsPagerAdapter extends FragmentPagerAdapter {
             return FollowingFragment.newInstance(user, authToken);
         } else if (position == FOLLOWERS_FRAGMENT_POSITION) {
             return FollowerFragment.newInstance(user, authToken);
+        } else if (position == STORY_FRAGMENT_POSITION) {
+            return StoryFragment.newInstance(user, authToken);
         } else {
             return PlaceholderFragment.newInstance(position + 1);
         }
