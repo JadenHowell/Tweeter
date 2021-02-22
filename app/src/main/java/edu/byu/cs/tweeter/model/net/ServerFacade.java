@@ -2,26 +2,48 @@ package edu.byu.cs.tweeter.model.net;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import edu.byu.cs.tweeter.BuildConfig;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
+import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.model.service.request.ChangeFollowStateRequest;
+import edu.byu.cs.tweeter.model.service.request.FeedRequest;
+import edu.byu.cs.tweeter.model.service.request.FollowerCountRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowerRequest;
+import edu.byu.cs.tweeter.model.service.request.FollowingCountRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
+import edu.byu.cs.tweeter.model.service.request.IsFollowingRequest;
 import edu.byu.cs.tweeter.model.service.request.LoginRequest;
+import edu.byu.cs.tweeter.model.service.request.PostRequest;
+import edu.byu.cs.tweeter.model.service.request.UserRequest;
+import edu.byu.cs.tweeter.model.service.response.ChangeFollowStateResponse;
+import edu.byu.cs.tweeter.model.service.response.FeedResponse;
+import edu.byu.cs.tweeter.model.service.response.FollowerCountResponse;
+import edu.byu.cs.tweeter.model.service.request.StoryRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowerResponse;
+import edu.byu.cs.tweeter.model.service.response.FollowingCountResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
+import edu.byu.cs.tweeter.model.service.response.IsFollowingResponse;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
+import edu.byu.cs.tweeter.model.service.response.PostResponse;
+import edu.byu.cs.tweeter.model.service.response.Response;
+import edu.byu.cs.tweeter.model.service.response.StoryResponse;
+import edu.byu.cs.tweeter.model.service.response.UserResponse;
 
 /**
  * Acts as a Facade to the Tweeter server. All network requests to the server should go through
  * this class.
  */
 public class ServerFacade {
-    // This is the hard coded followee data returned by the 'getFollowees()' method
+    // This is the hard coded followee/follower data returned by the 'getFollowees()'/'getFollowers()' methods
     private static final String MALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png";
     private static final String FEMALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png";
+
+    private static final String STORY_TYPE = "story";
+    private static final String FEED_TYPE = "feed";
 
     private final User user1 = new User("Allen", "Anderson", MALE_IMAGE_URL);
     private final User user2 = new User("Amy", "Ames", FEMALE_IMAGE_URL);
@@ -43,6 +65,14 @@ public class ServerFacade {
     private final User user18 = new User("Isabel", "Isaacson", FEMALE_IMAGE_URL);
     private final User user19 = new User("Justin", "Jones", MALE_IMAGE_URL);
     private final User user20 = new User("Jill", "Johnson", FEMALE_IMAGE_URL);
+
+    private final Status status1 = new Status(user1, Calendar.getInstance().getTime(), "test1 @GiovannaGiles");
+    private final Status status2 = new Status(user2, Calendar.getInstance().getTime(), "test2 @TestUser");
+    private final Status status3 = new Status(user3, Calendar.getInstance().getTime(), "test3 google.com");
+    private final Status status4 = new Status(new User("Test", "User",
+            "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), Calendar.getInstance().getTime(),
+            "A really long message that should take up a few lines and has a mention to someone @AmyAmes. and a http://url.com");
+    private final Status status5 = new Status(user4, Calendar.getInstance().getTime(), "post! @AmyAmes @JillJohnson @ChrisColston @fakeuser");
 
     /**
      * Performs a login and if successful, returns the logged in user and an auth token. The current
@@ -219,7 +249,251 @@ public class ServerFacade {
      * @return the followers.
      */
     List<User> getDummyFollowers() {
-        return Arrays.asList(user2, user3, user4, user5, user10,
-                user12, user14, user16, user17, user19);
+        return Arrays.asList(user2, user3, user4, user5, user7, user8, user9, user10,
+                user12, user13, user14, user16, user17, user19);
+    }
+
+    /**
+     * Returns a response based on the number of users this user is following
+     * @param request a request containing the user alias to check for
+     * @return a response containing the number of users our user is following
+     */
+    public FollowingCountResponse getFollowingCount(FollowingCountRequest request){
+        String userAlias = request.getFollowerAlias();
+
+        int count;
+        if(userAlias.equals("@TestUser")){
+            count = 7;
+        }else{
+            count = 100;
+        }
+
+        FollowingCountResponse response = new FollowingCountResponse(true, null, count);
+        return response;
+    }
+
+    /**
+     * Returns a response based on the number of users this user is followed by
+     * @param request a request containing the user alias to check for
+     * @return a response containing the number of users our user is followed by
+     */
+    public FollowerCountResponse getFollowerCount(FollowerCountRequest request){
+        String userAlias = request.getFolloweeAlias();
+        int count;
+        if(userAlias.equals("@TestUser")){
+            count = 30;
+        }else{
+            count = 3;
+        }
+
+        FollowerCountResponse response = new FollowerCountResponse(true, null, count);
+        return response;
+    }
+
+    public Response getIsFollowing(IsFollowingRequest request) {
+        String rootUserAlias = request.getRootUserAlias();
+        String otherUserAlias = request.getOtherUserAlias();
+        boolean didChanceFollow = true;
+        if(Math.random() < .5){
+            didChanceFollow = false;
+        }
+        IsFollowingResponse response = new IsFollowingResponse(true, null, didChanceFollow);
+        return response;
+    }
+
+    static boolean followState = true;
+    public Response changeFollowState(ChangeFollowStateRequest request) {
+        String loggedInUserAlias = request.getRootUserAlias();
+        String otherUserAlias = request.getOtherUserAlias();
+        ChangeFollowStateResponse response = new ChangeFollowStateResponse(true, null, followState);
+        followState = !followState;
+        return response;
+    }
+
+
+    /**
+     * Returns the statuses that the user specified in the request has in their story. Uses information in
+     * the request object to limit the number of statuses returned and to return the next set of
+     * statuses after any that were returned in a previous request. The current implementation
+     * returns generated data and doesn't actually make a network request.
+     *
+     * @param request contains information about the user whose statuses are to be returned and any
+     *                other information required to satisfy the request.
+     * @return the story response.
+     */
+    public StoryResponse getStory(StoryRequest request) {
+
+        // Used in place of assert statements because Android does not support them
+        if(BuildConfig.DEBUG) {
+            if(request.getLimit() < 0) {
+                throw new AssertionError();
+            }
+
+            if(request.getUserAlias() == null) {
+                throw new AssertionError();
+            }
+        }
+
+        List<Status> allStatuses = getDummyStory(request.getUserAlias());
+        List<Status> responseStatuses = new ArrayList<>(request.getLimit());
+
+        boolean hasMorePages = false;
+
+        if(request.getLimit() > 0) {
+            int statusesIndex = getStoryStartingIndex(request.getLastStatus(), allStatuses);
+
+            for(int limitCounter = 0; statusesIndex < allStatuses.size() && limitCounter < request.getLimit(); statusesIndex++, limitCounter++) {
+                responseStatuses.add(allStatuses.get(statusesIndex));
+            }
+
+            hasMorePages = statusesIndex < allStatuses.size();
+        }
+
+        return new StoryResponse(responseStatuses, hasMorePages);
+    }
+
+    /**
+     * Determines the index for the first status in the specified 'allStatuses' list that should
+     * be returned in the current request. This will be the index of the next statuses after the
+     * specified 'lastStatus'.
+     *
+     * @param lastStatus the alias of the last status that was returned in the previous
+     *                          request or null if there was no previous request.
+     * @param allStatuses the generated list of statuses from which we are returning paged results.
+     * @return the index of the first status to be returned.
+     */
+    private int getStoryStartingIndex(String lastStatus, List<Status> allStatuses) {
+
+        int statusesIndex = 0;
+
+        if(lastStatus != null) {
+            // This is a paged request for something after the first page. Find the first item
+            // we should return
+            for (int i = 0; i < allStatuses.size(); i++) {
+                if(lastStatus.equals(allStatuses.get(i).getUser().getAlias())) {
+                    // We found the index of the last item returned last time. Increment to get
+                    // to the first one we should return
+                    statusesIndex = i + 1;
+                    break;
+                }
+            }
+        }
+
+        return statusesIndex;
+    }
+
+    /**
+     * Returns the list of dummy story data. This is written as a separate method to allow
+     * mocking of the story.
+     *
+     * @return the statuses.
+     */
+    List<Status> getDummyStory(String userAlias) {
+        List<Status> allStatus = Arrays.asList(status1, status5, status2, status3, status4, status1, status2, status3, status4);
+        List<Status> returnList = new ArrayList<>();
+        for(int i = 0; i < allStatus.size(); i++) {
+            if (allStatus.get(i).getUser().getAlias().equals(userAlias)) {
+                returnList.add(allStatus.get(i));
+            }
+        }
+        return returnList;
+    }
+
+    /**
+     * Returns the statuses that the user specified in the request has in their feed. Uses information in
+     * the request object to limit the number of statuses returned and to return the next set of
+     * statuses after any that were returned in a previous request. The current implementation
+     * returns generated data and doesn't actually make a network request.
+     *
+     * @param request contains information about the user whose statuses are to be returned and any
+     *                other information required to satisfy the request.
+     * @return the feed response.
+     */
+    public FeedResponse getFeed(FeedRequest request) {
+
+        // Used in place of assert statements because Android does not support them
+        if(BuildConfig.DEBUG) {
+            if(request.getLimit() < 0) {
+                throw new AssertionError();
+            }
+
+            if(request.getUserAlias() == null) {
+                throw new AssertionError();
+            }
+        }
+
+        List<Status> allStatuses = getDummyFeed(request.getUserAlias());
+        List<Status> responseStatuses = new ArrayList<>(request.getLimit());
+
+        boolean hasMorePages = false;
+
+        if(request.getLimit() > 0) {
+            int statusesIndex = getFeedStartingIndex(request.getLastStatus(), allStatuses);
+
+            for(int limitCounter = 0; statusesIndex < allStatuses.size() && limitCounter < request.getLimit(); statusesIndex++, limitCounter++) {
+                responseStatuses.add(allStatuses.get(statusesIndex));
+            }
+
+            hasMorePages = statusesIndex < allStatuses.size();
+        }
+
+        return new FeedResponse(responseStatuses, hasMorePages);
+    }
+
+    /**
+     * Determines the index for the first status in the specified 'allStatuses' list that should
+     * be returned in the current request. This will be the index of the next status after the
+     * specified 'lastStatus'.
+     *
+     * @param lastStatus the alias of the last status that was returned in the previous
+     *                          request or null if there was no previous request.
+     * @param allStatuses the generated list of statuses from which we are returning paged results.
+     * @return the index of the first status to be returned.
+     */
+    private int getFeedStartingIndex(String lastStatus, List<Status> allStatuses) {
+
+        int statusesIndex = 0;
+
+        if(lastStatus != null) {
+            // This is a paged request for something after the first page. Find the first item
+            // we should return
+            for (int i = 0; i < allStatuses.size(); i++) {
+                if(lastStatus.equals(allStatuses.get(i).getUser().getAlias())) {
+                    // We found the index of the last item returned last time. Increment to get
+                    // to the first one we should return
+                    statusesIndex = i + 1;
+                    break;
+                }
+            }
+        }
+
+        return statusesIndex;
+    }
+
+    /**
+     * Returns the list of dummy feed data. This is written as a separate method to allow
+     * mocking of the statuses.
+     *
+     * @return the statuses.
+     */
+
+    List<Status> getDummyFeed(String userAlias) {
+        return Arrays.asList(status1, status5, status2, status3, status4, status1, status2, status3, status4);
+    }
+
+    public PostResponse post(PostRequest request) {
+        return new PostResponse(true, "Post Successful!");
+    }
+
+    public UserResponse getUser(UserRequest request) {
+        List<User> allUsers = Arrays.asList(user1, user2, user3, user4, user5, user6, user7,
+                user8, user9, user10, user11, user12, user13, user14, user15, user16, user17, user18,
+                user19, user20);
+        for (User user : allUsers) {
+            if (user.getAlias().equals(request.getUserAlias())) {
+                return new UserResponse(true, "User returned", user);
+            }
+        }
+        return new UserResponse(false, "User \"" + request.getUserAlias() + "\" not found");
     }
 }

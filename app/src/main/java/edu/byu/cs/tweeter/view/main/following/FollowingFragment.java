@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.view.main.following;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,8 @@ import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
 import edu.byu.cs.tweeter.presenter.FollowingPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.GetFollowingTask;
+import edu.byu.cs.tweeter.view.main.MainActivity;
+import edu.byu.cs.tweeter.view.main.OtherUserActivity;
 import edu.byu.cs.tweeter.view.util.ImageUtils;
 
 /**
@@ -100,6 +103,7 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
         private final ImageView userImage;
         private final TextView userAlias;
         private final TextView userName;
+        private User otherUser;
 
         /**
          * Creates an instance and sets an OnClickListener for the user's row.
@@ -117,7 +121,15 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Toast.makeText(getContext(), "You selected '" + userName.getText() + "'.", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(getContext(), "You selected '"
+                        //  + userName.getText() + "'.", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getContext(), OtherUserActivity.class);
+
+                        intent.putExtra(OtherUserActivity.LOGGED_IN_USER_KEY, user);
+                        intent.putExtra(OtherUserActivity.AUTH_TOKEN_KEY, authToken);
+                        intent.putExtra(OtherUserActivity.OTHER_USER_KEY, otherUser);
+
+                        startActivity(intent);
                     }
                 });
             } else {
@@ -136,6 +148,7 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
             userImage.setImageDrawable(ImageUtils.drawableFromByteArray(user.getImageBytes()));
             userAlias.setText(user.getAlias());
             userName.setText(user.getName());
+            otherUser = user;
         }
     }
 
