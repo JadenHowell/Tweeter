@@ -20,4 +20,6 @@
     <string name="followerCount">Followers: %d</string>
     <string name="button_text_follow">Follow</string>
     <string name="title_activity_other_user">Other User</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
