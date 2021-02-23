@@ -17,6 +17,7 @@ import edu.byu.cs.tweeter.model.service.request.FollowingCountRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.request.IsFollowingRequest;
 import edu.byu.cs.tweeter.model.service.request.LoginRequest;
+import edu.byu.cs.tweeter.model.service.request.LogoutRequest;
 import edu.byu.cs.tweeter.model.service.request.PostRequest;
 import edu.byu.cs.tweeter.model.service.request.UserRequest;
 import edu.byu.cs.tweeter.model.service.response.ChangeFollowStateResponse;
@@ -28,6 +29,7 @@ import edu.byu.cs.tweeter.model.service.response.FollowingCountResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
 import edu.byu.cs.tweeter.model.service.response.IsFollowingResponse;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
+import edu.byu.cs.tweeter.model.service.response.LogoutResponse;
 import edu.byu.cs.tweeter.model.service.response.PostResponse;
 import edu.byu.cs.tweeter.model.service.response.Response;
 import edu.byu.cs.tweeter.model.service.response.StoryResponse;
@@ -86,6 +88,18 @@ public class ServerFacade {
         User user = new User("Test", "User",
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
         return new LoginResponse(user, new AuthToken());
+    }
+
+    /**
+     * Performs a logout and if successful, returns the success. The current
+     * implementation is hard-coded to succeed and doesn't actually make a network
+     * request.
+     *
+     * @param request contains all information needed to perform a logout.
+     * @return the logout response.
+     */
+    public LogoutResponse logout(LogoutRequest request) {
+        return new LogoutResponse(true, "");
     }
 
     /**
