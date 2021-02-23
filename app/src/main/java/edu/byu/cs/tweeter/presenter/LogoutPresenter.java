@@ -1,20 +1,55 @@
 package edu.byu.cs.tweeter.presenter;
 
 import java.io.IOException;
-
+import edu.byu.cs.tweeter.model.service.FollowingService;
+import edu.byu.cs.tweeter.model.service.LoginService;
 import edu.byu.cs.tweeter.model.service.LogoutService;
+import edu.byu.cs.tweeter.model.service.Service;
+import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
+import edu.byu.cs.tweeter.model.service.request.LoginRequest;
 import edu.byu.cs.tweeter.model.service.request.LogoutRequest;
+import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
+import edu.byu.cs.tweeter.model.service.response.LoginResponse;
 import edu.byu.cs.tweeter.model.service.response.LogoutResponse;
 
 public class LogoutPresenter {
 
     private final View view;
+    /**
+     * The interface by which this presenter communicates with it's view.
+     */
+    public interface View {
+        // If needed, specify methods here that will be called on the view in response to model updates
+    }
 
-    public interface View {}
-    public LogoutPresenter(View view) {this.view = view;}
+    /**
+     * Creates an instance.
+     *
+     * @param view the view for which this class is the presenter.
+     */
+    public LogoutPresenter(View view) {
+        this.view = view;
+    }
 
-    public LogoutResponse logout(LogoutRequest logoutRequest) throws IOException {
-        LogoutService logoutService = new LogoutService();
-        return (LogoutResponse) logoutService.serve(logoutRequest);
+    /**
+     * Returns the logout success
+     *
+     * @param request contains the data required to fulfill the request.
+     * @return the followees.
+     */
+    public LogoutResponse logout(LogoutRequest request) throws IOException {
+        Service logoutService = getLogoutService();
+        return (LogoutResponse) logoutService.serve(request);
+    }
+
+    /**
+     * Returns an instance of {@link LogoutService}. Allows mocking of the LogoutService class
+     * for testing purposes. All usages of LogoutService should get their LogoutService
+     * instance from this method to allow for mocking of the instance.
+     *
+     * @return the instance.
+     */
+    Service getLogoutService() {
+        return new LogoutService();
     }
 }

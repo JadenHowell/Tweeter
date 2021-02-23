@@ -93,6 +93,18 @@ public class ServerFacade {
     }
 
     /**
+     * Performs a logout and if successful, returns the success. The current
+     * implementation is hard-coded to succeed and doesn't actually make a network
+     * request.
+     *
+     * @param request contains all information needed to perform a logout.
+     * @return the logout response.
+     */
+    public LogoutResponse logout(LogoutRequest request) {
+        return new LogoutResponse(true, "");
+    }
+
+    /**
      * Returns the users that the user specified in the request is following. Uses information in
      * the request object to limit the number of followees returned and to return the next set of
      * followees after any that were returned in a previous request. The current implementation
