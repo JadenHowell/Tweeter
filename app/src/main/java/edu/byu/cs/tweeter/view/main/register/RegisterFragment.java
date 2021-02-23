@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,21 +24,26 @@ import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.service.request.LoginRequest;
+import edu.byu.cs.tweeter.model.service.request.RegisterRequest;
 import edu.byu.cs.tweeter.model.service.response.LoginResponse;
+import edu.byu.cs.tweeter.model.service.response.RegisterResponse;
 import edu.byu.cs.tweeter.presenter.LoginPresenter;
+import edu.byu.cs.tweeter.presenter.RegisterPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.LoginTask;
+import edu.byu.cs.tweeter.view.asyncTasks.RegisterTask;
+import edu.byu.cs.tweeter.view.main.MainActivity;
 import edu.byu.cs.tweeter.view.main.login.LoginFragment;
 
-public class RegisterFragment extends Fragment implements LoginPresenter.View, LoginTask.Observer {
+public class RegisterFragment extends Fragment implements RegisterPresenter.View, RegisterTask.Observer {
 
-    private static final String LOG_TAG = "LoginFragment";
+    private static final String LOG_TAG = "RegisterFragment";
     private static final String USER_KEY = "UserKey";
     private static final String AUTH_TOKEN_KEY = "AuthTokenKey";
     private Toast registerToast;
 
     private User user;
     private AuthToken authToken;
-    private LoginPresenter presenter;
+    private RegisterPresenter presenter;
 
     public static RegisterFragment newInstance(User user, AuthToken authToken) {
         RegisterFragment fragment = new RegisterFragment();
@@ -59,7 +65,7 @@ public class RegisterFragment extends Fragment implements LoginPresenter.View, L
         user = (User) getArguments().getSerializable(USER_KEY);
         authToken = (AuthToken) getArguments().getSerializable(AUTH_TOKEN_KEY);
 
-        presenter = new LoginPresenter(this);
+        presenter = new RegisterPresenter(this);
 
         Button takePictureButton;
         takePictureButton = view.findViewById(R.id.TakePictureButton);
@@ -95,9 +101,9 @@ public class RegisterFragment extends Fragment implements LoginPresenter.View, L
                 registerToast.show();
 
                 // It doesn't matter what values we put here. We will be logged in with a hard-coded dummy user.
-                LoginRequest loginRequest = new LoginRequest("dummyUserName", "dummyPassword");
-                LoginTask loginTask = new LoginTask(presenter, RegisterFragment.this);
-                loginTask.execute(loginRequest);
+                RegisterRequest registerRequest = new RegisterRequest("New","User","dummyUserName", "dummyPassword");
+                RegisterTask registerTask = new RegisterTask(presenter, RegisterFragment.this);
+                registerTask.execute(registerRequest);
             }
         });
 
@@ -112,17 +118,25 @@ public class RegisterFragment extends Fragment implements LoginPresenter.View, L
     }
 
     @Override
-    public void loginSuccessful(LoginResponse loginResponse) {
+    public void registerSuccessful(RegisterResponse registerResponse) {
+        Intent intent = new Intent(getContext(), MainActivity.class);
 
+        intent.putExtra(MainActivity.CURRENT_USER_KEY, registerResponse.getUser());
+        intent.putExtra(MainActivity.AUTH_TOKEN_KEY, registerResponse.getAuthToken());
+
+        registerToast.cancel();
+        startActivity(intent);
     }
 
     @Override
-    public void loginUnsuccessful(LoginResponse loginResponse) {
-
+    public void registerUnsuccessful(RegisterResponse registerResponse) {
+        Toast.makeText(getContext(), "Failed to register. " + registerResponse.getMessage(), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void handleException(Exception ex) {
+        Log.e(LOG_TAG, ex.getMessage(), ex);
+        Toast.makeText(getContext(), "Failed to login because of exception: " + ex.getMessage(), Toast.LENGTH_LONG).show();
 
     }
 }

@@ -1,7 +1,6 @@
 package edu.byu.cs.tweeter.presenter;
 
 import java.io.IOException;
-
 import edu.byu.cs.tweeter.model.service.FollowingService;
 import edu.byu.cs.tweeter.model.service.LoginService;
 import edu.byu.cs.tweeter.model.service.LogoutService;
@@ -16,7 +15,6 @@ import edu.byu.cs.tweeter.model.service.response.LogoutResponse;
 public class LogoutPresenter {
 
     private final View view;
-
     /**
      * The interface by which this presenter communicates with it's view.
      */

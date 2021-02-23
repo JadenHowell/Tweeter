@@ -518,7 +518,12 @@ public class ServerFacade {
 
 
     public RegisterResponse register(RegisterRequest request) {
-        User user = new User("One", "Two", "Three");
+        User user = new User("One", "Two", "https://www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png");
         return new RegisterResponse(user, new AuthToken());
+    }
+
+    public LogoutResponse logout(LogoutRequest logoutRequest) {
+        User user = new User("Uno", "Dos", "https://cdn4.iconfinder.com/data/icons/avatars-xmas-giveaway/128/girl_female_woman_avatar-512.png");
+        return new LogoutResponse(user, new AuthToken());
     }
 }

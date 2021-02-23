@@ -37,7 +37,7 @@ public class LogoutTask extends AsyncTask<LogoutRequest, Void, LogoutResponse> {
         this.presenter = presenter;
         this.observer = observer;
     }
-
+  
     /**
      * The method that is invoked on a background thread to log the user in. This method is
      * invoked indirectly by calling {@link #execute(LogoutRequest...)}.

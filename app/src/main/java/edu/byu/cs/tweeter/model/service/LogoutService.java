@@ -12,7 +12,6 @@ public class LogoutService extends Service{
         return serverFacade.logout((LogoutRequest) request);
     }
 
-    @Override
     void onSuccess(Response response) throws IOException {
     }
 }
