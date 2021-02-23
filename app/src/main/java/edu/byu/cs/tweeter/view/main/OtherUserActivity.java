@@ -1,7 +1,11 @@
 package edu.byu.cs.tweeter.view.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import org.jetbrains.annotations.NotNull;
+
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
@@ -20,27 +26,34 @@ import edu.byu.cs.tweeter.model.service.request.ChangeFollowStateRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowerCountRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowingCountRequest;
 import edu.byu.cs.tweeter.model.service.request.IsFollowingRequest;
+import edu.byu.cs.tweeter.model.service.request.LogoutRequest;
 import edu.byu.cs.tweeter.model.service.response.ChangeFollowStateResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowerCountResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowingCountResponse;
 import edu.byu.cs.tweeter.model.service.response.IsFollowingResponse;
+import edu.byu.cs.tweeter.model.service.response.LogoutResponse;
 import edu.byu.cs.tweeter.presenter.CountPresenter;
 import edu.byu.cs.tweeter.presenter.FollowButtonPresenter;
+import edu.byu.cs.tweeter.presenter.LogoutPresenter;
+import edu.byu.cs.tweeter.view.LoginActivity;
 import edu.byu.cs.tweeter.view.asyncTasks.ChangeFollowStateTask;
 import edu.byu.cs.tweeter.view.asyncTasks.GetFollowerCountTask;
 import edu.byu.cs.tweeter.view.asyncTasks.GetFollowingCountTask;
 import edu.byu.cs.tweeter.view.asyncTasks.GetIsFollowingTask;
+import edu.byu.cs.tweeter.view.asyncTasks.LogoutTask;
 import edu.byu.cs.tweeter.view.util.ImageUtils;
 
 public class OtherUserActivity extends AppCompatActivity
         implements CountPresenter.View, GetFollowingCountTask.FollowingCountObserver, GetFollowerCountTask.FollowerCountObserver,
-                    FollowButtonPresenter.View, GetIsFollowingTask.IsFollowingObserver, ChangeFollowStateTask.ChangeStateObserver {
+                    FollowButtonPresenter.View, GetIsFollowingTask.IsFollowingObserver, ChangeFollowStateTask.ChangeStateObserver,
+                    LogoutPresenter.View, LogoutTask.Observer{
 
     public static final String LOGGED_IN_USER_KEY = "CurrentUser";
     public static final String AUTH_TOKEN_KEY = "AuthTokenKey";
     public static final String OTHER_USER_KEY = "OtherUser";
 
     FollowButtonPresenter buttonPresenter;
+    User loggedInUser;
 
     private boolean followButtonState = true;
 
@@ -49,7 +62,7 @@ public class OtherUserActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_other_user);
 
-        User loggedInUser = (User) getIntent().getSerializableExtra(LOGGED_IN_USER_KEY);
+        loggedInUser = (User) getIntent().getSerializableExtra(LOGGED_IN_USER_KEY);
         User otherUser = (User) getIntent().getSerializableExtra(OTHER_USER_KEY);
         if(loggedInUser == null) {
             throw new RuntimeException("Logged in user not passed to activity");
@@ -106,6 +119,26 @@ public class OtherUserActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NotNull MenuItem item){
+        if(R.id.logoutMenu == item.getItemId()){
+            //Toast.makeText(this, "Clicked logout", Toast.LENGTH_SHORT).show();
+            LogoutPresenter logoutPresenter = new LogoutPresenter(this);
+            LogoutTask logoutTask = new LogoutTask(logoutPresenter, this);
+            LogoutRequest logoutRequest = new LogoutRequest(loggedInUser.getAlias());
+            logoutTask.execute(logoutRequest);
+            Toast.makeText(this, "Logout successful", Toast.LENGTH_SHORT).show();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
     public void followerCountRetrieved(FollowerCountResponse followerCountResponse) {
         TextView followerCount = findViewById(R.id.followerCount);
         followerCount.setText(getString(R.string.followerCount, followerCountResponse.getCount()));
@@ -136,6 +169,17 @@ public class OtherUserActivity extends AppCompatActivity
             follow_unfollowButton.setText("Follow");
             follow_unfollowButton.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
         }
+    }
+
+    @Override
+    public void logoutSuccessful(LogoutResponse logoutResponse) {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void logoutUnsuccessful(LogoutResponse logoutResponse) {
+        Toast.makeText(this, "Logout unsuccessful, try agin", Toast.LENGTH_SHORT).show();
     }
 
     @Override
