@@ -37,7 +37,7 @@ public class LoginPresenter {
      * @param loginRequest the request.
      */
     public LoginResponse login(LoginRequest loginRequest) throws IOException {
-        LoginService loginService = new LoginService();
+        Service loginService = getLoginService();
         return (LoginResponse) loginService.serve(loginRequest);
     }
 
