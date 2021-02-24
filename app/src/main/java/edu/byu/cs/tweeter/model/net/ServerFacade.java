@@ -353,7 +353,7 @@ public class ServerFacade {
             }
         }
 
-        List<Status> allStatuses = getDummyStory(request.getUserAlias());
+        List<Status> allStatuses = getDummyStory("@TestUser");//request.getUserAlias());
         List<Status> responseStatuses = new ArrayList<>(request.getLimit());
 
         boolean hasMorePages = false;
@@ -518,7 +518,7 @@ public class ServerFacade {
 
 
     public RegisterResponse register(RegisterRequest request) {
-        User user = new User("One", "Two", "https://www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png");
+        User user = new User("One", "Two", "@OneTwo", "https://www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png");
         return new RegisterResponse(user, new AuthToken());
     }
 
