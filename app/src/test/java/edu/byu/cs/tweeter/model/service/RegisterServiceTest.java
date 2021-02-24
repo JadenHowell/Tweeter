@@ -33,7 +33,7 @@ public class RegisterServiceTest {
         invalidRequest = new RegisterRequest(null, null, null, null);
 
         // Setup a mock ServerFacade that will return known responses
-        successResponse = new RegisterResponse(new User("first", "last", "url"), new AuthToken());
+        successResponse = new RegisterResponse(new User("first", "last", "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), new AuthToken());
         ServerFacade mockServerFacade = Mockito.mock(ServerFacade.class);
         Mockito.when(mockServerFacade.register(validRequest)).thenReturn(successResponse);
 

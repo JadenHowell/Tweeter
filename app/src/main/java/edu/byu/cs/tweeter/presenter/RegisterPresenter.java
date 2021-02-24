@@ -19,7 +19,7 @@ public class RegisterPresenter {
     public RegisterPresenter(View view) {this.view = view;}
 
     public RegisterResponse register(RegisterRequest registerRequest) throws IOException {
-        RegisterService registerService = new RegisterService();
+        Service registerService = getRegisterService();
         return (RegisterResponse) registerService.serve(registerRequest);
     }
 
