@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.LoginActivity"
+            android:name=".client.view.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTask">
@@ -25,11 +25,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.main.MainActivity"
+            android:name=".client.view.main.MainActivity"
             android:label="@string/title_activity_main">
         </activity>
         <activity
-            android:name=".view.main.OtherUserActivity"
+            android:name=".client.view.main.OtherUserActivity"
             android:label="@string/title_activity_other_user">
         </activity>
     </application>
