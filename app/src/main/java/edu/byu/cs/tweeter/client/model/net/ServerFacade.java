@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.client.model.net;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -9,6 +10,7 @@ import edu.byu.cs.tweeter.BuildConfig;
 import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.shared.domain.User;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.ChangeFollowStateRequest;
 import edu.byu.cs.tweeter.shared.service.request.FeedRequest;
 import edu.byu.cs.tweeter.shared.service.request.FollowerCountRequest;
@@ -42,6 +44,12 @@ import edu.byu.cs.tweeter.shared.service.response.UserResponse;
  * this class.
  */
 public class ServerFacade {
+
+    private static final String SERVER_URL = "example.com";
+    private static final String FOLLOWEES_URL_PATH = "/getfollowing";
+
+    private final ClientCommunicator clientCommunicator = new ClientCommunicator(SERVER_URL);
+
     // This is the hard coded followee/follower data returned by the 'getFollowees()'/'getFollowers()' methods
     private static final String MALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png";
     private static final String FEMALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png";
@@ -107,42 +115,21 @@ public class ServerFacade {
     /**
      * Returns the users that the user specified in the request is following. Uses information in
      * the request object to limit the number of followees returned and to return the next set of
-     * followees after any that were returned in a previous request. The current implementation
-     * returns generated data and doesn't actually make a network request.
+     * followees after any that were returned in a previous request.
      *
      * @param request contains information about the user whose followees are to be returned and any
      *                other information required to satisfy the request.
-     * @return the following response.
+     * @return the followees.
      */
-    public FollowingResponse getFollowees(FollowingRequest request) {
+    public FollowingResponse getFollowees(FollowingRequest request)
+            throws IOException, TweeterRemoteException {
+        FollowingResponse response = clientCommunicator.doPost(FOLLOWEES_URL_PATH, request, null, FollowingResponse.class);
 
-        // Used in place of assert statements because Android does not support them
-        if (BuildConfig.DEBUG) {
-            if (request.getLimit() < 0) {
-                throw new AssertionError();
-            }
-
-            if (request.getFollowerAlias() == null) {
-                throw new AssertionError();
-            }
+        if(response.isSuccess()) {
+            return response;
+        } else {
+            throw new RuntimeException(response.getMessage());
         }
-
-        List<User> allFollowees = getDummyFollowees();
-        List<User> responseFollowees = new ArrayList<>(request.getLimit());
-
-        boolean hasMorePages = false;
-
-        if (request.getLimit() > 0) {
-            int followeesIndex = getFolloweesStartingIndex(request.getLastFolloweeAlias(), allFollowees);
-
-            for (int limitCounter = 0; followeesIndex < allFollowees.size() && limitCounter < request.getLimit(); followeesIndex++, limitCounter++) {
-                responseFollowees.add(allFollowees.get(followeesIndex));
-            }
-
-            hasMorePages = followeesIndex < allFollowees.size();
-        }
-
-        return new FollowingResponse(responseFollowees, hasMorePages);
     }
 
     /**
