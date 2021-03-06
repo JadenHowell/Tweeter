@@ -9,10 +9,10 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.model.service.ChangeFollowStateService;
 import edu.byu.cs.tweeter.model.service.IsFollowingService;
-import edu.byu.cs.tweeter.model.service.request.ChangeFollowStateRequest;
-import edu.byu.cs.tweeter.model.service.request.IsFollowingRequest;
-import edu.byu.cs.tweeter.model.service.response.ChangeFollowStateResponse;
-import edu.byu.cs.tweeter.model.service.response.IsFollowingResponse;
+import edu.byu.cs.tweeter.shared.service.request.ChangeFollowStateRequest;
+import edu.byu.cs.tweeter.shared.service.request.IsFollowingRequest;
+import edu.byu.cs.tweeter.shared.service.response.ChangeFollowStateResponse;
+import edu.byu.cs.tweeter.shared.service.response.IsFollowingResponse;
 
 public class FollowButtonPresenterTest {
     private IsFollowingRequest request;

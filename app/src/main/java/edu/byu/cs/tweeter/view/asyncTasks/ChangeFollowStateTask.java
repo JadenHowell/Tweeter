@@ -4,8 +4,8 @@ import android.os.AsyncTask;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.model.service.request.ChangeFollowStateRequest;
-import edu.byu.cs.tweeter.model.service.response.ChangeFollowStateResponse;
+import edu.byu.cs.tweeter.shared.service.request.ChangeFollowStateRequest;
+import edu.byu.cs.tweeter.shared.service.response.ChangeFollowStateResponse;
 import edu.byu.cs.tweeter.presenter.FollowButtonPresenter;
 
 public class ChangeFollowStateTask extends AsyncTask<ChangeFollowStateRequest, Void, ChangeFollowStateResponse> {

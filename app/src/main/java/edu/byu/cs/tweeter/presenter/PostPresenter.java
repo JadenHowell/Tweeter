@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.model.service.PostService;
 import edu.byu.cs.tweeter.model.service.Service;
-import edu.byu.cs.tweeter.model.service.request.PostRequest;
-import edu.byu.cs.tweeter.model.service.response.PostResponse;
+import edu.byu.cs.tweeter.shared.service.request.PostRequest;
+import edu.byu.cs.tweeter.shared.service.response.PostResponse;
 
 /**
  * The presenter for the "post" functionality of the application.

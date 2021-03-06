@@ -1,7 +1,6 @@
 package edu.byu.cs.tweeter.view.main.register;
 
 import android.Manifest;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -21,18 +20,13 @@ import androidx.fragment.app.Fragment;
 import java.util.Objects;
 
 import edu.byu.cs.tweeter.R;
-import edu.byu.cs.tweeter.model.domain.AuthToken;
-import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.model.service.request.LoginRequest;
-import edu.byu.cs.tweeter.model.service.request.RegisterRequest;
-import edu.byu.cs.tweeter.model.service.response.LoginResponse;
-import edu.byu.cs.tweeter.model.service.response.RegisterResponse;
-import edu.byu.cs.tweeter.presenter.LoginPresenter;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
+import edu.byu.cs.tweeter.shared.domain.User;
+import edu.byu.cs.tweeter.shared.service.request.RegisterRequest;
+import edu.byu.cs.tweeter.shared.service.response.RegisterResponse;
 import edu.byu.cs.tweeter.presenter.RegisterPresenter;
-import edu.byu.cs.tweeter.view.asyncTasks.LoginTask;
 import edu.byu.cs.tweeter.view.asyncTasks.RegisterTask;
 import edu.byu.cs.tweeter.view.main.MainActivity;
-import edu.byu.cs.tweeter.view.main.login.LoginFragment;
 
 public class RegisterFragment extends Fragment implements RegisterPresenter.View, RegisterTask.Observer {
 

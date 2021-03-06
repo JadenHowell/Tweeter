@@ -22,18 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.byu.cs.tweeter.R;
-import edu.byu.cs.tweeter.model.domain.AuthToken;
-import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.model.service.request.FollowerRequest;
-import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
-import edu.byu.cs.tweeter.model.service.response.FollowerResponse;
-import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
+import edu.byu.cs.tweeter.shared.domain.User;
+import edu.byu.cs.tweeter.shared.service.request.FollowerRequest;
+import edu.byu.cs.tweeter.shared.service.response.FollowerResponse;
 import edu.byu.cs.tweeter.presenter.FollowerPresenter;
-import edu.byu.cs.tweeter.presenter.FollowingPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.GetFollowerTask;
-import edu.byu.cs.tweeter.view.asyncTasks.GetFollowingTask;
 import edu.byu.cs.tweeter.view.main.OtherUserActivity;
-import edu.byu.cs.tweeter.view.main.following.FollowingFragment;
 import edu.byu.cs.tweeter.view.util.ImageUtils;
 
 /**
@@ -163,7 +158,7 @@ public class FollowerFragment extends Fragment implements FollowerPresenter.View
 
         private final List<User> users = new ArrayList<>();
 
-        private edu.byu.cs.tweeter.model.domain.User lastFollower;
+        private edu.byu.cs.tweeter.shared.domain.User lastFollower;
 
         private boolean hasMorePages;
         private boolean isLoading = false;

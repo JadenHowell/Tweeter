@@ -8,11 +8,11 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.util.Calendar;
 
-import edu.byu.cs.tweeter.model.domain.Status;
-import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.shared.domain.Status;
+import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.model.service.PostService;
-import edu.byu.cs.tweeter.model.service.request.PostRequest;
-import edu.byu.cs.tweeter.model.service.response.PostResponse;
+import edu.byu.cs.tweeter.shared.service.request.PostRequest;
+import edu.byu.cs.tweeter.shared.service.response.PostResponse;
 
 public class PostPresenterTest {
 

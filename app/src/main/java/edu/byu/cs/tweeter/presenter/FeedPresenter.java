@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.model.service.FeedService;
 import edu.byu.cs.tweeter.model.service.Service;
-import edu.byu.cs.tweeter.model.service.request.FeedRequest;
-import edu.byu.cs.tweeter.model.service.response.FeedResponse;
+import edu.byu.cs.tweeter.shared.service.request.FeedRequest;
+import edu.byu.cs.tweeter.shared.service.response.FeedResponse;
 
 /**
  * The presenter for the "feed" functionality of the application.

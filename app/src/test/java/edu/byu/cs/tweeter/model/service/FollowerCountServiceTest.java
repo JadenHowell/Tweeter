@@ -8,8 +8,8 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.model.net.ServerFacade;
-import edu.byu.cs.tweeter.model.service.request.FollowerCountRequest;
-import edu.byu.cs.tweeter.model.service.response.FollowerCountResponse;
+import edu.byu.cs.tweeter.shared.service.request.FollowerCountRequest;
+import edu.byu.cs.tweeter.shared.service.response.FollowerCountResponse;
 
 public class FollowerCountServiceTest {
 

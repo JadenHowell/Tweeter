@@ -2,9 +2,9 @@ package edu.byu.cs.tweeter.model.service;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.model.service.request.LogoutRequest;
-import edu.byu.cs.tweeter.model.service.request.Request;
-import edu.byu.cs.tweeter.model.service.response.Response;
+import edu.byu.cs.tweeter.shared.service.request.LogoutRequest;
+import edu.byu.cs.tweeter.shared.service.request.Request;
+import edu.byu.cs.tweeter.shared.service.response.Response;
 
 public class LogoutService extends Service{
     @Override

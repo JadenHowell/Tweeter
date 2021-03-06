@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.model.service.Service;
 import edu.byu.cs.tweeter.model.service.StoryService;
-import edu.byu.cs.tweeter.model.service.request.StoryRequest;
-import edu.byu.cs.tweeter.model.service.response.StoryResponse;
+import edu.byu.cs.tweeter.shared.service.request.StoryRequest;
+import edu.byu.cs.tweeter.shared.service.response.StoryResponse;
 
 /**
  * The presenter for the "story" functionality of the application.

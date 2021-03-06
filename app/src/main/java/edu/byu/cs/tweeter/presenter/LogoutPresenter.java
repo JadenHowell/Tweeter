@@ -1,16 +1,11 @@
 package edu.byu.cs.tweeter.presenter;
 
 import java.io.IOException;
-import edu.byu.cs.tweeter.model.service.FollowingService;
-import edu.byu.cs.tweeter.model.service.LoginService;
+
 import edu.byu.cs.tweeter.model.service.LogoutService;
 import edu.byu.cs.tweeter.model.service.Service;
-import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
-import edu.byu.cs.tweeter.model.service.request.LoginRequest;
-import edu.byu.cs.tweeter.model.service.request.LogoutRequest;
-import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
-import edu.byu.cs.tweeter.model.service.response.LoginResponse;
-import edu.byu.cs.tweeter.model.service.response.LogoutResponse;
+import edu.byu.cs.tweeter.shared.service.request.LogoutRequest;
+import edu.byu.cs.tweeter.shared.service.response.LogoutResponse;
 
 public class LogoutPresenter {
 

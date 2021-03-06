@@ -4,8 +4,8 @@ import android.os.AsyncTask;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.model.service.request.FeedRequest;
-import edu.byu.cs.tweeter.model.service.response.FeedResponse;
+import edu.byu.cs.tweeter.shared.service.request.FeedRequest;
+import edu.byu.cs.tweeter.shared.service.response.FeedResponse;
 import edu.byu.cs.tweeter.presenter.FeedPresenter;
 
 /**

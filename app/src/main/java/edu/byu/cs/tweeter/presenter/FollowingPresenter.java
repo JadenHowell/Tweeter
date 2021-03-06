@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.model.service.FollowingService;
 import edu.byu.cs.tweeter.model.service.Service;
-import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
-import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
+import edu.byu.cs.tweeter.shared.service.request.FollowingRequest;
+import edu.byu.cs.tweeter.shared.service.response.FollowingResponse;
 
 /**
  * The presenter for the "following" functionality of the application.

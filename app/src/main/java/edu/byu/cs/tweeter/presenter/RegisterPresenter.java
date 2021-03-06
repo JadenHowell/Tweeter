@@ -2,11 +2,10 @@ package edu.byu.cs.tweeter.presenter;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.model.service.LoginService;
 import edu.byu.cs.tweeter.model.service.RegisterService;
 import edu.byu.cs.tweeter.model.service.Service;
-import edu.byu.cs.tweeter.model.service.request.RegisterRequest;
-import edu.byu.cs.tweeter.model.service.response.RegisterResponse;
+import edu.byu.cs.tweeter.shared.service.request.RegisterRequest;
+import edu.byu.cs.tweeter.shared.service.response.RegisterResponse;
 
 public class RegisterPresenter {
 

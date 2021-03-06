@@ -8,8 +8,8 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.model.net.ServerFacade;
-import edu.byu.cs.tweeter.model.service.request.IsFollowingRequest;
-import edu.byu.cs.tweeter.model.service.response.IsFollowingResponse;
+import edu.byu.cs.tweeter.shared.service.request.IsFollowingRequest;
+import edu.byu.cs.tweeter.shared.service.response.IsFollowingResponse;
 
 public class IsFollowingServiceTest {
 

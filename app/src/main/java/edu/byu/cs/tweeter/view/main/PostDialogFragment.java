@@ -18,11 +18,11 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 import edu.byu.cs.tweeter.R;
-import edu.byu.cs.tweeter.model.domain.AuthToken;
-import edu.byu.cs.tweeter.model.domain.Status;
-import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.model.service.request.PostRequest;
-import edu.byu.cs.tweeter.model.service.response.PostResponse;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
+import edu.byu.cs.tweeter.shared.domain.Status;
+import edu.byu.cs.tweeter.shared.domain.User;
+import edu.byu.cs.tweeter.shared.service.request.PostRequest;
+import edu.byu.cs.tweeter.shared.service.response.PostResponse;
 import edu.byu.cs.tweeter.presenter.PostPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.PostTask;
 import edu.byu.cs.tweeter.view.util.ImageUtils;

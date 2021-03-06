@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.model.service.Service;
 import edu.byu.cs.tweeter.model.service.UserService;
-import edu.byu.cs.tweeter.model.service.request.UserRequest;
-import edu.byu.cs.tweeter.model.service.response.UserResponse;
+import edu.byu.cs.tweeter.shared.service.request.UserRequest;
+import edu.byu.cs.tweeter.shared.service.response.UserResponse;
 
 /**
  * The presenter for the "get user" functionality of the application.

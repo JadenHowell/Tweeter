@@ -9,11 +9,11 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
 
-import edu.byu.cs.tweeter.model.domain.Status;
-import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.shared.domain.Status;
+import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.model.net.ServerFacade;
-import edu.byu.cs.tweeter.model.service.request.StoryRequest;
-import edu.byu.cs.tweeter.model.service.response.StoryResponse;
+import edu.byu.cs.tweeter.shared.service.request.StoryRequest;
+import edu.byu.cs.tweeter.shared.service.response.StoryResponse;
 
 public class StoryServiceTest {
 

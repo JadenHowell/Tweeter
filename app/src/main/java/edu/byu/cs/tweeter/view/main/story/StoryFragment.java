@@ -27,13 +27,13 @@ import java.util.Calendar;
 import java.util.List;
 
 import edu.byu.cs.tweeter.R;
-import edu.byu.cs.tweeter.model.domain.AuthToken;
-import edu.byu.cs.tweeter.model.domain.Status;
-import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.model.service.request.StoryRequest;
-import edu.byu.cs.tweeter.model.service.request.UserRequest;
-import edu.byu.cs.tweeter.model.service.response.StoryResponse;
-import edu.byu.cs.tweeter.model.service.response.UserResponse;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
+import edu.byu.cs.tweeter.shared.domain.Status;
+import edu.byu.cs.tweeter.shared.domain.User;
+import edu.byu.cs.tweeter.shared.service.request.StoryRequest;
+import edu.byu.cs.tweeter.shared.service.request.UserRequest;
+import edu.byu.cs.tweeter.shared.service.response.StoryResponse;
+import edu.byu.cs.tweeter.shared.service.response.UserResponse;
 import edu.byu.cs.tweeter.presenter.StoryPresenter;
 import edu.byu.cs.tweeter.presenter.UserPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.GetStoryTask;
@@ -222,7 +222,7 @@ public class StoryFragment extends Fragment implements StoryPresenter.View, User
 
         private final List<Status> story = new ArrayList<>();
 
-        private edu.byu.cs.tweeter.model.domain.Status lastStatus;
+        private edu.byu.cs.tweeter.shared.domain.Status lastStatus;
 
         private boolean hasMorePages;
         private boolean isLoading = false;

@@ -3,10 +3,10 @@ package edu.byu.cs.tweeter.model.service;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.model.net.ServerFacade;
-import edu.byu.cs.tweeter.model.service.request.Request;
-import edu.byu.cs.tweeter.model.service.request.UserRequest;
-import edu.byu.cs.tweeter.model.service.response.Response;
-import edu.byu.cs.tweeter.model.service.response.UserResponse;
+import edu.byu.cs.tweeter.shared.service.request.Request;
+import edu.byu.cs.tweeter.shared.service.request.UserRequest;
+import edu.byu.cs.tweeter.shared.service.response.Response;
+import edu.byu.cs.tweeter.shared.service.response.UserResponse;
 import edu.byu.cs.tweeter.util.ByteArrayUtils;
 
 public class UserService extends Service{

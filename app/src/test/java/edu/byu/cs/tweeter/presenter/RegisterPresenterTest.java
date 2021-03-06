@@ -7,11 +7,11 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.model.domain.AuthToken;
-import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
+import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.model.service.RegisterService;
-import edu.byu.cs.tweeter.model.service.request.RegisterRequest;
-import edu.byu.cs.tweeter.model.service.response.RegisterResponse;
+import edu.byu.cs.tweeter.shared.service.request.RegisterRequest;
+import edu.byu.cs.tweeter.shared.service.response.RegisterResponse;
 
 public class RegisterPresenterTest {
 

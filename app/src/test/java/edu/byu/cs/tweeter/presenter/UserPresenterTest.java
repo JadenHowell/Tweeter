@@ -7,10 +7,10 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.model.service.UserService;
-import edu.byu.cs.tweeter.model.service.request.UserRequest;
-import edu.byu.cs.tweeter.model.service.response.UserResponse;
+import edu.byu.cs.tweeter.shared.service.request.UserRequest;
+import edu.byu.cs.tweeter.shared.service.response.UserResponse;
 
 public class UserPresenterTest {
 

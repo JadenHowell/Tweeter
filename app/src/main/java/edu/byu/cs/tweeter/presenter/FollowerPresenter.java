@@ -3,8 +3,8 @@ package edu.byu.cs.tweeter.presenter;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.model.service.FollowerService;
-import edu.byu.cs.tweeter.model.service.request.FollowerRequest;
-import edu.byu.cs.tweeter.model.service.response.FollowerResponse;
+import edu.byu.cs.tweeter.shared.service.request.FollowerRequest;
+import edu.byu.cs.tweeter.shared.service.response.FollowerResponse;
 
 /**
  * The presenter for the "follower" functionality of the application.

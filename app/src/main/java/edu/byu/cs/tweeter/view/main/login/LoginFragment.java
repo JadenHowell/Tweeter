@@ -12,13 +12,11 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import edu.byu.cs.tweeter.R;
-import edu.byu.cs.tweeter.model.domain.AuthToken;
-import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.model.service.request.LoginRequest;
-import edu.byu.cs.tweeter.model.service.response.LoginResponse;
-import edu.byu.cs.tweeter.presenter.FollowingPresenter;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
+import edu.byu.cs.tweeter.shared.domain.User;
+import edu.byu.cs.tweeter.shared.service.request.LoginRequest;
+import edu.byu.cs.tweeter.shared.service.response.LoginResponse;
 import edu.byu.cs.tweeter.presenter.LoginPresenter;
-import edu.byu.cs.tweeter.view.LoginActivity;
 import edu.byu.cs.tweeter.view.asyncTasks.LoginTask;
 import edu.byu.cs.tweeter.view.main.MainActivity;
 

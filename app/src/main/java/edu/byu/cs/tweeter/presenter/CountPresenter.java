@@ -5,10 +5,10 @@ import java.io.IOException;
 import edu.byu.cs.tweeter.model.service.FollowerCountService;
 import edu.byu.cs.tweeter.model.service.FollowingCountService;
 import edu.byu.cs.tweeter.model.service.Service;
-import edu.byu.cs.tweeter.model.service.request.FollowerCountRequest;
-import edu.byu.cs.tweeter.model.service.request.FollowingCountRequest;
-import edu.byu.cs.tweeter.model.service.response.FollowerCountResponse;
-import edu.byu.cs.tweeter.model.service.response.FollowingCountResponse;
+import edu.byu.cs.tweeter.shared.service.request.FollowerCountRequest;
+import edu.byu.cs.tweeter.shared.service.request.FollowingCountRequest;
+import edu.byu.cs.tweeter.shared.service.response.FollowerCountResponse;
+import edu.byu.cs.tweeter.shared.service.response.FollowingCountResponse;
 
 public class CountPresenter {
     private final CountPresenter.View view;

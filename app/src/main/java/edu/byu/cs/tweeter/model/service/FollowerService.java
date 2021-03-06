@@ -2,13 +2,12 @@ package edu.byu.cs.tweeter.model.service;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.model.net.ServerFacade;
-import edu.byu.cs.tweeter.model.service.request.FollowerRequest;
-import edu.byu.cs.tweeter.model.service.request.Request;
-import edu.byu.cs.tweeter.model.service.response.FollowerResponse;
-import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
-import edu.byu.cs.tweeter.model.service.response.Response;
+import edu.byu.cs.tweeter.shared.service.request.FollowerRequest;
+import edu.byu.cs.tweeter.shared.service.request.Request;
+import edu.byu.cs.tweeter.shared.service.response.FollowerResponse;
+import edu.byu.cs.tweeter.shared.service.response.Response;
 import edu.byu.cs.tweeter.util.ByteArrayUtils;
 
 /**

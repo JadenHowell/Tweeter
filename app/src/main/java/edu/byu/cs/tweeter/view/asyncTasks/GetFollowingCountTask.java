@@ -4,8 +4,8 @@ import android.os.AsyncTask;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.model.service.request.FollowingCountRequest;
-import edu.byu.cs.tweeter.model.service.response.FollowingCountResponse;
+import edu.byu.cs.tweeter.shared.service.request.FollowingCountRequest;
+import edu.byu.cs.tweeter.shared.service.response.FollowingCountResponse;
 import edu.byu.cs.tweeter.presenter.CountPresenter;
 
 public class GetFollowingCountTask extends AsyncTask<FollowingCountRequest, Void, FollowingCountResponse> {

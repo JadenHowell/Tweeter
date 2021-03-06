@@ -4,8 +4,8 @@ import android.os.AsyncTask;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.model.service.request.PostRequest;
-import edu.byu.cs.tweeter.model.service.response.PostResponse;
+import edu.byu.cs.tweeter.shared.service.request.PostRequest;
+import edu.byu.cs.tweeter.shared.service.response.PostResponse;
 import edu.byu.cs.tweeter.presenter.PostPresenter;
 
 public class PostTask extends AsyncTask<PostRequest, Void, PostResponse> {

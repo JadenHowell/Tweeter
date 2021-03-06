@@ -2,12 +2,11 @@ package edu.byu.cs.tweeter.model.service;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.model.service.Service;
-import edu.byu.cs.tweeter.model.service.request.RegisterRequest;
-import edu.byu.cs.tweeter.model.service.request.Request;
-import edu.byu.cs.tweeter.model.service.response.RegisterResponse;
-import edu.byu.cs.tweeter.model.service.response.Response;
+import edu.byu.cs.tweeter.shared.domain.User;
+import edu.byu.cs.tweeter.shared.service.request.RegisterRequest;
+import edu.byu.cs.tweeter.shared.service.request.Request;
+import edu.byu.cs.tweeter.shared.service.response.RegisterResponse;
+import edu.byu.cs.tweeter.shared.service.response.Response;
 import edu.byu.cs.tweeter.util.ByteArrayUtils;
 
 public class RegisterService extends Service {
