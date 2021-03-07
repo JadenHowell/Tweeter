@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.ChangeFollowStateRequest;
 import edu.byu.cs.tweeter.shared.service.response.ChangeFollowStateResponse;
 import edu.byu.cs.tweeter.client.presenter.FollowButtonPresenter;
@@ -51,7 +52,7 @@ public class ChangeFollowStateTask extends AsyncTask<ChangeFollowStateRequest, V
 
         try {
             response = presenter.changeFollowState(ChangeFollowStateRequests[0]);
-        } catch (IOException ex) {
+        } catch (IOException | TweeterRemoteException ex) {
             exception = ex;
         }
 

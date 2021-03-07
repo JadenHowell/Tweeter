@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.service.LogoutService;
 import edu.byu.cs.tweeter.client.model.service.Service;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.LogoutRequest;
 import edu.byu.cs.tweeter.shared.service.response.LogoutResponse;
 
@@ -32,7 +33,7 @@ public class LogoutPresenter {
      * @param request contains the data required to fulfill the request.
      * @return the followees.
      */
-    public LogoutResponse logout(LogoutRequest request) throws IOException {
+    public LogoutResponse logout(LogoutRequest request) throws IOException, TweeterRemoteException {
         Service logoutService = getLogoutService();
         return (LogoutResponse) logoutService.serve(request);
     }

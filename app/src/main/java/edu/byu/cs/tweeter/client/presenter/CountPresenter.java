@@ -5,6 +5,7 @@ import java.io.IOException;
 import edu.byu.cs.tweeter.client.model.service.FollowerCountService;
 import edu.byu.cs.tweeter.client.model.service.FollowingCountService;
 import edu.byu.cs.tweeter.client.model.service.Service;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.FollowerCountRequest;
 import edu.byu.cs.tweeter.shared.service.request.FollowingCountRequest;
 import edu.byu.cs.tweeter.shared.service.response.FollowerCountResponse;
@@ -35,7 +36,7 @@ public class CountPresenter {
      * @param request contains the data required to fulfill the request.
      * @return the followerCount.
      */
-    public FollowerCountResponse getFollowerCount(FollowerCountRequest request) throws IOException {
+    public FollowerCountResponse getFollowerCount(FollowerCountRequest request) throws IOException, TweeterRemoteException {
         Service followerCountService = getFollowerCountService();
         return (FollowerCountResponse) followerCountService.serve(request);
     }
@@ -46,7 +47,7 @@ public class CountPresenter {
      * @param request contains the data required to fulfill the request.
      * @return the followingCount.
      */
-    public FollowingCountResponse getFollowingCount(FollowingCountRequest request) throws IOException {
+    public FollowingCountResponse getFollowingCount(FollowingCountRequest request) throws IOException, TweeterRemoteException {
         Service followingCountService = getFollowingCountService();
         return (FollowingCountResponse) followingCountService.serve(request);
     }

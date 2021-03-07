@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.IsFollowingRequest;
 import edu.byu.cs.tweeter.shared.service.response.IsFollowingResponse;
 import edu.byu.cs.tweeter.client.presenter.FollowButtonPresenter;
@@ -51,7 +52,7 @@ public class GetIsFollowingTask extends AsyncTask<IsFollowingRequest, Void, IsFo
 
         try {
             response = presenter.getIsFollowing(isFollowingRequests[0]);
-        } catch (IOException ex) {
+        } catch (IOException | TweeterRemoteException ex) {
             exception = ex;
         }
 

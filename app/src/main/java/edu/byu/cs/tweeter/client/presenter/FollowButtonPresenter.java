@@ -5,6 +5,7 @@ import java.io.IOException;
 import edu.byu.cs.tweeter.client.model.service.ChangeFollowStateService;
 import edu.byu.cs.tweeter.client.model.service.IsFollowingService;
 import edu.byu.cs.tweeter.client.model.service.Service;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.ChangeFollowStateRequest;
 import edu.byu.cs.tweeter.shared.service.request.IsFollowingRequest;
 import edu.byu.cs.tweeter.shared.service.response.ChangeFollowStateResponse;
@@ -35,14 +36,14 @@ public class FollowButtonPresenter {
      * @param request contains the data required to fulfill the request.
      * @return the followingCount.
      */
-    public IsFollowingResponse getIsFollowing(IsFollowingRequest request) throws IOException {
+    public IsFollowingResponse getIsFollowing(IsFollowingRequest request) throws IOException, TweeterRemoteException {
         Service isFollowingService = getIsFollowingService();
         IsFollowingResponse response = (IsFollowingResponse) isFollowingService.serve(request);
         isFollowing = response.getIsFollowing();
         return response;
     }
 
-    public ChangeFollowStateResponse changeFollowState(ChangeFollowStateRequest request) throws IOException {
+    public ChangeFollowStateResponse changeFollowState(ChangeFollowStateRequest request) throws IOException, TweeterRemoteException {
         Service changeFollowStateService = getChangeFollowStateService();
         return (ChangeFollowStateResponse) changeFollowStateService.serve(request);
     }

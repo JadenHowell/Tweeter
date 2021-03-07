@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.service.Service;
 import edu.byu.cs.tweeter.client.model.service.UserService;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.UserRequest;
 import edu.byu.cs.tweeter.shared.service.response.UserResponse;
 
@@ -37,7 +38,7 @@ public class UserPresenter {
      * @return the user.
      */
 
-    public UserResponse getUser(UserRequest request) throws IOException {
+    public UserResponse getUser(UserRequest request) throws IOException, TweeterRemoteException {
         Service userService = getUserService();
         return (UserResponse) userService.serve((request));
     }

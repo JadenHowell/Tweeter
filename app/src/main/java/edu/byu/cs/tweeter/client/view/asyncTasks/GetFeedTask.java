@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.FeedRequest;
 import edu.byu.cs.tweeter.shared.service.response.FeedResponse;
 import edu.byu.cs.tweeter.client.presenter.FeedPresenter;
@@ -55,7 +56,7 @@ public class GetFeedTask extends AsyncTask<FeedRequest, Void, FeedResponse> {
 
         try {
             response = presenter.getFeed(feedRequests[0]);
-        } catch (IOException ex) {
+        } catch (IOException | TweeterRemoteException ex) {
             exception = ex;
         }
 

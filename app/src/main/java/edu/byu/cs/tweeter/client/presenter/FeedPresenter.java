@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.service.FeedService;
 import edu.byu.cs.tweeter.client.model.service.Service;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.FeedRequest;
 import edu.byu.cs.tweeter.shared.service.response.FeedResponse;
 
@@ -38,7 +39,7 @@ public class FeedPresenter {
      * @param request contains the data required to fulfill the request.
      * @return the feed.
      */
-    public FeedResponse getFeed(FeedRequest request) throws IOException {
+    public FeedResponse getFeed(FeedRequest request) throws IOException, TweeterRemoteException {
         Service feedService = getFeedService();
         return (FeedResponse) feedService.serve(request);
     }

@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.FollowingCountRequest;
 import edu.byu.cs.tweeter.shared.service.response.FollowingCountResponse;
 import edu.byu.cs.tweeter.client.presenter.CountPresenter;
@@ -52,7 +53,7 @@ public class GetFollowingCountTask extends AsyncTask<FollowingCountRequest, Void
 
         try {
             response = presenter.getFollowingCount(followingCountRequests[0]);
-        } catch (IOException ex) {
+        } catch (IOException | TweeterRemoteException ex) {
             exception = ex;
         }
 

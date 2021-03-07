@@ -6,6 +6,7 @@ import android.util.Log;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.shared.domain.User;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.RegisterRequest;
 import edu.byu.cs.tweeter.shared.service.response.RegisterResponse;
 import edu.byu.cs.tweeter.client.presenter.RegisterPresenter;
@@ -42,7 +43,7 @@ public class RegisterTask extends AsyncTask<RegisterRequest, Void, RegisterRespo
             if(registerResponse.isSuccess()) {
                 loadImage(registerResponse.getUser());
             }
-        } catch (IOException ex) {
+        } catch (IOException | TweeterRemoteException ex) {
             exception = ex;
         }
         return registerResponse;

@@ -16,14 +16,9 @@ public abstract class Service {
      * @param request
      * @return
      */
-    public Response serve(Request request) throws IOException{ //, TweeterRemoteException{
+    public Response serve(Request request) throws IOException, TweeterRemoteException{
         serverFacade = getServerFacade();
-        Response response = null;
-        try {
-            response = accessFacade(request);
-        }catch (TweeterRemoteException e ){
-            e.printStackTrace();
-        }
+        Response response = accessFacade(request);
         if (response.isSuccess()){
             onSuccess(response);
         }
