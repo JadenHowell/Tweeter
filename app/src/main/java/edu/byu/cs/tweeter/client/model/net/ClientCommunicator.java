@@ -42,6 +42,7 @@ class ClientCommunicator {
 
                 String entityBody = JsonSerializer.serialize(requestInfo);
                 try (DataOutputStream os = new DataOutputStream(connection.getOutputStream())) {
+                    //System.out.println("\n\n" + entityBody + "\n\n");
                     os.writeBytes(entityBody);
                     os.flush();
                 }

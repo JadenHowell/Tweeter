@@ -6,9 +6,14 @@ package edu.byu.cs.tweeter.shared.service.request;
  */
 public class FollowingRequest extends Request {
 
-    private final String followerAlias;
-    private final int limit;
-    private final String lastFolloweeAlias;
+    private String followerAlias;
+    private int limit;
+    private String lastFolloweeAlias;
+
+    /**
+     * Allows construction of the object from Json. Private so it won't be called in normal code.
+     */
+    private FollowingRequest() {}
 
     /**
      * Creates an instance.
@@ -35,12 +40,30 @@ public class FollowingRequest extends Request {
     }
 
     /**
+     * Sets the follower.
+     *
+     * @param followerAlias the follower.
+     */
+    public void setFollowerAlias(String followerAlias) {
+        this.followerAlias = followerAlias;
+    }
+
+    /**
      * Returns the number representing the maximum number of followees to be returned by this request.
      *
      * @return the limit.
      */
     public int getLimit() {
         return limit;
+    }
+
+    /**
+     * Sets the limit.
+     *
+     * @param limit the limit.
+     */
+    public void setLimit(int limit) {
+        this.limit = limit;
     }
 
     /**
@@ -51,5 +74,14 @@ public class FollowingRequest extends Request {
      */
     public String getLastFolloweeAlias() {
         return lastFolloweeAlias;
+    }
+
+    /**
+     * Sets the last followee.
+     *
+     * @param lastFolloweeAlias the last followee.
+     */
+    public void setLastFolloweeAlias(String lastFolloweeAlias) {
+        this.lastFolloweeAlias = lastFolloweeAlias;
     }
 }

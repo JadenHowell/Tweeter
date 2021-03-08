@@ -45,7 +45,7 @@ import edu.byu.cs.tweeter.shared.service.response.UserResponse;
  */
 public class ServerFacade {
 
-    private static final String SERVER_URL = "example.com";
+    private static final String SERVER_URL = "https://hyms0dv7ol.execute-api.us-west-2.amazonaws.com/test";
     private static final String FOLLOWEES_URL_PATH = "/getfollowing";
 
     private final ClientCommunicator clientCommunicator = new ClientCommunicator(SERVER_URL);
