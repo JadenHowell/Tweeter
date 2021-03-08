@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.service.LogoutService;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.LogoutRequest;
 import edu.byu.cs.tweeter.shared.service.response.LogoutResponse;
 
@@ -19,7 +20,7 @@ public class LogoutPresenterTest {
     private LogoutPresenter presenter;
 
     @BeforeEach
-    public void setup() throws IOException {
+    public void setup() throws IOException, TweeterRemoteException {
         request = new LogoutRequest("@TestUser");
         response = new LogoutResponse(true, "");
 
@@ -31,14 +32,14 @@ public class LogoutPresenterTest {
     }
 
     @Test
-    public void testLogout_returnsLogoutResult() throws IOException {
+    public void testLogout_returnsLogoutResult() throws IOException, TweeterRemoteException {
         Mockito.when(mockLogoutService.serve(request)).thenReturn(response);
 
         Assertions.assertEquals(response, presenter.logout(request));
     }
 
     @Test
-    public void testLogout_serviceThrowsIOException_presenterThrowsIOException() throws IOException {
+    public void testLogout_serviceThrowsIOException_presenterThrowsIOException() throws IOException, TweeterRemoteException {
         Mockito.when(mockLogoutService.serve(request)).thenThrow(new IOException());
 
         Assertions.assertThrows(IOException.class, () -> {

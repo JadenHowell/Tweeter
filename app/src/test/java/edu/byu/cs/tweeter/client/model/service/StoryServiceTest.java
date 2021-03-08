@@ -12,6 +12,7 @@ import java.util.Calendar;
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.StoryRequest;
 import edu.byu.cs.tweeter.shared.service.response.StoryResponse;
 
@@ -68,7 +69,7 @@ public class StoryServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testGetStory_validRequest_correctResponse() throws IOException {
+    public void testGetStory_validRequest_correctResponse() throws IOException, TweeterRemoteException {
         StoryResponse response = (StoryResponse) storyServiceSpy.serve(validRequest);
         Assertions.assertEquals(successResponse, response);
     }
@@ -80,7 +81,7 @@ public class StoryServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testGetStory_validRequest_loadsProfileImages() throws IOException {
+    public void testGetStory_validRequest_loadsProfileImages() throws IOException, TweeterRemoteException {
         StoryResponse response = (StoryResponse) storyServiceSpy.serve(validRequest);
 
         for(Status status : response.getStatusList()) {
@@ -95,7 +96,7 @@ public class StoryServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testGetFeed_invalidRequest_returnsNoStory() throws IOException {
+    public void testGetFeed_invalidRequest_returnsNoStory() throws IOException, TweeterRemoteException {
         StoryResponse response = (StoryResponse) storyServiceSpy.serve(invalidRequest);
         Assertions.assertEquals(failureResponse, response);
     }

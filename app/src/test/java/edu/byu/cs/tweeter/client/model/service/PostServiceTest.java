@@ -11,6 +11,7 @@ import java.util.Calendar;
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.PostRequest;
 import edu.byu.cs.tweeter.shared.service.response.PostResponse;
 
@@ -58,7 +59,7 @@ public class PostServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testPost_validRequest_correctResponse() throws IOException {
+    public void testPost_validRequest_correctResponse() throws IOException, TweeterRemoteException {
         PostResponse response = (PostResponse) postServiceSpy.serve(validRequest);
         Assertions.assertEquals(successResponse, response);
     }
@@ -70,7 +71,7 @@ public class PostServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testPost_invalidRequest_returnsInvalidResponse() throws IOException {
+    public void testPost_invalidRequest_returnsInvalidResponse() throws IOException, TweeterRemoteException {
         PostResponse response = (PostResponse) postServiceSpy.serve(invalidRequest);
         Assertions.assertEquals(failureResponse, response);
     }

@@ -5,11 +5,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import edu.byu.cs.tweeter.shared.domain.Follow;
 import edu.byu.cs.tweeter.shared.domain.User;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.shared.service.response.FollowingResponse;
 
@@ -25,18 +28,22 @@ class ServerFacadeTest {
     private final User user8 = new User("Zoe", "Zabriski", "");
 
     private ServerFacade serverFacadeSpy;
+    private ClientCommunicator mockClientCommunicator;
+    private static final String FOLLOWEES_URL_PATH = "/getfollowing";
 
     @BeforeEach
     void setup() {
         serverFacadeSpy = Mockito.spy(new ServerFacade());
+        mockClientCommunicator = Mockito.mock(ClientCommunicator.class);
+        serverFacadeSpy.setClientCommunicator(mockClientCommunicator);
     }
 
     @Test
-    void testGetFollowees_noFolloweesForUser() {
+    void testGetFollowees_noFolloweesForUser() throws IOException, TweeterRemoteException {
         List<User> followees = Collections.emptyList();
-        Mockito.when(serverFacadeSpy.getDummyFollowees()).thenReturn(followees);
-
+        FollowingResponse expResp = new FollowingResponse(followees, false);
         FollowingRequest request = new FollowingRequest(user1.getAlias(), 10, null);
+        Mockito.when(mockClientCommunicator.doPost(FOLLOWEES_URL_PATH, request, null, FollowingResponse.class)).thenReturn(expResp);
         FollowingResponse response = serverFacadeSpy.getFollowees(request);
 
         Assertions.assertEquals(0, response.getFollowees().size());
@@ -44,11 +51,11 @@ class ServerFacadeTest {
     }
 
     @Test
-    void testGetFollowees_oneFollowerForUser_limitGreaterThanUsers() {
+    void testGetFollowees_oneFollowerForUser_limitGreaterThanUsers() throws IOException, TweeterRemoteException {
         List<User> followees = Collections.singletonList(user2);
-        Mockito.when(serverFacadeSpy.getDummyFollowees()).thenReturn(followees);
-
+        FollowingResponse expResp = new FollowingResponse(followees, false);
         FollowingRequest request = new FollowingRequest(user1.getAlias(), 10, null);
+        Mockito.when(mockClientCommunicator.doPost(FOLLOWEES_URL_PATH, request, null, FollowingResponse.class)).thenReturn(expResp);
         FollowingResponse response = serverFacadeSpy.getFollowees(request);
 
         Assertions.assertEquals(1, response.getFollowees().size());
@@ -57,11 +64,11 @@ class ServerFacadeTest {
     }
 
     @Test
-    void testGetFollowees_twoFollowersForUser_limitEqualsUsers() {
+    void testGetFollowees_twoFollowersForUser_limitEqualsUsers() throws IOException, TweeterRemoteException {
         List<User> followees = Arrays.asList(user2, user3);
-        Mockito.when(serverFacadeSpy.getDummyFollowees()).thenReturn(followees);
-
+        FollowingResponse expectedResponse = new FollowingResponse(followees, false);
         FollowingRequest request = new FollowingRequest(user3.getAlias(), 2, null);
+        Mockito.when(mockClientCommunicator.doPost(FOLLOWEES_URL_PATH, request, null, FollowingResponse.class)).thenReturn(expectedResponse);
         FollowingResponse response = serverFacadeSpy.getFollowees(request);
 
         Assertions.assertEquals(2, response.getFollowees().size());
@@ -71,11 +78,17 @@ class ServerFacadeTest {
     }
 
     @Test
-    void testGetFollowees_limitLessThanUsers_endsOnPageBoundary() {
-        List<User> followees = Arrays.asList(user2, user3, user4, user5, user6, user7);
-        Mockito.when(serverFacadeSpy.getDummyFollowees()).thenReturn(followees);
+    void testGetFollowees_limitLessThanUsers_endsOnPageBoundary() throws IOException, TweeterRemoteException {
+        List<User> followees1 = Arrays.asList(user2, user3);
+        List<User> followees2 = Arrays.asList(user4, user5);
+        List<User> followees3 = Arrays.asList(user6, user7);
+        FollowingResponse expResp1 = new FollowingResponse(followees1, true);
+        FollowingResponse expResp2 = new FollowingResponse(followees2, true);
+        FollowingResponse expResp3 = new FollowingResponse(followees3, false);
 
         FollowingRequest request = new FollowingRequest(user5.getAlias(), 2, null);
+        Mockito.when(mockClientCommunicator.doPost(FOLLOWEES_URL_PATH, request, null, FollowingResponse.class))
+                .thenReturn(expResp1).thenReturn(expResp2).thenReturn(expResp3);
         FollowingResponse response = serverFacadeSpy.getFollowees(request);
 
         // Verify first page
@@ -85,7 +98,6 @@ class ServerFacadeTest {
         Assertions.assertTrue(response.getHasMorePages());
 
         // Get and verify second page
-        request = new FollowingRequest(user5.getAlias(), 2, response.getFollowees().get(1).getAlias());
         response = serverFacadeSpy.getFollowees(request);
 
         Assertions.assertEquals(2, response.getFollowees().size());
@@ -94,7 +106,6 @@ class ServerFacadeTest {
         Assertions.assertTrue(response.getHasMorePages());
 
         // Get and verify third page
-        request = new FollowingRequest(user5.getAlias(), 2, response.getFollowees().get(1).getAlias());
         response = serverFacadeSpy.getFollowees(request);
 
         Assertions.assertEquals(2, response.getFollowees().size());
@@ -105,11 +116,19 @@ class ServerFacadeTest {
 
 
     @Test
-    void testGetFollowees_limitLessThanUsers_notEndsOnPageBoundary() {
-        List<User> followees = Arrays.asList(user2, user3, user4, user5, user6, user7, user8);
-        Mockito.when(serverFacadeSpy.getDummyFollowees()).thenReturn(followees);
+    void testGetFollowees_limitLessThanUsers_notEndsOnPageBoundary() throws IOException, TweeterRemoteException {
+        List<User> followees1 = Arrays.asList(user2, user3);
+        List<User> followees2 = Arrays.asList(user4, user5);
+        List<User> followees3 = Arrays.asList(user6, user7);
+        List<User> followees4 = Arrays.asList(user8);
+        FollowingResponse expResp1 = new FollowingResponse(followees1, true);
+        FollowingResponse expResp2 = new FollowingResponse(followees2, true);
+        FollowingResponse expResp3 = new FollowingResponse(followees3, true);
+        FollowingResponse expResp4 = new FollowingResponse(followees4, false);
 
-        FollowingRequest request = new FollowingRequest(user6.getAlias(), 2, null);
+        FollowingRequest request = new FollowingRequest(user5.getAlias(), 2, null);
+        Mockito.when(mockClientCommunicator.doPost(FOLLOWEES_URL_PATH, request, null, FollowingResponse.class))
+                .thenReturn(expResp1).thenReturn(expResp2).thenReturn(expResp3).thenReturn(expResp4);
         FollowingResponse response = serverFacadeSpy.getFollowees(request);
 
         // Verify first page
@@ -119,7 +138,6 @@ class ServerFacadeTest {
         Assertions.assertTrue(response.getHasMorePages());
 
         // Get and verify second page
-        request = new FollowingRequest(user6.getAlias(), 2, response.getFollowees().get(1).getAlias());
         response = serverFacadeSpy.getFollowees(request);
 
         Assertions.assertEquals(2, response.getFollowees().size());
@@ -128,7 +146,6 @@ class ServerFacadeTest {
         Assertions.assertTrue(response.getHasMorePages());
 
         // Get and verify third page
-        request = new FollowingRequest(user6.getAlias(), 2, response.getFollowees().get(1).getAlias());
         response = serverFacadeSpy.getFollowees(request);
 
         Assertions.assertEquals(2, response.getFollowees().size());
@@ -136,10 +153,8 @@ class ServerFacadeTest {
         Assertions.assertTrue(response.getFollowees().contains(user7));
         Assertions.assertTrue(response.getHasMorePages());
 
-        // Get and verify fourth page
-        request = new FollowingRequest(user6.getAlias(), 2, response.getFollowees().get(1).getAlias());
+        //Get and verify last page
         response = serverFacadeSpy.getFollowees(request);
-
         Assertions.assertEquals(1, response.getFollowees().size());
         Assertions.assertTrue(response.getFollowees().contains(user8));
         Assertions.assertFalse(response.getHasMorePages());

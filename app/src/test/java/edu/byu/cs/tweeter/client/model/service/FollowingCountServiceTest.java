@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.FollowingCountRequest;
 import edu.byu.cs.tweeter.shared.service.response.FollowingCountResponse;
 
@@ -51,7 +52,7 @@ public class FollowingCountServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testGetFollowingCount_validRequest_correctResponse() throws IOException {
+    public void testGetFollowingCount_validRequest_correctResponse() throws IOException, TweeterRemoteException {
         FollowingCountResponse response = (FollowingCountResponse) followingCountServiceSpy.serve(validRequest);
         Assertions.assertEquals(successResponse, response);
     }
@@ -63,7 +64,7 @@ public class FollowingCountServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testGetFollowingCount_invalidRequest_returnsInvalidResponse() throws IOException {
+    public void testGetFollowingCount_invalidRequest_returnsInvalidResponse() throws IOException, TweeterRemoteException {
         FollowingCountResponse response = (FollowingCountResponse) followingCountServiceSpy.serve(invalidRequest);
         Assertions.assertEquals(failureResponse, response);
     }

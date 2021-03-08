@@ -10,6 +10,7 @@ import java.util.Arrays;
 
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.shared.service.response.FollowingResponse;
 
@@ -28,7 +29,7 @@ public class FollowingServiceProxyTest {
      * requests.
      */
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException, TweeterRemoteException {
         User currentUser = new User("FirstName", "LastName", null);
 
         User resultUser1 = new User("FirstName1", "LastName1",
@@ -63,7 +64,7 @@ public class FollowingServiceProxyTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testGetFollowees_validRequest_correctResponse() throws IOException {
+    public void testGetFollowees_validRequest_correctResponse() throws IOException, TweeterRemoteException {
         FollowingResponse response = (FollowingResponse) followingServiceProxySpy.serve(validRequest);
         Assertions.assertEquals(successResponse, response);
     }
@@ -75,7 +76,7 @@ public class FollowingServiceProxyTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testGetFollowees_validRequest_loadsProfileImages() throws IOException {
+    public void testGetFollowees_validRequest_loadsProfileImages() throws IOException, TweeterRemoteException {
         FollowingResponse response = (FollowingResponse) followingServiceProxySpy.serve(validRequest);
 
         for(User user : response.getFollowees()) {
@@ -90,7 +91,7 @@ public class FollowingServiceProxyTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testGetFollowees_invalidRequest_returnsNoFollowees() throws IOException {
+    public void testGetFollowees_invalidRequest_returnsNoFollowees() throws IOException, TweeterRemoteException {
         FollowingResponse response = (FollowingResponse) followingServiceProxySpy.serve(invalidRequest);
         Assertions.assertEquals(failureResponse, response);
     }

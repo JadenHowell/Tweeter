@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.service.ChangeFollowStateService;
 import edu.byu.cs.tweeter.client.model.service.IsFollowingService;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.ChangeFollowStateRequest;
 import edu.byu.cs.tweeter.shared.service.request.IsFollowingRequest;
 import edu.byu.cs.tweeter.shared.service.response.ChangeFollowStateResponse;
@@ -25,7 +26,7 @@ public class FollowButtonPresenterTest {
     private ChangeFollowStateService mockChangeStateService;
 
     @BeforeEach
-    public void setup() throws IOException {
+    public void setup() throws IOException, TweeterRemoteException {
         request = new IsFollowingRequest("@TestUser", "@OtherUser");
         response = new IsFollowingResponse(true, null, true);
 
@@ -46,13 +47,13 @@ public class FollowButtonPresenterTest {
     }
 
     @Test
-    public void testGetIsFollowing_returnsCorrectResult() throws IOException {
+    public void testGetIsFollowing_returnsCorrectResult() throws IOException, TweeterRemoteException {
         Mockito.when(mockIsFollowingService.serve(request)).thenReturn(response);
         Assertions.assertEquals(response, presenter.getIsFollowing(request));
     }
 
     @Test
-    public void testGetIsFollowing_serviceThrowsIOException_presenterThrowsIOException() throws IOException {
+    public void testGetIsFollowing_serviceThrowsIOException_presenterThrowsIOException() throws IOException, TweeterRemoteException {
         Mockito.when(mockIsFollowingService.serve(request)).thenThrow(new IOException());
 
         Assertions.assertThrows(IOException.class, () -> {
@@ -61,13 +62,13 @@ public class FollowButtonPresenterTest {
     }
 
     @Test
-    public void testChangeState_returnsCorrectResult() throws IOException {
+    public void testChangeState_returnsCorrectResult() throws IOException, TweeterRemoteException {
         Mockito.when(mockChangeStateService.serve(changeStateRequest)).thenReturn(changeStateResponse);
         Assertions.assertEquals(changeStateResponse, presenter.changeFollowState(changeStateRequest));
     }
 
     @Test
-    public void testChangeState_serviceThrowsIOException_presenterThrowsIOException() throws IOException {
+    public void testChangeState_serviceThrowsIOException_presenterThrowsIOException() throws IOException, TweeterRemoteException {
         Mockito.when(mockChangeStateService.serve(changeStateRequest)).thenThrow(new IOException());
 
         Assertions.assertThrows(IOException.class, () -> {

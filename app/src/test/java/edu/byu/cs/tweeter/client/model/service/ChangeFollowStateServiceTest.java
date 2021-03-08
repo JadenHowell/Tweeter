@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.ChangeFollowStateRequest;
 import edu.byu.cs.tweeter.shared.service.response.ChangeFollowStateResponse;
 
@@ -51,7 +52,7 @@ public class ChangeFollowStateServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testChangeFollowState_validRequest_correctResponse() throws IOException {
+    public void testChangeFollowState_validRequest_correctResponse() throws IOException, TweeterRemoteException {
         ChangeFollowStateResponse response = (ChangeFollowStateResponse) changeFollowStateServiceSpy.serve(validRequest);
         Assertions.assertEquals(successResponse, response);
     }
@@ -63,7 +64,7 @@ public class ChangeFollowStateServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testChangeFollowState_invalidRequest_returnsInvalidResponse() throws IOException {
+    public void testChangeFollowState_invalidRequest_returnsInvalidResponse() throws IOException, TweeterRemoteException {
         ChangeFollowStateResponse response = (ChangeFollowStateResponse) changeFollowStateServiceSpy.serve(invalidRequest);
         Assertions.assertEquals(failureResponse, response);
     }

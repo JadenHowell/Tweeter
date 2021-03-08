@@ -10,6 +10,7 @@ import java.io.IOException;
 import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.LoginRequest;
 import edu.byu.cs.tweeter.shared.service.response.LoginResponse;
 
@@ -52,7 +53,7 @@ public class LoginServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testLogin_validRequest_correctResponse() throws IOException {
+    public void testLogin_validRequest_correctResponse() throws IOException, TweeterRemoteException {
         LoginResponse response = (LoginResponse) loginServiceSpy.serve(validRequest);
         Assertions.assertEquals(successResponse, response);
     }
@@ -64,7 +65,7 @@ public class LoginServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testLogin_invalidRequest_returnsInvalidResponse() throws IOException {
+    public void testLogin_invalidRequest_returnsInvalidResponse() throws IOException, TweeterRemoteException {
         LoginResponse response = (LoginResponse) loginServiceSpy.serve(invalidRequest);
         Assertions.assertEquals(failureResponse, response);
     }

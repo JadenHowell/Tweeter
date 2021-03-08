@@ -12,6 +12,7 @@ import java.util.Calendar;
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.FeedRequest;
 import edu.byu.cs.tweeter.shared.service.response.FeedResponse;
 
@@ -68,7 +69,7 @@ public class FeedServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testGetFeed_validRequest_correctResponse() throws IOException {
+    public void testGetFeed_validRequest_correctResponse() throws IOException, TweeterRemoteException {
         FeedResponse response = (FeedResponse) feedServiceSpy.serve(validRequest);
         Assertions.assertEquals(successResponse, response);
     }
@@ -80,7 +81,7 @@ public class FeedServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testGetFeed_validRequest_loadsProfileImages() throws IOException {
+    public void testGetFeed_validRequest_loadsProfileImages() throws IOException, TweeterRemoteException {
         FeedResponse response = (FeedResponse) feedServiceSpy.serve(validRequest);
 
         for(Status status : response.getStatusList()) {
@@ -95,7 +96,7 @@ public class FeedServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testGetFeed_invalidRequest_returnsNoFeed() throws IOException {
+    public void testGetFeed_invalidRequest_returnsNoFeed() throws IOException, TweeterRemoteException {
         FeedResponse response = (FeedResponse) feedServiceSpy.serve(invalidRequest);
         Assertions.assertEquals(failureResponse, response);
     }

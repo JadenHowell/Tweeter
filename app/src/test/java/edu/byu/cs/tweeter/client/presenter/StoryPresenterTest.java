@@ -12,6 +12,7 @@ import java.util.Calendar;
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.client.model.service.StoryService;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.StoryRequest;
 import edu.byu.cs.tweeter.shared.service.response.StoryResponse;
 
@@ -23,7 +24,7 @@ public class StoryPresenterTest {
     private StoryPresenter presenter;
 
     @BeforeEach
-    public void setup() throws IOException {
+    public void setup() throws IOException, TweeterRemoteException {
         User currentUser = new User("FirstName", "LastName", null);
 
         Status resultStatus1 = new Status(new User("FirstName1", "LastName1",
@@ -49,7 +50,7 @@ public class StoryPresenterTest {
     }
 
     @Test
-    public void testGetStory_returnsServiceResult() throws IOException {
+    public void testGetStory_returnsServiceResult() throws IOException, TweeterRemoteException {
         Mockito.when(mockStoryService.serve(request)).thenReturn(response);
 
         // Assert that the presenter returns the same response as the service (it doesn't do
@@ -58,7 +59,7 @@ public class StoryPresenterTest {
     }
 
     @Test
-    public void testGetStory_serviceThrowsIOException_presenterThrowsIOException() throws IOException {
+    public void testGetStory_serviceThrowsIOException_presenterThrowsIOException() throws IOException, TweeterRemoteException {
         Mockito.when(mockStoryService.serve(request)).thenThrow(new IOException());
 
         Assertions.assertThrows(IOException.class, () -> {

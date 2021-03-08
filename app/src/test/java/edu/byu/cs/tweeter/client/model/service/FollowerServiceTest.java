@@ -10,6 +10,7 @@ import java.util.Arrays;
 
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.FollowerRequest;
 import edu.byu.cs.tweeter.shared.service.response.FollowerResponse;
 
@@ -62,7 +63,7 @@ public class FollowerServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testGetFollowers_validRequest_correctResponse() throws IOException {
+    public void testGetFollowers_validRequest_correctResponse() throws IOException, TweeterRemoteException {
         FollowerResponse response = (FollowerResponse) followerServiceSpy.serve(validRequest);
         Assertions.assertEquals(successResponse, response);
     }
@@ -74,7 +75,7 @@ public class FollowerServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testGetFollowers_validRequest_loadsProfileImages() throws IOException {
+    public void testGetFollowers_validRequest_loadsProfileImages() throws IOException, TweeterRemoteException {
         FollowerResponse response = (FollowerResponse) followerServiceSpy.serve(validRequest);
 
         for(User user : response.getFollowers()) {
@@ -89,7 +90,7 @@ public class FollowerServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testGetFollowers_invalidRequest_returnsNoFollowees() throws IOException {
+    public void testGetFollowers_invalidRequest_returnsNoFollowees() throws IOException, TweeterRemoteException {
         FollowerResponse response = (FollowerResponse) followerServiceSpy.serve(invalidRequest);
         Assertions.assertEquals(failureResponse, response);
     }

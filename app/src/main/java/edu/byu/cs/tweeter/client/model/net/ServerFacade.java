@@ -48,7 +48,7 @@ public class ServerFacade {
     private static final String SERVER_URL = "https://hyms0dv7ol.execute-api.us-west-2.amazonaws.com/test";
     private static final String FOLLOWEES_URL_PATH = "/getfollowing";
 
-    private final ClientCommunicator clientCommunicator = new ClientCommunicator(SERVER_URL);
+    private ClientCommunicator clientCommunicator = new ClientCommunicator(SERVER_URL);
 
     // This is the hard coded followee/follower data returned by the 'getFollowees()'/'getFollowers()' methods
     private static final String MALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png";
@@ -130,48 +130,6 @@ public class ServerFacade {
         } else {
             throw new RuntimeException(response.getMessage());
         }
-    }
-
-    /**
-     * Determines the index for the first followee in the specified 'allFollowees' list that should
-     * be returned in the current request. This will be the index of the next followee after the
-     * specified 'lastFollowee'.
-     *
-     * @param lastFolloweeAlias the alias of the last followee that was returned in the previous
-     *                          request or null if there was no previous request.
-     * @param allFollowees      the generated list of followees from which we are returning paged results.
-     * @return the index of the first followee to be returned.
-     */
-    private int getFolloweesStartingIndex(String lastFolloweeAlias, List<User> allFollowees) {
-
-        int followeesIndex = 0;
-
-        if (lastFolloweeAlias != null) {
-            // This is a paged request for something after the first page. Find the first item
-            // we should return
-            for (int i = 0; i < allFollowees.size(); i++) {
-                if (lastFolloweeAlias.equals(allFollowees.get(i).getAlias())) {
-                    // We found the index of the last item returned last time. Increment to get
-                    // to the first one we should return
-                    followeesIndex = i + 1;
-                    break;
-                }
-            }
-        }
-
-        return followeesIndex;
-    }
-
-    /**
-     * Returns the list of dummy followee data. This is written as a separate method to allow
-     * mocking of the followees.
-     *
-     * @return the followees.
-     */
-    List<User> getDummyFollowees() {
-        return Arrays.asList(user1, user2, user3, user4, user5, user6, user7,
-                user8, user9, user10, user11, user12, user13, user14, user15, user16, user17, user18,
-                user19, user20);
     }
 
     /**
@@ -507,6 +465,14 @@ public class ServerFacade {
     public RegisterResponse register(RegisterRequest request) {
         User user = new User("One", "Two", "@OneTwo", "https://www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png");
         return new RegisterResponse(user, new AuthToken());
+    }
+
+
+    /**
+     * This function exists solely to allow us to use mock client communicators, should not be used except in tests
+     */
+    public void setClientCommunicator(ClientCommunicator clientCommunicator){
+        this.clientCommunicator = clientCommunicator;
     }
 
 }

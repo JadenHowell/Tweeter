@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.LogoutRequest;
 import edu.byu.cs.tweeter.shared.service.response.LogoutResponse;
 
@@ -50,7 +51,7 @@ public class LogoutServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testLogout_validRequest_correctResponse() throws IOException {
+    public void testLogout_validRequest_correctResponse() throws IOException, TweeterRemoteException {
         LogoutResponse response = (LogoutResponse) logoutServiceSpy.serve(validRequest);
         Assertions.assertEquals(successResponse, response);
     }
@@ -62,7 +63,7 @@ public class LogoutServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testLogout_invalidRequest_returnsInvalidResponse() throws IOException {
+    public void testLogout_invalidRequest_returnsInvalidResponse() throws IOException, TweeterRemoteException {
         LogoutResponse response = (LogoutResponse) logoutServiceSpy.serve(invalidRequest);
         Assertions.assertEquals(failureResponse, response);
     }

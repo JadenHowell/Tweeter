@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.IsFollowingRequest;
 import edu.byu.cs.tweeter.shared.service.response.IsFollowingResponse;
 
@@ -51,7 +52,7 @@ public class IsFollowingServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testGetIsFollowing_validRequest_correctResponse() throws IOException {
+    public void testGetIsFollowing_validRequest_correctResponse() throws IOException, TweeterRemoteException {
         IsFollowingResponse response = (IsFollowingResponse) isFollowingServiceSpy.serve(validRequest);
         Assertions.assertEquals(successResponse, response);
     }
@@ -63,7 +64,7 @@ public class IsFollowingServiceTest {
      * @throws IOException if an IO error occurs.
      */
     @Test
-    public void testGetIsFollowing_invalidRequest_returnsInvalidResponse() throws IOException {
+    public void testGetIsFollowing_invalidRequest_returnsInvalidResponse() throws IOException, TweeterRemoteException {
         IsFollowingResponse response = (IsFollowingResponse) isFollowingServiceSpy.serve(invalidRequest);
         Assertions.assertEquals(failureResponse, response);
     }

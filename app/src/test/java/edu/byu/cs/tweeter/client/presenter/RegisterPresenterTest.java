@@ -10,6 +10,7 @@ import java.io.IOException;
 import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.client.model.service.RegisterService;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.RegisterRequest;
 import edu.byu.cs.tweeter.shared.service.response.RegisterResponse;
 
@@ -21,7 +22,7 @@ public class RegisterPresenterTest {
     private RegisterPresenter presenter;
 
     @BeforeEach
-    public void setup() throws IOException {
+    public void setup() throws IOException, TweeterRemoteException {
         request = new RegisterRequest("first", "last", "username", "password");
         response = new RegisterResponse(new User("first", "last", "url"), new AuthToken());
 
@@ -33,14 +34,14 @@ public class RegisterPresenterTest {
     }
 
     @Test
-    public void testRegister_returnsRegisterResult() throws IOException {
+    public void testRegister_returnsRegisterResult() throws IOException, TweeterRemoteException {
         Mockito.when(mockRegisterService.serve(request)).thenReturn(response);
 
         Assertions.assertEquals(response, presenter.register(request));
     }
 
     @Test
-    public void testRegister_serviceThrowsIOException_presenterThrowsIOException() throws IOException {
+    public void testRegister_serviceThrowsIOException_presenterThrowsIOException() throws IOException, TweeterRemoteException {
         Mockito.when(mockRegisterService.serve(request)).thenThrow(new IOException());
 
         Assertions.assertThrows(IOException.class, () -> {
