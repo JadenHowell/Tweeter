@@ -48,15 +48,14 @@ public class ServerFacade {
     private static final String SERVER_URL = "https://hyms0dv7ol.execute-api.us-west-2.amazonaws.com/test";
     private static final String FOLLOWEES_URL_PATH = "/getfollowing";
     private static final String FOLLOWERS_URL_PATH = "/getfollower";
+    private static final String FOLLOWER_COUNT_URL_PATH = "/getfollowercount";
+    private static final String FOLLOWING_COUNT_URL_PATH = "/getfollowingcount";
 
     private ClientCommunicator clientCommunicator = new ClientCommunicator(SERVER_URL);
 
     // This is the hard coded followee/follower data returned by the 'getFollowees()'/'getFollowers()' methods
     private static final String MALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png";
     private static final String FEMALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png";
-
-    private static final String STORY_TYPE = "story";
-    private static final String FEED_TYPE = "feed";
 
     private final User user1 = new User("Allen", "Anderson", MALE_IMAGE_URL);
     private final User user2 = new User("Amy", "Ames", FEMALE_IMAGE_URL);
@@ -159,18 +158,15 @@ public class ServerFacade {
      * @param request a request containing the user alias to check for
      * @return a response containing the number of users our user is following
      */
-    public FollowingCountResponse getFollowingCount(FollowingCountRequest request) {
-        String userAlias = request.getFollowerAlias();
+    public FollowingCountResponse getFollowingCount(FollowingCountRequest request) throws IOException, TweeterRemoteException {
+        FollowingCountResponse response = clientCommunicator.doPost(FOLLOWING_COUNT_URL_PATH, request, null, FollowingCountResponse.class);
 
-        int count;
-        if (userAlias.equals("@TestUser")) {
-            count = 7;
+        if(response.isSuccess()) {
+            System.out.println("FOLLOWING  COUNT: " + response.getCount());
+            return response;
         } else {
-            count = 100;
+            throw new RuntimeException(response.getMessage());
         }
-
-        FollowingCountResponse response = new FollowingCountResponse(true, null, count);
-        return response;
     }
 
     /**
@@ -179,17 +175,15 @@ public class ServerFacade {
      * @param request a request containing the user alias to check for
      * @return a response containing the number of users our user is followed by
      */
-    public FollowerCountResponse getFollowerCount(FollowerCountRequest request) {
-        String userAlias = request.getFolloweeAlias();
-        int count;
-        if (userAlias.equals("@TestUser")) {
-            count = 30;
-        } else {
-            count = 3;
-        }
+    public FollowerCountResponse getFollowerCount(FollowerCountRequest request) throws IOException, TweeterRemoteException {
+        FollowerCountResponse response = clientCommunicator.doPost(FOLLOWER_COUNT_URL_PATH, request, null, FollowerCountResponse.class);
 
-        FollowerCountResponse response = new FollowerCountResponse(true, null, count);
-        return response;
+        if(response.isSuccess()) {
+            System.out.println("FOLLOWERCOUNT: " + response.getCount());
+            return response;
+        } else {
+            throw new RuntimeException(response.getMessage());
+        }
     }
 
     public Response getIsFollowing(IsFollowingRequest request) {

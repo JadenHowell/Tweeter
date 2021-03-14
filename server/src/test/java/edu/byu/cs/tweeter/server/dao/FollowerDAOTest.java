@@ -10,7 +10,9 @@ import java.util.Collections;
 import java.util.List;
 
 import edu.byu.cs.tweeter.shared.domain.User;
+import edu.byu.cs.tweeter.shared.service.request.FollowerCountRequest;
 import edu.byu.cs.tweeter.shared.service.request.FollowerRequest;
+import edu.byu.cs.tweeter.shared.service.response.FollowerCountResponse;
 import edu.byu.cs.tweeter.shared.service.response.FollowerResponse;
 
 public class FollowerDAOTest {
@@ -143,5 +145,16 @@ public class FollowerDAOTest {
         Assertions.assertEquals(1, response.getFollowers().size());
         Assertions.assertTrue(response.getFollowers().contains(user8));
         Assertions.assertFalse(response.getHasMorePages());
+    }
+
+    @Test
+    void testGetCountCorrect() {
+        List<User> followers = Arrays.asList(user2, user3, user4, user5, user6, user7, user8);
+        Mockito.when(followerDAOSpy.getDummyFollowers()).thenReturn(followers);
+
+        FollowerCountRequest request = new FollowerCountRequest("@TestUser");
+        FollowerCountResponse response = followerDAOSpy.getFollowerCount(request);
+
+        Assertions.assertEquals(followers.size(), response.getCount());
     }
 }

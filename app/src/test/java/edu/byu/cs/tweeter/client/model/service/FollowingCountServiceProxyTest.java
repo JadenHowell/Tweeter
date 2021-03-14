@@ -27,7 +27,7 @@ public class FollowingCountServiceProxyTest {
      * requests.
      */
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException, TweeterRemoteException {
         // Setup request objects to use in the tests
         validRequest = new FollowingCountRequest("@TestUser");
         invalidRequest = new FollowingCountRequest(null);
