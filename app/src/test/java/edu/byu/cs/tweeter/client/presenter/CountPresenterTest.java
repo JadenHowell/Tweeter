@@ -7,8 +7,8 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.client.model.service.FollowerCountService;
-import edu.byu.cs.tweeter.client.model.service.FollowingCountService;
+import edu.byu.cs.tweeter.client.model.service.FollowerCountServiceProxy;
+import edu.byu.cs.tweeter.client.model.service.FollowingCountServiceProxy;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.FollowerCountRequest;
 import edu.byu.cs.tweeter.shared.service.request.FollowingCountRequest;
@@ -18,12 +18,12 @@ import edu.byu.cs.tweeter.shared.service.response.FollowingCountResponse;
 public class CountPresenterTest {
     private FollowingCountRequest followingCountRequest;
     private FollowingCountResponse followingCountResponse;
-    private FollowingCountService mockFollowingCountService;
+    private FollowingCountServiceProxy mockFollowingCountServiceProxy;
     private CountPresenter presenter;
 
     private FollowerCountRequest followerCountRequest;
     private FollowerCountResponse followerCountResponse;
-    private FollowerCountService mockFollowerCountService;
+    private FollowerCountServiceProxy mockFollowerCountServiceProxy;
 
     @BeforeEach
     public void setup() throws IOException, TweeterRemoteException {
@@ -33,28 +33,28 @@ public class CountPresenterTest {
         followerCountRequest = new FollowerCountRequest("@TestUser");
         followerCountResponse = new FollowerCountResponse(true, null, 7);
 
-        mockFollowerCountService = Mockito.mock(FollowerCountService.class);
-        Mockito.when(mockFollowerCountService.serve(followerCountRequest)).thenReturn(followerCountResponse);
+        mockFollowerCountServiceProxy = Mockito.mock(FollowerCountServiceProxy.class);
+        Mockito.when(mockFollowerCountServiceProxy.serve(followerCountRequest)).thenReturn(followerCountResponse);
 
         // Create a mock FollowingService
-        mockFollowingCountService = Mockito.mock(FollowingCountService.class);
-        Mockito.when(mockFollowingCountService.serve(followingCountRequest)).thenReturn(followingCountResponse);
+        mockFollowingCountServiceProxy = Mockito.mock(FollowingCountServiceProxy.class);
+        Mockito.when(mockFollowingCountServiceProxy.serve(followingCountRequest)).thenReturn(followingCountResponse);
 
         // Wrap a FollowingPresenter in a spy that will use the mock service.
         presenter = Mockito.spy(new CountPresenter(new CountPresenter.View() {}));
-        Mockito.when(presenter.getFollowerCountService()).thenReturn(mockFollowerCountService);
-        Mockito.when(presenter.getFollowingCountService()).thenReturn(mockFollowingCountService);
+        Mockito.when(presenter.getFollowerCountService()).thenReturn(mockFollowerCountServiceProxy);
+        Mockito.when(presenter.getFollowingCountService()).thenReturn(mockFollowingCountServiceProxy);
     }
 
     @Test
     public void testGetFollowingCount_returnsCorrectResult() throws IOException, TweeterRemoteException {
-        Mockito.when(mockFollowingCountService.serve(followingCountRequest)).thenReturn(followingCountResponse);
+        Mockito.when(mockFollowingCountServiceProxy.serve(followingCountRequest)).thenReturn(followingCountResponse);
         Assertions.assertEquals(followingCountResponse, presenter.getFollowingCount(followingCountRequest));
     }
 
     @Test
     public void testGetFollowingCount_serviceThrowsIOException_presenterThrowsIOException() throws IOException, TweeterRemoteException {
-        Mockito.when(mockFollowingCountService.serve(followingCountRequest)).thenThrow(new IOException());
+        Mockito.when(mockFollowingCountServiceProxy.serve(followingCountRequest)).thenThrow(new IOException());
 
         Assertions.assertThrows(IOException.class, () -> {
             presenter.getFollowingCount(followingCountRequest);
@@ -63,13 +63,13 @@ public class CountPresenterTest {
 
     @Test
     public void testGetFollowerCount_returnsCorrectResult() throws IOException, TweeterRemoteException {
-        Mockito.when(mockFollowerCountService.serve(followerCountRequest)).thenReturn(followerCountResponse);
+        Mockito.when(mockFollowerCountServiceProxy.serve(followerCountRequest)).thenReturn(followerCountResponse);
         Assertions.assertEquals(followerCountResponse, presenter.getFollowerCount(followerCountRequest));
     }
 
     @Test
     public void testGetFollowerCount_serviceThrowsIOException_presenterThrowsIOException() throws IOException, TweeterRemoteException {
-        Mockito.when(mockFollowerCountService.serve(followerCountRequest)).thenThrow(new IOException());
+        Mockito.when(mockFollowerCountServiceProxy.serve(followerCountRequest)).thenThrow(new IOException());
 
         Assertions.assertThrows(IOException.class, () -> {
             presenter.getFollowerCount(followerCountRequest);
