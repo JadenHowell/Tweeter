@@ -2,8 +2,8 @@ package edu.byu.cs.tweeter.client.presenter;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.client.model.service.FollowerCountService;
-import edu.byu.cs.tweeter.client.model.service.FollowingCountService;
+import edu.byu.cs.tweeter.client.model.service.FollowerCountServiceProxy;
+import edu.byu.cs.tweeter.client.model.service.FollowingCountServiceProxy;
 import edu.byu.cs.tweeter.client.model.service.Service;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.FollowerCountRequest;
@@ -53,24 +53,24 @@ public class CountPresenter {
     }
 
     /**
-     * Returns an instance of {@link FollowingCountService}. Allows mocking of the FollowingCountService class
+     * Returns an instance of {@link FollowingCountServiceProxy}. Allows mocking of the FollowingCountService class
      * for testing purposes. All usages of FollowingCountService should get their FollowingCountService
      * instance from this method to allow for mocking of the instance.
      *
      * @return the instance.
      */
     Service getFollowingCountService() {
-        return new FollowingCountService();
+        return new FollowingCountServiceProxy();
     }
 
     /**
-     * Returns an instance of {@link FollowerCountService}. Allows mocking of the FollowerCountService class
+     * Returns an instance of {@link FollowerCountServiceProxy}. Allows mocking of the FollowerCountService class
      * for testing purposes. All usages of FollowerCountService should get their FollowerCountService
      * instance from this method to allow for mocking of the instance.
      *
      * @return the instance.
      */
     Service getFollowerCountService() {
-        return new FollowerCountService();
+        return new FollowerCountServiceProxy();
     }
 }

@@ -47,15 +47,17 @@ public class ServerFacade {
 
     private static final String SERVER_URL = "https://hyms0dv7ol.execute-api.us-west-2.amazonaws.com/test";
     private static final String FOLLOWEES_URL_PATH = "/getfollowing";
+    private static final String FOLLOWERS_URL_PATH = "/getfollower";
+    private static final String FOLLOWER_COUNT_URL_PATH = "/getfollowercount";
+    private static final String FOLLOWING_COUNT_URL_PATH = "/getfollowingcount";
+    private static final String IS_FOLLOWING_URL_PATH = "/getisfollowing";
+    private static final String CHANGE_FOLLOW_STATE_URL_PATH = "/changefollowstate";
 
     private ClientCommunicator clientCommunicator = new ClientCommunicator(SERVER_URL);
 
     // This is the hard coded followee/follower data returned by the 'getFollowees()'/'getFollowers()' methods
     private static final String MALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png";
     private static final String FEMALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png";
-
-    private static final String STORY_TYPE = "story";
-    private static final String FEED_TYPE = "feed";
 
     private final User user1 = new User("Allen", "Anderson", MALE_IMAGE_URL);
     private final User user2 = new User("Amy", "Ames", FEMALE_IMAGE_URL);
@@ -142,76 +144,14 @@ public class ServerFacade {
      *                other information required to satisfy the request.
      * @return the following response.
      */
-    public FollowerResponse getFollowers(FollowerRequest request) {
+    public FollowerResponse getFollowers(FollowerRequest request) throws IOException, TweeterRemoteException {
+        FollowerResponse response = clientCommunicator.doPost(FOLLOWERS_URL_PATH, request, null, FollowerResponse.class);
 
-        // Used in place of assert statements because Android does not support them
-        if (BuildConfig.DEBUG) {
-            if (request.getLimit() < 0) {
-                throw new AssertionError();
-            }
-
-            if (request.getFolloweeAlias() == null) {
-                throw new AssertionError();
-            }
+        if(response.isSuccess()) {
+            return response;
+        } else {
+            throw new RuntimeException(response.getMessage());
         }
-
-        List<User> allFollowers = getDummyFollowers();
-        List<User> responseFollowers = new ArrayList<>(request.getLimit());
-
-        boolean hasMorePages = false;
-
-        if (request.getLimit() > 0) {
-            int followersIndex = getFollowersStartingIndex(request.getLastFollowerAlias(), allFollowers);
-
-            for (int limitCounter = 0; followersIndex < allFollowers.size() && limitCounter < request.getLimit(); followersIndex++, limitCounter++) {
-                responseFollowers.add(allFollowers.get(followersIndex));
-            }
-
-            hasMorePages = followersIndex < allFollowers.size();
-        }
-
-        return new FollowerResponse(responseFollowers, hasMorePages);
-    }
-
-    /**
-     * Determines the index for the first follower in the specified 'allFollowers' list that should
-     * be returned in the current request. This will be the index of the next follower after the
-     * specified 'lastFollower'.
-     *
-     * @param lastFollowerAlias the alias of the last follower that was returned in the previous
-     *                          request or null if there was no previous request.
-     * @param allFollowers      the generated list of followers from which we are returning paged results.
-     * @return the index of the first follower to be returned.
-     */
-    private int getFollowersStartingIndex(String lastFollowerAlias, List<User> allFollowers) {
-
-        int followersIndex = 0;
-
-        if (lastFollowerAlias != null) {
-            // This is a paged request for something after the first page. Find the first item
-            // we should return
-            for (int i = 0; i < allFollowers.size(); i++) {
-                if (lastFollowerAlias.equals(allFollowers.get(i).getAlias())) {
-                    // We found the index of the last item returned last time. Increment to get
-                    // to the first one we should return
-                    followersIndex = i + 1;
-                    break;
-                }
-            }
-        }
-
-        return followersIndex;
-    }
-
-    /**
-     * Returns the list of dummy follower data. This is written as a separate method to allow
-     * mocking of the followers.
-     *
-     * @return the followers.
-     */
-    List<User> getDummyFollowers() {
-        return Arrays.asList(user2, user3, user4, user5, user7, user8, user9, user10,
-                user12, user13, user14, user16, user17, user19);
     }
 
     /**
@@ -220,18 +160,14 @@ public class ServerFacade {
      * @param request a request containing the user alias to check for
      * @return a response containing the number of users our user is following
      */
-    public FollowingCountResponse getFollowingCount(FollowingCountRequest request) {
-        String userAlias = request.getFollowerAlias();
+    public FollowingCountResponse getFollowingCount(FollowingCountRequest request) throws IOException, TweeterRemoteException {
+        FollowingCountResponse response = clientCommunicator.doPost(FOLLOWING_COUNT_URL_PATH, request, null, FollowingCountResponse.class);
 
-        int count;
-        if (userAlias.equals("@TestUser")) {
-            count = 7;
+        if(response.isSuccess()) {
+            return response;
         } else {
-            count = 100;
+            throw new RuntimeException(response.getMessage());
         }
-
-        FollowingCountResponse response = new FollowingCountResponse(true, null, count);
-        return response;
     }
 
     /**
@@ -240,38 +176,34 @@ public class ServerFacade {
      * @param request a request containing the user alias to check for
      * @return a response containing the number of users our user is followed by
      */
-    public FollowerCountResponse getFollowerCount(FollowerCountRequest request) {
-        String userAlias = request.getFolloweeAlias();
-        int count;
-        if (userAlias.equals("@TestUser")) {
-            count = 30;
+    public FollowerCountResponse getFollowerCount(FollowerCountRequest request) throws IOException, TweeterRemoteException {
+        FollowerCountResponse response = clientCommunicator.doPost(FOLLOWER_COUNT_URL_PATH, request, null, FollowerCountResponse.class);
+
+        if(response.isSuccess()) {
+            return response;
         } else {
-            count = 3;
+            throw new RuntimeException(response.getMessage());
         }
-
-        FollowerCountResponse response = new FollowerCountResponse(true, null, count);
-        return response;
     }
 
-    public Response getIsFollowing(IsFollowingRequest request) {
-        String rootUserAlias = request.getRootUserAlias();
-        String otherUserAlias = request.getOtherUserAlias();
-        boolean didChanceFollow = true;
-        if (Math.random() < .5) {
-            didChanceFollow = false;
+    public IsFollowingResponse getIsFollowing(IsFollowingRequest request) throws IOException, TweeterRemoteException {
+        IsFollowingResponse response = clientCommunicator.doPost(IS_FOLLOWING_URL_PATH, request, null, IsFollowingResponse.class);
+
+        if(response.isSuccess()){
+            return response;
+        } else{
+            throw new RuntimeException(response.getMessage());
         }
-        IsFollowingResponse response = new IsFollowingResponse(true, null, didChanceFollow);
-        return response;
     }
 
-    static boolean followState = true;
+    public ChangeFollowStateResponse changeFollowState(ChangeFollowStateRequest request) throws IOException, TweeterRemoteException {
+        ChangeFollowStateResponse response = clientCommunicator.doPost(CHANGE_FOLLOW_STATE_URL_PATH, request, null, ChangeFollowStateResponse.class);
 
-    public Response changeFollowState(ChangeFollowStateRequest request) {
-        String loggedInUserAlias = request.getRootUserAlias();
-        String otherUserAlias = request.getOtherUserAlias();
-        ChangeFollowStateResponse response = new ChangeFollowStateResponse(true, null, followState);
-        followState = !followState;
-        return response;
+        if(response.isSuccess()){
+            return response;
+        } else{
+            throw new RuntimeException(response.getMessage());
+        }
     }
 
 

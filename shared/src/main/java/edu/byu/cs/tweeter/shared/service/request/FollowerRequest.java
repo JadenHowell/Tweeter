@@ -5,9 +5,9 @@ package edu.byu.cs.tweeter.shared.service.request;
  * followers for a specified follower.
  */
 public class FollowerRequest extends Request {
-    private final String followeeAlias;
-    private final int limit;
-    private final String lastFollowerAlias;
+    private String followeeAlias;
+    private int limit;
+    private String lastFollowerAlias;
 
     /**
      * Creates an instance.
@@ -24,6 +24,8 @@ public class FollowerRequest extends Request {
         this.lastFollowerAlias = lastFollowerAlias;
     }
 
+    private FollowerRequest(){}
+
     /**
      * Returns the followee whose followers are to be returned by this request.
      *
@@ -32,6 +34,8 @@ public class FollowerRequest extends Request {
     public String getFolloweeAlias() {
         return followeeAlias;
     }
+
+    public void setFolloweeAlias(String followeeAlias) {this.followeeAlias = followeeAlias;}
 
     /**
      * Returns the number representing the maximum number of followers to be returned by this request.
@@ -42,6 +46,8 @@ public class FollowerRequest extends Request {
         return limit;
     }
 
+    public void setLimit(int limit) {this.limit = limit;}
+
     /**
      * Returns the last follower that was returned in the previous request or null if there was no
      * previous request or if no followers were returned in the previous request.
@@ -51,5 +57,7 @@ public class FollowerRequest extends Request {
     public String getLastFollowerAlias() {
         return lastFollowerAlias;
     }
+
+    public void setLastFollowerAlias(String lastFollowerAlias) {this.lastFollowerAlias = lastFollowerAlias;}
 
 }

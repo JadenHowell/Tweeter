@@ -14,7 +14,7 @@ import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.FollowerRequest;
 import edu.byu.cs.tweeter.shared.service.response.FollowerResponse;
 
-public class FollowerServiceTest {
+public class FollowerServiceProxyTest {
 
     private FollowerRequest validRequest;
     private FollowerRequest invalidRequest;
@@ -22,14 +22,14 @@ public class FollowerServiceTest {
     private FollowerResponse successResponse;
     private FollowerResponse failureResponse;
 
-    private FollowerService followerServiceSpy;
+    private FollowerServiceProxy followerServiceProxySpy;
 
     /**
      * Create a FollowerService spy that uses a mock ServerFacade to return known responses to
      * requests.
      */
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException, TweeterRemoteException {
         User currentUser = new User("FirstName", "LastName", null);
 
         User resultUser1 = new User("FirstName1", "LastName1",
@@ -52,8 +52,8 @@ public class FollowerServiceTest {
         Mockito.when(mockServerFacade.getFollowers(invalidRequest)).thenReturn(failureResponse);
 
         // Create a FollowingService instance and wrap it with a spy that will use the mock service
-        followerServiceSpy = Mockito.spy(new FollowerService());
-        Mockito.when(followerServiceSpy.getServerFacade()).thenReturn(mockServerFacade);
+        followerServiceProxySpy = Mockito.spy(new FollowerServiceProxy());
+        Mockito.when(followerServiceProxySpy.getServerFacade()).thenReturn(mockServerFacade);
     }
 
     /**
@@ -64,7 +64,7 @@ public class FollowerServiceTest {
      */
     @Test
     public void testGetFollowers_validRequest_correctResponse() throws IOException, TweeterRemoteException {
-        FollowerResponse response = (FollowerResponse) followerServiceSpy.serve(validRequest);
+        FollowerResponse response = (FollowerResponse) followerServiceProxySpy.serve(validRequest);
         Assertions.assertEquals(successResponse, response);
     }
 
@@ -76,7 +76,7 @@ public class FollowerServiceTest {
      */
     @Test
     public void testGetFollowers_validRequest_loadsProfileImages() throws IOException, TweeterRemoteException {
-        FollowerResponse response = (FollowerResponse) followerServiceSpy.serve(validRequest);
+        FollowerResponse response = (FollowerResponse) followerServiceProxySpy.serve(validRequest);
 
         for(User user : response.getFollowers()) {
             Assertions.assertNotNull(user.getImageBytes());
@@ -91,7 +91,7 @@ public class FollowerServiceTest {
      */
     @Test
     public void testGetFollowers_invalidRequest_returnsNoFollowees() throws IOException, TweeterRemoteException {
-        FollowerResponse response = (FollowerResponse) followerServiceSpy.serve(invalidRequest);
+        FollowerResponse response = (FollowerResponse) followerServiceProxySpy.serve(invalidRequest);
         Assertions.assertEquals(failureResponse, response);
     }
 }
