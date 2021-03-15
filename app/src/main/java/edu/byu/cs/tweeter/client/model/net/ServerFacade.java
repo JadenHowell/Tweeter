@@ -50,6 +50,8 @@ public class ServerFacade {
     private static final String FOLLOWERS_URL_PATH = "/getfollower";
     private static final String FOLLOWER_COUNT_URL_PATH = "/getfollowercount";
     private static final String FOLLOWING_COUNT_URL_PATH = "/getfollowingcount";
+    private static final String IS_FOLLOWING_URL_PATH = "/getisfollowing";
+    private static final String CHANGE_FOLLOW_STATE_URL_PATH = "/changefollowstate";
 
     private ClientCommunicator clientCommunicator = new ClientCommunicator(SERVER_URL);
 
@@ -162,7 +164,6 @@ public class ServerFacade {
         FollowingCountResponse response = clientCommunicator.doPost(FOLLOWING_COUNT_URL_PATH, request, null, FollowingCountResponse.class);
 
         if(response.isSuccess()) {
-            System.out.println("FOLLOWING  COUNT: " + response.getCount());
             return response;
         } else {
             throw new RuntimeException(response.getMessage());
@@ -179,32 +180,30 @@ public class ServerFacade {
         FollowerCountResponse response = clientCommunicator.doPost(FOLLOWER_COUNT_URL_PATH, request, null, FollowerCountResponse.class);
 
         if(response.isSuccess()) {
-            System.out.println("FOLLOWERCOUNT: " + response.getCount());
             return response;
         } else {
             throw new RuntimeException(response.getMessage());
         }
     }
 
-    public Response getIsFollowing(IsFollowingRequest request) {
-        String rootUserAlias = request.getRootUserAlias();
-        String otherUserAlias = request.getOtherUserAlias();
-        boolean didChanceFollow = true;
-        if (Math.random() < .5) {
-            didChanceFollow = false;
+    public IsFollowingResponse getIsFollowing(IsFollowingRequest request) throws IOException, TweeterRemoteException {
+        IsFollowingResponse response = clientCommunicator.doPost(IS_FOLLOWING_URL_PATH, request, null, IsFollowingResponse.class);
+
+        if(response.isSuccess()){
+            return response;
+        } else{
+            throw new RuntimeException(response.getMessage());
         }
-        IsFollowingResponse response = new IsFollowingResponse(true, null, didChanceFollow);
-        return response;
     }
 
-    static boolean followState = true;
+    public ChangeFollowStateResponse changeFollowState(ChangeFollowStateRequest request) throws IOException, TweeterRemoteException {
+        ChangeFollowStateResponse response = clientCommunicator.doPost(CHANGE_FOLLOW_STATE_URL_PATH, request, null, ChangeFollowStateResponse.class);
 
-    public Response changeFollowState(ChangeFollowStateRequest request) {
-        String loggedInUserAlias = request.getRootUserAlias();
-        String otherUserAlias = request.getOtherUserAlias();
-        ChangeFollowStateResponse response = new ChangeFollowStateResponse(true, null, followState);
-        followState = !followState;
-        return response;
+        if(response.isSuccess()){
+            return response;
+        } else{
+            throw new RuntimeException(response.getMessage());
+        }
     }
 
 

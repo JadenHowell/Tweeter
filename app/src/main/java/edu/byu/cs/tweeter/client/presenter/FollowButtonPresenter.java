@@ -2,8 +2,8 @@ package edu.byu.cs.tweeter.client.presenter;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.client.model.service.ChangeFollowStateService;
-import edu.byu.cs.tweeter.client.model.service.IsFollowingService;
+import edu.byu.cs.tweeter.client.model.service.ChangeFollowStateServiceProxy;
+import edu.byu.cs.tweeter.client.model.service.IsFollowingServiceProxy;
 import edu.byu.cs.tweeter.client.model.service.Service;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.ChangeFollowStateRequest;
@@ -49,25 +49,25 @@ public class FollowButtonPresenter {
     }
 
     /**
-     * Returns an instance of {@link IsFollowingService}. Allows mocking of the IsFollowingService class
+     * Returns an instance of {@link IsFollowingServiceProxy}. Allows mocking of the IsFollowingService class
      * for testing purposes. All usages of IsFollowingService should get their IsFollowingService
      * instance from this method to allow for mocking of the instance.
      *
      * @return the instance.
      */
     Service getIsFollowingService() {
-        return new IsFollowingService();
+        return new IsFollowingServiceProxy();
     }
 
     /**
-     * Returns an instance of {@link ChangeFollowStateService}. Allows mocking of the ChangeFollowStateService class
+     * Returns an instance of {@link ChangeFollowStateServiceProxy}. Allows mocking of the ChangeFollowStateService class
      * for testing purposes. All usages of ChangeFollowStateService should get their ChangeFollowStateService
      * instance from this method to allow for mocking of the instance.
      *
      * @return the instance.
      */
     Service getChangeFollowStateService() {
-        return new ChangeFollowStateService();
+        return new ChangeFollowStateServiceProxy();
     }
 
 }

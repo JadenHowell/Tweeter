@@ -12,7 +12,7 @@ import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.IsFollowingRequest;
 import edu.byu.cs.tweeter.shared.service.response.IsFollowingResponse;
 
-public class IsFollowingServiceTest {
+public class IsFollowingServiceProxyTest {
 
     private IsFollowingRequest validRequest;
     private IsFollowingRequest invalidRequest;
@@ -20,14 +20,14 @@ public class IsFollowingServiceTest {
     private IsFollowingResponse successResponse;
     private IsFollowingResponse failureResponse;
 
-    private IsFollowingService isFollowingServiceSpy;
+    private IsFollowingServiceProxy isFollowingServiceProxySpy;
 
     /**
      * Create a IsFollowingService spy that uses a mock ServerFacade to return known responses to
      * requests.
      */
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException, TweeterRemoteException {
         // Setup request objects to use in the tests
         validRequest = new IsFollowingRequest("@TestUser", "@OtherUser");
         invalidRequest = new IsFollowingRequest(null, null);
@@ -41,8 +41,8 @@ public class IsFollowingServiceTest {
         Mockito.when(mockServerFacade.getIsFollowing(invalidRequest)).thenReturn(failureResponse);
 
         // Create a FollowingService instance and wrap it with a spy that will use the mock service
-        isFollowingServiceSpy = Mockito.spy(new IsFollowingService());
-        Mockito.when(isFollowingServiceSpy.getServerFacade()).thenReturn(mockServerFacade);
+        isFollowingServiceProxySpy = Mockito.spy(new IsFollowingServiceProxy());
+        Mockito.when(isFollowingServiceProxySpy.getServerFacade()).thenReturn(mockServerFacade);
     }
 
     /**
@@ -53,7 +53,7 @@ public class IsFollowingServiceTest {
      */
     @Test
     public void testGetIsFollowing_validRequest_correctResponse() throws IOException, TweeterRemoteException {
-        IsFollowingResponse response = (IsFollowingResponse) isFollowingServiceSpy.serve(validRequest);
+        IsFollowingResponse response = (IsFollowingResponse) isFollowingServiceProxySpy.serve(validRequest);
         Assertions.assertEquals(successResponse, response);
     }
 
@@ -65,7 +65,7 @@ public class IsFollowingServiceTest {
      */
     @Test
     public void testGetIsFollowing_invalidRequest_returnsInvalidResponse() throws IOException, TweeterRemoteException {
-        IsFollowingResponse response = (IsFollowingResponse) isFollowingServiceSpy.serve(invalidRequest);
+        IsFollowingResponse response = (IsFollowingResponse) isFollowingServiceProxySpy.serve(invalidRequest);
         Assertions.assertEquals(failureResponse, response);
     }
 }

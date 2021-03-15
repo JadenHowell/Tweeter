@@ -12,7 +12,7 @@ import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.ChangeFollowStateRequest;
 import edu.byu.cs.tweeter.shared.service.response.ChangeFollowStateResponse;
 
-public class ChangeFollowStateServiceTest {
+public class ChangeFollowStateServiceProxyTest {
 
     private ChangeFollowStateRequest validRequest;
     private ChangeFollowStateRequest invalidRequest;
@@ -20,14 +20,14 @@ public class ChangeFollowStateServiceTest {
     private ChangeFollowStateResponse successResponse;
     private ChangeFollowStateResponse failureResponse;
 
-    private ChangeFollowStateService changeFollowStateServiceSpy;
+    private ChangeFollowStateServiceProxy changeFollowStateServiceProxySpy;
 
     /**
      * Create a ChangeFollowStateService spy that uses a mock ServerFacade to return known responses to
      * requests.
      */
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException, TweeterRemoteException {
         // Setup request objects to use in the tests
         validRequest = new ChangeFollowStateRequest("@TestUser", "@OtherUser");
         invalidRequest = new ChangeFollowStateRequest(null, null);
@@ -41,8 +41,8 @@ public class ChangeFollowStateServiceTest {
         Mockito.when(mockServerFacade.changeFollowState(invalidRequest)).thenReturn(failureResponse);
 
         // Create a FollowingService instance and wrap it with a spy that will use the mock service
-        changeFollowStateServiceSpy = Mockito.spy(new ChangeFollowStateService());
-        Mockito.when(changeFollowStateServiceSpy.getServerFacade()).thenReturn(mockServerFacade);
+        changeFollowStateServiceProxySpy = Mockito.spy(new ChangeFollowStateServiceProxy());
+        Mockito.when(changeFollowStateServiceProxySpy.getServerFacade()).thenReturn(mockServerFacade);
     }
 
     /**
@@ -53,7 +53,7 @@ public class ChangeFollowStateServiceTest {
      */
     @Test
     public void testChangeFollowState_validRequest_correctResponse() throws IOException, TweeterRemoteException {
-        ChangeFollowStateResponse response = (ChangeFollowStateResponse) changeFollowStateServiceSpy.serve(validRequest);
+        ChangeFollowStateResponse response = (ChangeFollowStateResponse) changeFollowStateServiceProxySpy.serve(validRequest);
         Assertions.assertEquals(successResponse, response);
     }
 
@@ -65,7 +65,7 @@ public class ChangeFollowStateServiceTest {
      */
     @Test
     public void testChangeFollowState_invalidRequest_returnsInvalidResponse() throws IOException, TweeterRemoteException {
-        ChangeFollowStateResponse response = (ChangeFollowStateResponse) changeFollowStateServiceSpy.serve(invalidRequest);
+        ChangeFollowStateResponse response = (ChangeFollowStateResponse) changeFollowStateServiceProxySpy.serve(invalidRequest);
         Assertions.assertEquals(failureResponse, response);
     }
 }
