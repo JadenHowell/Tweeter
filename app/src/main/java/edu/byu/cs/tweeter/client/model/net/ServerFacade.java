@@ -47,6 +47,9 @@ public class ServerFacade {
 
     private static final String SERVER_URL = "https://hyms0dv7ol.execute-api.us-west-2.amazonaws.com/test";
     private static final String FOLLOWEES_URL_PATH = "/getfollowing";
+    private static final String LOGIN_URL_PATH = "/login";
+    private static final String LOGOUT_URL_PATH = "/logout";
+    private static final String REGISTER_URL_PATH = "/register";
 
     private ClientCommunicator clientCommunicator = new ClientCommunicator(SERVER_URL);
 
@@ -94,10 +97,16 @@ public class ServerFacade {
      * @param request contains all information needed to perform a login.
      * @return the login response.
      */
-    public LoginResponse login(LoginRequest request) {
-        User user = new User("Test", "User",
-                "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
-        return new LoginResponse(user, new AuthToken());
+    public LoginResponse login(LoginRequest request) throws IOException, TweeterRemoteException {
+        LoginResponse response = clientCommunicator.doPost(LOGIN_URL_PATH, request, null, LoginResponse.class);
+        if(response.isSuccess()) {
+            return response;
+        } else {
+            throw new RuntimeException(response.getMessage());
+        }
+        //User user = new User("Test", "User",
+                //"https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
+        //return new LoginResponse(user, new AuthToken());
     }
 
     /**
@@ -108,8 +117,14 @@ public class ServerFacade {
      * @param request contains all information needed to perform a logout.
      * @return the logout response.
      */
-    public LogoutResponse logout(LogoutRequest request) {
-        return new LogoutResponse(true, "");
+    public LogoutResponse logout(LogoutRequest request) throws IOException, TweeterRemoteException {
+        LogoutResponse response = clientCommunicator.doPost(LOGOUT_URL_PATH, request, null, LogoutResponse.class);
+        if(response.isSuccess()) {
+            return response;
+        } else {
+            throw new RuntimeException(response.getMessage());
+        }
+        //return new LogoutResponse(true, "");
     }
 
     /**
@@ -462,9 +477,15 @@ public class ServerFacade {
     }
 
 
-    public RegisterResponse register(RegisterRequest request) {
-        User user = new User("One", "Two", "@OneTwo", "https://www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png");
-        return new RegisterResponse(user, new AuthToken());
+    public RegisterResponse register(RegisterRequest request) throws IOException, TweeterRemoteException {
+        RegisterResponse response = clientCommunicator.doPost(REGISTER_URL_PATH, request, null, RegisterResponse.class);
+        if(response.isSuccess()) {
+            return response;
+        } else {
+            throw new RuntimeException(response.getMessage());
+        }
+        //User user = new User("One", "Two", "@OneTwo", "https://www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png");
+        //return new RegisterResponse(user, new AuthToken());
     }
 
 

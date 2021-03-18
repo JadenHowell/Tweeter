@@ -2,19 +2,15 @@ package edu.byu.cs.tweeter.client.presenter;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.client.model.service.LoginService;
+import edu.byu.cs.tweeter.client.model.service.LoginServiceProxy;
 import edu.byu.cs.tweeter.client.model.service.Service;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.LoginRequest;
 import edu.byu.cs.tweeter.shared.service.response.LoginResponse;
 
-/**
- * The presenter for the login functionality of the application.
- */
 public class LoginPresenter {
 
     private final View view;
-
     /**
      * The interface by which this presenter communicates with it's view.
      */
@@ -42,6 +38,6 @@ public class LoginPresenter {
     }
 
     Service getLoginService() {
-        return new LoginService();
+        return new LoginServiceProxy();
     }
 }
