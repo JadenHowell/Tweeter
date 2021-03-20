@@ -16,21 +16,27 @@ public class FollowerDAO {
     private static final String MALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png";
     private static final String FEMALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png";
 
-    private final User user2 = new User("Amy", "Ames", FEMALE_IMAGE_URL);
-    private final User user3 = new User("Bob", "Bobson", MALE_IMAGE_URL);
-    private final User user4 = new User("Bonnie", "Beatty", FEMALE_IMAGE_URL);
-    private final User user5 = new User("Chris", "Colston", MALE_IMAGE_URL);
-    private final User user7 = new User("Dan", "Donaldson", MALE_IMAGE_URL);
-    private final User user8 = new User("Dee", "Dempsey", FEMALE_IMAGE_URL);
-    private final User user9 = new User("Elliott", "Enderson", MALE_IMAGE_URL);
-    private final User user10 = new User("Elizabeth", "Engle", FEMALE_IMAGE_URL);
-    private final User user12 = new User("Fran", "Franklin", FEMALE_IMAGE_URL);
-    private final User user13 = new User("Gary", "Gilbert", MALE_IMAGE_URL);
-    private final User user14 = new User("Giovanna", "Giles", FEMALE_IMAGE_URL);
-    private final User user16 = new User("Helen", "Hopwell", FEMALE_IMAGE_URL);
-    private final User user17 = new User("Igor", "Isaacson", MALE_IMAGE_URL);
-    private final User user19 = new User("Justin", "Jones", MALE_IMAGE_URL);
-    private final User user20 = new User("Jill", "Johnson", FEMALE_IMAGE_URL);
+    private final User user1 = new User("Allen", "Anderson", "@AllenAnderson", MALE_IMAGE_URL);
+    private final User user2 = new User("Amy", "Ames", "@AmyAmes", FEMALE_IMAGE_URL);
+    private final User user3 = new User("Bob", "Bobson", "@BobBobson", MALE_IMAGE_URL);
+    private final User user4 = new User("Bonnie", "Beatty", "@BonnieBeatty", FEMALE_IMAGE_URL);
+    private final User user5 = new User("Chris", "Colston", "@ChrisColston", MALE_IMAGE_URL);
+    private final User user6 = new User("Cindy", "Coats", "@CindyCoats", FEMALE_IMAGE_URL);
+    private final User user7 = new User("Dan", "Donaldson", "@DanDonaldson", MALE_IMAGE_URL);
+    private final User user8 = new User("Dee", "Dempsey", "@DeeDempsey", FEMALE_IMAGE_URL);
+    private final User user9 = new User("Elliott", "Enderson", "@ElliottEnderson", MALE_IMAGE_URL);
+    private final User user10 = new User("Elizabeth", "Engle", "@ElizabethEngle", FEMALE_IMAGE_URL);
+    private final User user11 = new User("Frank", "Frandson", "@FrankFrandson", MALE_IMAGE_URL);
+    private final User user12 = new User("Fran", "Franklin", "@FranFranklin", FEMALE_IMAGE_URL);
+    private final User user13 = new User("Gary", "Gilbert", "@GaryGilbert", MALE_IMAGE_URL);
+    private final User user14 = new User("Giovanna", "Giles", "@GiovannaGiles", FEMALE_IMAGE_URL);
+    private final User user15 = new User("Henry", "Henderson", "@HenryHenderson", MALE_IMAGE_URL);
+    private final User user16 = new User("Helen", "Hopwell", "@HelenHopwell", FEMALE_IMAGE_URL);
+    private final User user17 = new User("Igor", "Isaacson", "@IgorIsaacson", MALE_IMAGE_URL);
+    private final User user18 = new User("Isabel", "Isaacson", "@IsabelIsaacson", FEMALE_IMAGE_URL);
+    private final User user19 = new User("Justin", "Jones", "@JustinJones", MALE_IMAGE_URL);
+    private final User user20 = new User("Jill", "Johnson", "@JillJohnson", FEMALE_IMAGE_URL);
+
 
     /**
      * Gets the count of users from the database that the user specified is following. The
