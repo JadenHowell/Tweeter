@@ -21,14 +21,14 @@ public class LoginServiceTest {
     private LoginResponse successResponse;
     private LoginResponse failureResponse;
 
-    private LoginService loginServiceSpy;
+    private LoginServiceProxy loginServiceSpy;
 
     /**
      * Create a LoginServiceSpy spy that uses a mock ServerFacade to return known responses to
      * requests.
      */
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException, TweeterRemoteException {
         // Setup request objects to use in the tests
         validRequest = new LoginRequest("@TestUser", "password");
         invalidRequest = new LoginRequest(null, null);
@@ -42,7 +42,7 @@ public class LoginServiceTest {
         Mockito.when(mockServerFacade.login(invalidRequest)).thenReturn(failureResponse);
 
         // Create a FollowingService instance and wrap it with a spy that will use the mock service
-        loginServiceSpy = Mockito.spy(new LoginService());
+        loginServiceSpy = Mockito.spy(new LoginServiceProxy());
         Mockito.when(loginServiceSpy.getServerFacade()).thenReturn(mockServerFacade);
     }
 
