@@ -24,7 +24,7 @@ public class LoginPresenterTest {
     @BeforeEach
     public void setup() throws IOException, TweeterRemoteException {
         request = new LoginRequest("@TestUser", "password");
-        response = new LoginResponse(new User("first", "last", "user", "url"), new AuthToken());
+        response = new LoginResponse(new User("first2", "last2", "user", "url"), new AuthToken());
 
         mockLoginService = Mockito.mock(LoginServiceProxy.class);
         Mockito.when(mockLoginService.serve(request)).thenReturn(response);
