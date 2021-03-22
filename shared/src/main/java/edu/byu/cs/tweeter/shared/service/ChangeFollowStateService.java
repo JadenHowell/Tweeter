@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.ChangeFollowStateRequest;
-import edu.byu.cs.tweeter.shared.service.response.Response;
+import edu.byu.cs.tweeter.shared.service.response.ChangeFollowStateResponse;
 
 public interface ChangeFollowStateService {
     /**
@@ -13,6 +13,6 @@ public interface ChangeFollowStateService {
      * @param request contains the data required to fulfill the request.
      * @return the new follow state.
      */
-    Response changeFollowState(ChangeFollowStateRequest request)
+    ChangeFollowStateResponse changeFollowState(ChangeFollowStateRequest request)
             throws IOException, TweeterRemoteException;
 }
