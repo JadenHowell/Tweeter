@@ -5,8 +5,13 @@ package edu.byu.cs.tweeter.shared.service.request;
  */
 public class LoginRequest extends Request {
 
-    private final String username;
-    private final String password;
+    private String username;
+    private String password;
+
+    public LoginRequest() {
+        this.username = "user_alias";
+        this.password = "password";
+    }
 
     /**
      * Creates an instance.
@@ -19,21 +24,12 @@ public class LoginRequest extends Request {
         this.password = password;
     }
 
-    /**
-     * Returns the username of the user to be logged in by this request.
-     *
-     * @return the username.
-     */
     public String getUsername() {
         return username;
     }
-
-    /**
-     * Returns the password of the user to be logged in by this request.
-     *
-     * @return the password.
-     */
     public String getPassword() {
         return password;
     }
+    public void setUsername(String username) { this.username = username; }
+    public void setPassword(String password) { this.password = password; }
 }

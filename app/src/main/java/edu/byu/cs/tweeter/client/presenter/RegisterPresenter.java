@@ -2,7 +2,7 @@ package edu.byu.cs.tweeter.client.presenter;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.client.model.service.RegisterService;
+import edu.byu.cs.tweeter.client.model.service.RegisterServiceProxy;
 import edu.byu.cs.tweeter.client.model.service.Service;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.RegisterRequest;
@@ -24,6 +24,6 @@ public class RegisterPresenter {
     }
 
     Service getRegisterService() {
-        return new RegisterService();
+        return new RegisterServiceProxy();
     }
 }
