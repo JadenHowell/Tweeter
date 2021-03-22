@@ -7,9 +7,9 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.client.model.service.LoginServiceProxy;
 import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
-import edu.byu.cs.tweeter.client.model.service.LoginService;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.LoginRequest;
 import edu.byu.cs.tweeter.shared.service.response.LoginResponse;
@@ -18,15 +18,15 @@ public class LoginPresenterTest {
 
     private LoginRequest request;
     private LoginResponse response;
-    private LoginService mockLoginService;
+    private LoginServiceProxy mockLoginService;
     private LoginPresenter presenter;
 
     @BeforeEach
     public void setup() throws IOException, TweeterRemoteException {
         request = new LoginRequest("@TestUser", "password");
-        response = new LoginResponse(new User("first", "last", "user", "url"), new AuthToken());
+        response = new LoginResponse(new User("first2", "last2", "user", "url"), new AuthToken());
 
-        mockLoginService = Mockito.mock(LoginService.class);
+        mockLoginService = Mockito.mock(LoginServiceProxy.class);
         Mockito.when(mockLoginService.serve(request)).thenReturn(response);
 
         presenter = Mockito.spy(new LoginPresenter(new LoginPresenter.View() {}));

@@ -7,9 +7,9 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.client.model.service.RegisterServiceProxy;
 import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
-import edu.byu.cs.tweeter.client.model.service.RegisterService;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.RegisterRequest;
 import edu.byu.cs.tweeter.shared.service.response.RegisterResponse;
@@ -18,7 +18,7 @@ public class RegisterPresenterTest {
 
     private RegisterRequest request;
     private RegisterResponse response;
-    private RegisterService mockRegisterService;
+    private RegisterServiceProxy mockRegisterService;
     private RegisterPresenter presenter;
 
     @BeforeEach
@@ -26,7 +26,7 @@ public class RegisterPresenterTest {
         request = new RegisterRequest("first", "last", "username", "password");
         response = new RegisterResponse(new User("first", "last", "url"), new AuthToken());
 
-        mockRegisterService = Mockito.mock(RegisterService.class);
+        mockRegisterService = Mockito.mock(RegisterServiceProxy.class);
         Mockito.when(mockRegisterService.serve(request)).thenReturn(response);
 
         presenter = Mockito.spy(new RegisterPresenter(new RegisterPresenter.View() {}));

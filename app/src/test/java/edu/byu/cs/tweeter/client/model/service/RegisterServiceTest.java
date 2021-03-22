@@ -21,14 +21,14 @@ public class RegisterServiceTest {
     private RegisterResponse successResponse;
     private RegisterResponse failureResponse;
 
-    private RegisterService registerServiceSpy;
+    private RegisterServiceProxy registerServiceSpy;
 
     /**
      * Create a RegisterServiceSpy spy that uses a mock ServerFacade to return known responses to
      * requests.
      */
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException, TweeterRemoteException {
         // Setup request objects to use in the tests
         validRequest = new RegisterRequest("first", "last", "username", "password");
         invalidRequest = new RegisterRequest(null, null, null, null);
@@ -42,7 +42,7 @@ public class RegisterServiceTest {
         Mockito.when(mockServerFacade.register(invalidRequest)).thenReturn(failureResponse);
 
         // Create a FollowingService instance and wrap it with a spy that will use the mock service
-        registerServiceSpy = Mockito.spy(new RegisterService());
+        registerServiceSpy = Mockito.spy(new RegisterServiceProxy());
         Mockito.when(registerServiceSpy.getServerFacade()).thenReturn(mockServerFacade);
     }
 

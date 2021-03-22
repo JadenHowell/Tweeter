@@ -19,14 +19,14 @@ public class LogoutServiceTest {
     private LogoutResponse successResponse;
     private LogoutResponse failureResponse;
 
-    private LogoutService logoutServiceSpy;
+    private LogoutServiceProxy logoutServiceSpy;
 
     /**
      * Create a LogoutServiceSpy spy that uses a mock ServerFacade to return known responses to
      * requests.
      */
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException, TweeterRemoteException {
         // Setup request objects to use in the tests
         validRequest = new LogoutRequest("@TestUser");
         invalidRequest = new LogoutRequest(null);
@@ -40,7 +40,7 @@ public class LogoutServiceTest {
         Mockito.when(mockServerFacade.logout(invalidRequest)).thenReturn(failureResponse);
 
         // Create a FollowingService instance and wrap it with a spy that will use the mock service
-        logoutServiceSpy = Mockito.spy(new LogoutService());
+        logoutServiceSpy = Mockito.spy(new LogoutServiceProxy());
         Mockito.when(logoutServiceSpy.getServerFacade()).thenReturn(mockServerFacade);
     }
 

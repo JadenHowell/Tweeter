@@ -7,7 +7,7 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.client.model.service.LogoutService;
+import edu.byu.cs.tweeter.client.model.service.LogoutServiceProxy;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.LogoutRequest;
 import edu.byu.cs.tweeter.shared.service.response.LogoutResponse;
@@ -16,7 +16,7 @@ public class LogoutPresenterTest {
 
     private LogoutRequest request;
     private LogoutResponse response;
-    private LogoutService mockLogoutService;
+    private LogoutServiceProxy mockLogoutService;
     private LogoutPresenter presenter;
 
     @BeforeEach
@@ -24,7 +24,7 @@ public class LogoutPresenterTest {
         request = new LogoutRequest("@TestUser");
         response = new LogoutResponse(true, "");
 
-        mockLogoutService = Mockito.mock(LogoutService.class);
+        mockLogoutService = Mockito.mock(LogoutServiceProxy.class);
         Mockito.when(mockLogoutService.serve(request)).thenReturn(response);
 
         presenter = Mockito.spy(new LogoutPresenter(new LogoutPresenter.View() {}));
