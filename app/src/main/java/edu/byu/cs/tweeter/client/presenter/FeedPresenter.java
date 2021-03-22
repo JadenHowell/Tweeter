@@ -2,7 +2,7 @@ package edu.byu.cs.tweeter.client.presenter;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.client.model.service.FeedService;
+import edu.byu.cs.tweeter.client.model.service.FeedServiceProxy;
 import edu.byu.cs.tweeter.client.model.service.Service;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.FeedRequest;
@@ -45,13 +45,13 @@ public class FeedPresenter {
     }
 
     /**
-     * Returns an instance of {@link FeedService}. Allows mocking of the FeedService class
-     * for testing purposes. All usages of FeedService should get their FeedService
+     * Returns an instance of {@link FeedServiceProxy}. Allows mocking of the FeedServiceProxy class
+     * for testing purposes. All usages of FeedServiceProxy should get their FeedServiceProxy
      * instance from this method to allow for mocking of the instance.
      *
      * @return the instance.
      */
     Service getFeedService() {
-        return new FeedService();
+        return new FeedServiceProxy();
     }
 }

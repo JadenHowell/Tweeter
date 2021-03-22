@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
+import edu.byu.cs.tweeter.shared.service.StoryService;
 import edu.byu.cs.tweeter.shared.service.request.Request;
 import edu.byu.cs.tweeter.shared.service.request.StoryRequest;
 import edu.byu.cs.tweeter.shared.service.response.Response;
@@ -13,7 +15,7 @@ import edu.byu.cs.tweeter.client.util.ByteArrayUtils;
 /**
  * Contains the business logic for getting the statuses in the story of a user.
  */
-public class StoryService extends Service {
+public class StoryServiceProxy extends Service implements StoryService {
 
     /**
      * Returns the statuses that the user specified in the request has in their story. Uses information in
@@ -25,8 +27,8 @@ public class StoryService extends Service {
      * @return the statuses.
      */
     @Override
-    Response accessFacade(Request request) {
-        return serverFacade.getStory((StoryRequest) request);
+    Response accessFacade(Request request) throws IOException, TweeterRemoteException {
+        return getStory((StoryRequest) request);
     }
 
     @Override
@@ -44,5 +46,10 @@ public class StoryService extends Service {
             byte [] bytes = ByteArrayUtils.bytesFromUrl(status.getUser().getImageUrl());
             status.getUser().setImageBytes(bytes);
         }
+    }
+
+    @Override
+    public StoryResponse getStory(StoryRequest request) throws IOException, TweeterRemoteException {
+        return serverFacade.getStory(request);
     }
 }

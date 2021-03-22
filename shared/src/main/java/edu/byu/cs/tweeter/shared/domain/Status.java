@@ -10,10 +10,10 @@ import java.util.Objects;
 public class Status implements Comparable<Status>, Serializable {
 
     private final User user;
-    private final Date date;
+    private final long date;
     private final String message;
 
-    public Status(User user, Date date, String message) {
+    public Status(User user, long date, String message) {
         this.user = user;
         this.date = date;
         this.message = message;
@@ -23,7 +23,7 @@ public class Status implements Comparable<Status>, Serializable {
         return user;
     }
 
-    public Date getDate() {
+    public long getDate() {
         return date;
     }
 

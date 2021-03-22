@@ -1,7 +1,7 @@
 package edu.byu.cs.tweeter.shared.service.response;
 
 
-public class ChangeFollowStateResponse extends Response{
+public class ChangeFollowStateResponse extends Response {
     boolean newFollowingState;
 
     public ChangeFollowStateResponse(boolean success, String msg, boolean newFollowingState){

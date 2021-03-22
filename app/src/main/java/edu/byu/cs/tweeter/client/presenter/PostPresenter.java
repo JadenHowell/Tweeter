@@ -2,7 +2,7 @@ package edu.byu.cs.tweeter.client.presenter;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.client.model.service.PostService;
+import edu.byu.cs.tweeter.client.model.service.PostServiceProxy;
 import edu.byu.cs.tweeter.client.model.service.Service;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.PostRequest;
@@ -43,13 +43,13 @@ public class PostPresenter {
     }
 
     /**
-     * Returns an instance of {@link PostService}. Allows mocking of the PostService class
-     * for testing purposes. All usages of PostService should get their PostService
+     * Returns an instance of {@link PostServiceProxy}. Allows mocking of the PostServiceProxy class
+     * for testing purposes. All usages of PostServiceProxy should get their PostServiceProxy
      * instance from this method to allow for mocking of the instance.
      *
      * @return the instance.
      */
     Service getPostService() {
-        return new PostService();
+        return new PostServiceProxy();
     }
 }
