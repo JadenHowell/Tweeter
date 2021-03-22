@@ -6,6 +6,7 @@ import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.ChangeFollowStateService;
 import edu.byu.cs.tweeter.shared.service.request.ChangeFollowStateRequest;
 import edu.byu.cs.tweeter.shared.service.request.Request;
+import edu.byu.cs.tweeter.shared.service.response.ChangeFollowStateResponse;
 import edu.byu.cs.tweeter.shared.service.response.Response;
 
 public class ChangeFollowStateServiceProxy extends Service implements ChangeFollowStateService {
