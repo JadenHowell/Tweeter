@@ -10,6 +10,7 @@ import java.io.IOException;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
+import edu.byu.cs.tweeter.shared.service.UserService;
 import edu.byu.cs.tweeter.shared.service.request.UserRequest;
 import edu.byu.cs.tweeter.shared.service.response.UserResponse;
 
@@ -21,14 +22,14 @@ public class UserServiceTest {
     private UserResponse successResponse;
     private UserResponse failureResponse;
 
-    private UserService userServiceSpy;
+    private UserServiceProxy userServiceSpy;
 
     /**
      * Create a UserService spy that uses a mock ServerFacade to return known responses to
      * requests.
      */
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException, TweeterRemoteException {
         User user1 = new User("FirstName1", "LastName1",
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
 
@@ -45,7 +46,7 @@ public class UserServiceTest {
         Mockito.when(mockServerFacade.getUser(invalidRequest)).thenReturn(failureResponse);
 
         // Create a UserService instance and wrap it with a spy that will use the mock service
-        userServiceSpy = Mockito.spy(new UserService());
+        userServiceSpy = Mockito.spy(new UserServiceProxy());
         Mockito.when(userServiceSpy.getServerFacade()).thenReturn(mockServerFacade);
     }
 

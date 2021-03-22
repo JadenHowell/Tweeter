@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -163,7 +164,7 @@ public class StoryFragment extends Fragment implements StoryPresenter.View, User
             userImage.setImageDrawable(ImageUtils.drawableFromByteArray(status.getUser().getImageBytes()));
             userAlias.setText(status.getUser().getAlias());
             userName.setText(String.format("%s %s", status.getUser().getFirstName(), status.getUser().getLastName()));
-            date.setText(status.getDate().toString());
+            date.setText(new Timestamp(status.getDate()).toString());
             message.setText(parseAlias(status.getMessage()));
             message.setMovementMethod(LinkMovementMethod.getInstance());
             otherUser = status.getUser();
@@ -377,8 +378,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.View, User
          * loading footer view) at the bottom of the list.
          */
         private void addLoadingFooter() {
-            addItem(new Status(new User("Test", "User",
-                    "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), Calendar.getInstance().getTime(), ""));
+            addItem(new Status(new User("fatal", "user",
+                    "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), Calendar.getInstance().getTime().getTime(), ""));
         }
 
         /**

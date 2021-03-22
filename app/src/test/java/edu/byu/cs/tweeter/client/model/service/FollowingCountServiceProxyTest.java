@@ -12,7 +12,7 @@ import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.FollowingCountRequest;
 import edu.byu.cs.tweeter.shared.service.response.FollowingCountResponse;
 
-public class FollowingCountServiceTest {
+public class FollowingCountServiceProxyTest {
 
     private FollowingCountRequest validRequest;
     private FollowingCountRequest invalidRequest;
@@ -20,14 +20,14 @@ public class FollowingCountServiceTest {
     private FollowingCountResponse successResponse;
     private FollowingCountResponse failureResponse;
 
-    private FollowingCountService followingCountServiceSpy;
+    private FollowingCountServiceProxy followingCountServiceProxySpy;
 
     /**
      * Create a FollowingCountService spy that uses a mock ServerFacade to return known responses to
      * requests.
      */
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException, TweeterRemoteException {
         // Setup request objects to use in the tests
         validRequest = new FollowingCountRequest("@TestUser");
         invalidRequest = new FollowingCountRequest(null);
@@ -41,8 +41,8 @@ public class FollowingCountServiceTest {
         Mockito.when(mockServerFacade.getFollowingCount(invalidRequest)).thenReturn(failureResponse);
 
         // Create a FollowingService instance and wrap it with a spy that will use the mock service
-        followingCountServiceSpy = Mockito.spy(new FollowingCountService());
-        Mockito.when(followingCountServiceSpy.getServerFacade()).thenReturn(mockServerFacade);
+        followingCountServiceProxySpy = Mockito.spy(new FollowingCountServiceProxy());
+        Mockito.when(followingCountServiceProxySpy.getServerFacade()).thenReturn(mockServerFacade);
     }
 
     /**
@@ -53,7 +53,7 @@ public class FollowingCountServiceTest {
      */
     @Test
     public void testGetFollowingCount_validRequest_correctResponse() throws IOException, TweeterRemoteException {
-        FollowingCountResponse response = (FollowingCountResponse) followingCountServiceSpy.serve(validRequest);
+        FollowingCountResponse response = (FollowingCountResponse) followingCountServiceProxySpy.serve(validRequest);
         Assertions.assertEquals(successResponse, response);
     }
 
@@ -65,7 +65,7 @@ public class FollowingCountServiceTest {
      */
     @Test
     public void testGetFollowingCount_invalidRequest_returnsInvalidResponse() throws IOException, TweeterRemoteException {
-        FollowingCountResponse response = (FollowingCountResponse) followingCountServiceSpy.serve(invalidRequest);
+        FollowingCountResponse response = (FollowingCountResponse) followingCountServiceProxySpy.serve(invalidRequest);
         Assertions.assertEquals(failureResponse, response);
     }
 }

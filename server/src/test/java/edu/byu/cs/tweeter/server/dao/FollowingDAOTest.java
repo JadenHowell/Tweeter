@@ -10,7 +10,11 @@ import java.util.Collections;
 import java.util.List;
 
 import edu.byu.cs.tweeter.shared.domain.User;
+import edu.byu.cs.tweeter.shared.service.request.FollowerCountRequest;
+import edu.byu.cs.tweeter.shared.service.request.FollowingCountRequest;
 import edu.byu.cs.tweeter.shared.service.request.FollowingRequest;
+import edu.byu.cs.tweeter.shared.service.response.FollowerCountResponse;
+import edu.byu.cs.tweeter.shared.service.response.FollowingCountResponse;
 import edu.byu.cs.tweeter.shared.service.response.FollowingResponse;
 
 class FollowingDAOTest {
@@ -143,5 +147,16 @@ class FollowingDAOTest {
         Assertions.assertEquals(1, response.getFollowees().size());
         Assertions.assertTrue(response.getFollowees().contains(user8));
         Assertions.assertFalse(response.getHasMorePages());
+    }
+
+    @Test
+    void testGetCountCorrect() {
+        List<User> followees = Arrays.asList(user2, user3, user4, user5, user6, user7, user8);
+        Mockito.when(followingDAOSpy.getDummyFollowees()).thenReturn(followees);
+
+        FollowingCountRequest request = new FollowingCountRequest("@TestUser");
+        FollowingCountResponse response = followingDAOSpy.getFolloweeCount(request);
+
+        Assertions.assertEquals(followees.size(), response.getCount());
     }
 }

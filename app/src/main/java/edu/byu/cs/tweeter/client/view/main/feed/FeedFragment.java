@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -161,7 +162,7 @@ public class FeedFragment extends Fragment implements FeedPresenter.View, UserPr
             userImage.setImageDrawable(ImageUtils.drawableFromByteArray(status.getUser().getImageBytes()));
             userAlias.setText(status.getUser().getAlias());
             userName.setText(String.format("%s %s", status.getUser().getFirstName(), status.getUser().getLastName()));
-            date.setText(status.getDate().toString());
+            date.setText(new Timestamp(status.getDate()).toString());
             message.setText(parseAlias(status.getMessage()));
             message.setMovementMethod(LinkMovementMethod.getInstance());
             otherUser = status.getUser();
@@ -336,7 +337,7 @@ public class FeedFragment extends Fragment implements FeedPresenter.View, UserPr
             addLoadingFooter();
 
             GetFeedTask getFeedTask = new GetFeedTask(presenter, this);
-            FeedRequest request = new FeedRequest(user.getAlias(), PAGE_SIZE, (lastStatus == null ? null : lastStatus.getUser().getAlias()));
+            FeedRequest request = new FeedRequest(user.getAlias(), PAGE_SIZE, (lastStatus == null ? null : lastStatus));
             getFeedTask.execute(request);
         }
 
@@ -375,8 +376,8 @@ public class FeedFragment extends Fragment implements FeedPresenter.View, UserPr
          * loading footer view) at the bottom of the list.
          */
         private void addLoadingFooter() {
-            addItem(new Status(new User("Test", "User",
-                    "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), Calendar.getInstance().getTime(), ""));
+            addItem(new Status(new User("fatal", "user",
+                    "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), Calendar.getInstance().getTime().getTime(), ""));
         }
 
         /**

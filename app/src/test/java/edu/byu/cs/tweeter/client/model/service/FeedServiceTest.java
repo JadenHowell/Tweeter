@@ -24,25 +24,25 @@ public class FeedServiceTest {
     private FeedResponse successResponse;
     private FeedResponse failureResponse;
 
-    private FeedService feedServiceSpy;
+    private FeedServiceProxy feedServiceSpy;
 
     /**
      * Create a FeedService spy that uses a mock ServerFacade to return known responses to
      * requests.
      */
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException, TweeterRemoteException {
         User currentUser = new User("FirstName", "LastName", null);
 
         Status resultStatus1 = new Status(new User("FirstName1", "LastName1",
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"),
-                Calendar.getInstance().getTime(), "Status1");
+                Calendar.getInstance().getTime().getTime(), "Status1");
         Status resultStatus2 = new Status(new User("FirstName2", "LastName2",
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png"),
-        Calendar.getInstance().getTime(), "Status2");
+        Calendar.getInstance().getTime().getTime(), "Status2");
         Status resultStatus3 = new Status(new User("FirstName3", "LastName3",
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png"),
-        Calendar.getInstance().getTime(), "Status3");
+        Calendar.getInstance().getTime().getTime(), "Status3");
 
         // Setup request objects to use in the tests
         validRequest = new FeedRequest(currentUser.getAlias(), 3, null);
@@ -57,7 +57,7 @@ public class FeedServiceTest {
         Mockito.when(mockServerFacade.getFeed(invalidRequest)).thenReturn(failureResponse);
 
         // Create a FeedService instance and wrap it with a spy that will use the mock service
-        feedServiceSpy = Mockito.spy(new FeedService());
+        feedServiceSpy = Mockito.spy(new FeedServiceProxy());
         Mockito.when(feedServiceSpy.getServerFacade()).thenReturn(mockServerFacade);
     }
 

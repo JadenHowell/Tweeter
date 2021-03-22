@@ -3,7 +3,7 @@ package edu.byu.cs.tweeter.client.presenter;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.service.Service;
-import edu.byu.cs.tweeter.client.model.service.UserService;
+import edu.byu.cs.tweeter.client.model.service.UserServiceProxy;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.UserRequest;
 import edu.byu.cs.tweeter.shared.service.response.UserResponse;
@@ -44,13 +44,13 @@ public class UserPresenter {
     }
 
     /**
-     * Returns an instance of {@link UserService}. Allows mocking of the UserService class
-     * for testing purposes. All usages of FollowingService should get their UserService
+     * Returns an instance of {@link UserServiceProxy}. Allows mocking of the UserServiceProxy class
+     * for testing purposes. All usages of FollowingService should get their UserServiceProxy
      * instance from this method to allow for mocking of the instance.
      *
      * @return the instance.
      */
     Service getUserService() {
-        return new UserService();
+        return new UserServiceProxy();
     }
 }

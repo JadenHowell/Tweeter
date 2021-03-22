@@ -7,8 +7,8 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.client.model.service.ChangeFollowStateService;
-import edu.byu.cs.tweeter.client.model.service.IsFollowingService;
+import edu.byu.cs.tweeter.client.model.service.ChangeFollowStateServiceProxy;
+import edu.byu.cs.tweeter.client.model.service.IsFollowingServiceProxy;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.ChangeFollowStateRequest;
 import edu.byu.cs.tweeter.shared.service.request.IsFollowingRequest;
@@ -18,12 +18,12 @@ import edu.byu.cs.tweeter.shared.service.response.IsFollowingResponse;
 public class FollowButtonPresenterTest {
     private IsFollowingRequest request;
     private IsFollowingResponse response;
-    private IsFollowingService mockIsFollowingService;
+    private IsFollowingServiceProxy mockIsFollowingServiceProxy;
     private FollowButtonPresenter presenter;
 
     private ChangeFollowStateRequest changeStateRequest;
     private ChangeFollowStateResponse changeStateResponse;
-    private ChangeFollowStateService mockChangeStateService;
+    private ChangeFollowStateServiceProxy mockChangeStateService;
 
     @BeforeEach
     public void setup() throws IOException, TweeterRemoteException {
@@ -33,28 +33,28 @@ public class FollowButtonPresenterTest {
         changeStateRequest = new ChangeFollowStateRequest("@TestUser", "@OtherUser");
         changeStateResponse = new ChangeFollowStateResponse(true, null, true);
 
-        mockChangeStateService = Mockito.mock(ChangeFollowStateService.class);
+        mockChangeStateService = Mockito.mock(ChangeFollowStateServiceProxy.class);
         Mockito.when(mockChangeStateService.serve(changeStateRequest)).thenReturn(changeStateResponse);
 
         // Create a mock FollowingService
-        mockIsFollowingService = Mockito.mock(IsFollowingService.class);
-        Mockito.when(mockIsFollowingService.serve(request)).thenReturn(response);
+        mockIsFollowingServiceProxy = Mockito.mock(IsFollowingServiceProxy.class);
+        Mockito.when(mockIsFollowingServiceProxy.serve(request)).thenReturn(response);
 
         // Wrap a FollowingPresenter in a spy that will use the mock service.
         presenter = Mockito.spy(new FollowButtonPresenter(new FollowButtonPresenter.View() {}));
-        Mockito.when(presenter.getIsFollowingService()).thenReturn(mockIsFollowingService);
+        Mockito.when(presenter.getIsFollowingService()).thenReturn(mockIsFollowingServiceProxy);
         Mockito.when(presenter.getChangeFollowStateService()).thenReturn(mockChangeStateService);
     }
 
     @Test
     public void testGetIsFollowing_returnsCorrectResult() throws IOException, TweeterRemoteException {
-        Mockito.when(mockIsFollowingService.serve(request)).thenReturn(response);
+        Mockito.when(mockIsFollowingServiceProxy.serve(request)).thenReturn(response);
         Assertions.assertEquals(response, presenter.getIsFollowing(request));
     }
 
     @Test
     public void testGetIsFollowing_serviceThrowsIOException_presenterThrowsIOException() throws IOException, TweeterRemoteException {
-        Mockito.when(mockIsFollowingService.serve(request)).thenThrow(new IOException());
+        Mockito.when(mockIsFollowingServiceProxy.serve(request)).thenThrow(new IOException());
 
         Assertions.assertThrows(IOException.class, () -> {
             presenter.getIsFollowing(request);

@@ -1,8 +1,8 @@
 package edu.byu.cs.tweeter.shared.service.request;
 
 public class IsFollowingRequest extends Request{
-    private final String rootUserAlias;
-    private final String otherUserAlias;
+    private String rootUserAlias;
+    private String otherUserAlias;
 
     /**
      * Creates an instance.
@@ -15,6 +15,8 @@ public class IsFollowingRequest extends Request{
         this.otherUserAlias = otherUserAlias;
     }
 
+    private IsFollowingRequest(){}
+
     /**
      * Returns the alias of the logged in user.
      *
@@ -23,6 +25,7 @@ public class IsFollowingRequest extends Request{
     public String getRootUserAlias() {
         return rootUserAlias;
     }
+    public void setRootUserAlias(String rootUserAlias) {this.rootUserAlias = rootUserAlias;}
 
     /**
      * Returns the user to whom we check if root user is following
@@ -31,5 +34,9 @@ public class IsFollowingRequest extends Request{
      */
     public String getOtherUserAlias() {
         return otherUserAlias;
+    }
+
+    public void setOtherUserAlias(String otherUserAlias) {
+        this.otherUserAlias = otherUserAlias;
     }
 }

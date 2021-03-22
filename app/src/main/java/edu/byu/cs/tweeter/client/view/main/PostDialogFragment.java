@@ -1,7 +1,9 @@
 package edu.byu.cs.tweeter.client.view.main;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
@@ -44,6 +46,7 @@ public class PostDialogFragment extends DialogFragment implements PostPresenter.
     private String message;
 
     private PostPresenter presenter;
+    private Activity mActivity;
 
     public PostDialogFragment() {
         // Required empty public constructor
@@ -66,6 +69,15 @@ public class PostDialogFragment extends DialogFragment implements PostPresenter.
 
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof Activity){
+            mActivity =(Activity) context;
+        }
     }
 
     @Override
@@ -99,7 +111,7 @@ public class PostDialogFragment extends DialogFragment implements PostPresenter.
                     public void onClick(DialogInterface dialog, int id) {
                         message = statusText.getText().toString();
 
-                        Status status = new Status(user, Calendar.getInstance().getTime(), message);
+                        Status status = new Status(user, Calendar.getInstance().getTime().getTime(), message);
                         post(status);
                     }
                 });
@@ -114,18 +126,17 @@ public class PostDialogFragment extends DialogFragment implements PostPresenter.
 
     @Override
     public void postSuccessful(PostResponse response) {
-        Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_LONG).show();
-
+        Toast.makeText(mActivity, response.getMessage(), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void postUnsuccessful(PostResponse response) {
-        Toast.makeText(getActivity(), "Failed to post because of exception: " + response.getMessage(), Toast.LENGTH_LONG).show();
+        Toast.makeText(mActivity, "Failed to post because of exception: " + response.getMessage(), Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void handleException(Exception exception) {
         Log.e(LOG_TAG, exception.getMessage(), exception);
-        Toast.makeText(getActivity(), "Failed to post because of exception: " + exception.getMessage(), Toast.LENGTH_LONG).show();
+        Toast.makeText(mActivity, "Failed to post because of exception: " + exception.getMessage(), Toast.LENGTH_LONG).show();
     }
 }

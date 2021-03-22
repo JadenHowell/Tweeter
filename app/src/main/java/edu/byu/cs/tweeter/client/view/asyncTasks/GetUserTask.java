@@ -73,7 +73,7 @@ public class GetUserTask extends AsyncTask<UserRequest, Void, UserResponse> {
     protected void onPostExecute(UserResponse userResponse) {
         if(exception != null) {
             observer.handleException(exception);
-        } else if(userResponse.isSuccess()) {
+        } else if(!userResponse.getMessage().contains("not found")) {
             observer.getUserSuccessful(userResponse);
         } else {
             observer.getUserUnsuccessful(userResponse);

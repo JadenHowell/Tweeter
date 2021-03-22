@@ -7,7 +7,12 @@ import edu.byu.cs.tweeter.shared.domain.Status;
  */
 public class PostRequest extends Request {
 
-    private final Status status;
+    private Status status;
+
+    /**
+     * Allows construction of the object from Json. Private so it won't be called in normal code.
+     */
+    private PostRequest() {}
 
     /**
      * Creates an instance.
