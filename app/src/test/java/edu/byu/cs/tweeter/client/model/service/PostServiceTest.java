@@ -23,17 +23,17 @@ public class PostServiceTest {
     private PostResponse successResponse;
     private PostResponse failureResponse;
 
-    private PostService postServiceSpy;
+    private PostServiceProxy postServiceSpy;
 
     /**
      * Create a PostService spy that uses a mock ServerFacade to return known responses to
      * requests.
      */
     @BeforeEach
-    public void setup() {
+    public void setup() throws IOException, TweeterRemoteException {
         Status resultStatus1 = new Status(new User("FirstName1", "LastName1",
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"),
-                Calendar.getInstance().getTime(), "Status1");
+                Calendar.getInstance().getTime().getTime(), "Status1");
 
         // Setup request objects to use in the tests
         validRequest = new PostRequest(resultStatus1);
@@ -48,7 +48,7 @@ public class PostServiceTest {
         Mockito.when(mockServerFacade.post(invalidRequest)).thenReturn(failureResponse);
 
         // Create a PostService instance and wrap it with a spy that will use the mock service
-        postServiceSpy = Mockito.spy(new PostService());
+        postServiceSpy = Mockito.spy(new PostServiceProxy());
         Mockito.when(postServiceSpy.getServerFacade()).thenReturn(mockServerFacade);
     }
 

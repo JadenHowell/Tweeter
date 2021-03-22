@@ -7,8 +7,8 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.client.model.service.UserServiceProxy;
 import edu.byu.cs.tweeter.shared.domain.User;
-import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.UserRequest;
 import edu.byu.cs.tweeter.shared.service.response.UserResponse;
@@ -17,7 +17,7 @@ public class UserPresenterTest {
 
     private UserRequest request;
     private UserResponse response;
-    private UserService mockUserService;
+    private UserServiceProxy mockUserServiceProxy;
     private UserPresenter presenter;
 
     @BeforeEach
@@ -29,17 +29,17 @@ public class UserPresenterTest {
         response = new UserResponse(true, "User returned", user1);
 
         // Create a mock UserService
-        mockUserService = Mockito.mock(UserService.class);
-        Mockito.when(mockUserService.serve(request)).thenReturn(response);
+        mockUserServiceProxy = Mockito.mock(UserServiceProxy.class);
+        Mockito.when(mockUserServiceProxy.serve(request)).thenReturn(response);
 
         // Wrap a UserPresenter in a spy that will use the mock service.
         presenter = Mockito.spy(new UserPresenter(new UserPresenter.View() {}));
-        Mockito.when(presenter.getUserService()).thenReturn(mockUserService);
+        Mockito.when(presenter.getUserService()).thenReturn(mockUserServiceProxy);
     }
 
     @Test
     public void testGetUser_returnsServiceResult() throws IOException, TweeterRemoteException {
-        Mockito.when(mockUserService.serve(request)).thenReturn(response);
+        Mockito.when(mockUserServiceProxy.serve(request)).thenReturn(response);
 
         // Assert that the presenter returns the same response as the service (it doesn't do
         // anything else, so there's nothing else to test).
@@ -48,7 +48,7 @@ public class UserPresenterTest {
 
     @Test
     public void testGetUser_serviceThrowsIOException_presenterThrowsIOException() throws IOException, TweeterRemoteException {
-        Mockito.when(mockUserService.serve(request)).thenThrow(new IOException());
+        Mockito.when(mockUserServiceProxy.serve(request)).thenThrow(new IOException());
 
         Assertions.assertThrows(IOException.class, () -> {
             presenter.getUser(request);

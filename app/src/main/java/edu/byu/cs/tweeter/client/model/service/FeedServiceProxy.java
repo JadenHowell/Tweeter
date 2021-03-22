@@ -4,6 +4,8 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
+import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
+import edu.byu.cs.tweeter.shared.service.FeedService;
 import edu.byu.cs.tweeter.shared.service.request.FeedRequest;
 import edu.byu.cs.tweeter.shared.service.request.Request;
 import edu.byu.cs.tweeter.shared.service.response.FeedResponse;
@@ -13,7 +15,7 @@ import edu.byu.cs.tweeter.client.util.ByteArrayUtils;
 /**
  * Contains the business logic for getting the statuses in the feed of a user.
  */
-public class FeedService extends Service {
+public class FeedServiceProxy extends Service implements FeedService {
 
     /**
      * Returns the statuses that the user specified in the request has in their feed. Uses information in
@@ -25,8 +27,8 @@ public class FeedService extends Service {
      * @return the statuses.
      */
     @Override
-    Response accessFacade(Request request) {
-        return serverFacade.getFeed((FeedRequest) request);
+    Response accessFacade(Request request) throws IOException, TweeterRemoteException {
+        return getFeed((FeedRequest) request);
     }
 
     @Override
@@ -44,5 +46,10 @@ public class FeedService extends Service {
             byte [] bytes = ByteArrayUtils.bytesFromUrl(status.getUser().getImageUrl());
             status.getUser().setImageBytes(bytes);
         }
+    }
+
+    @Override
+    public FeedResponse getFeed(FeedRequest request) throws IOException, TweeterRemoteException {
+        return serverFacade.getFeed(request);
     }
 }

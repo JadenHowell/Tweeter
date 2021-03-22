@@ -6,9 +6,14 @@ package edu.byu.cs.tweeter.shared.service.request;
  */
 public class StoryRequest extends Request {
 
-    private final String userAlias;
-    private final int limit;
-    private final String lastStatus;
+    private String userAlias;
+    private int limit;
+    private String lastStatus;
+
+    /**
+     * Allows construction of the object from Json. Private so it won't be called in normal code.
+     */
+    private StoryRequest() {}
 
     /**
      * Creates an instance.
@@ -41,6 +46,15 @@ public class StoryRequest extends Request {
      */
     public int getLimit() {
         return limit;
+    }
+
+    /**
+     * Sets the limit.
+     *
+     * @param limit the limit.
+     */
+    public void setLimit(int limit) {
+        this.limit = limit;
     }
 
     /**
