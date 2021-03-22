@@ -24,6 +24,5 @@ public class LoginIntegrationTests {
         LoginRequest request = new LoginRequest("username","password");
         LoginResponse response = (LoginResponse) loginService.serve(request);
         Assertions.assertEquals(expectedResponse.getUser(), response.getUser());
-        Assertions.assertEquals(expectedResponse.getAuthToken(), response.getAuthToken());
     }
 }
