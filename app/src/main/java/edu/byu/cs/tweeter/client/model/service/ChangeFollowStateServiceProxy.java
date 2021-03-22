@@ -19,7 +19,7 @@ public class ChangeFollowStateServiceProxy extends Service implements ChangeFoll
     }
 
     @Override
-    public Response changeFollowState(ChangeFollowStateRequest request) throws IOException, TweeterRemoteException {
+    public ChangeFollowStateResponse changeFollowState(ChangeFollowStateRequest request) throws IOException, TweeterRemoteException {
         return serverFacade.changeFollowState(request);
     }
 }
