@@ -202,7 +202,7 @@ public class StatusDAO {
                 status1, status5, status2, status3, status4, status1, status2, status3, status4);
         List<Status> returnList = new ArrayList<>();
         for (int i = 0; i < allStatus.size(); i++) {
-            if (allStatus.get(i).getUser().getAlias().equals(userAlias)) {
+            if (allStatus.get(i).getUser().getAlias().equals("@TestUser")) { //TODO: .equals(userAlias)
                 returnList.add(allStatus.get(i));
             }
         }
