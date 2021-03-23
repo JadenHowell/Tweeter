@@ -339,7 +339,7 @@ public class StoryFragment extends Fragment implements StoryPresenter.View, User
             addLoadingFooter();
 
             GetStoryTask getStoryTask = new GetStoryTask(presenter, this);
-            StoryRequest request = new StoryRequest(user.getAlias(), PAGE_SIZE, (lastStatus == null ? null : lastStatus.getUser().getAlias()));
+            StoryRequest request = new StoryRequest(user.getAlias(), PAGE_SIZE, (lastStatus == null ? null : lastStatus));
             getStoryTask.execute(request);
         }
 

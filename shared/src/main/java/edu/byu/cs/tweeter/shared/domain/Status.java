@@ -9,9 +9,12 @@ import java.util.Objects;
  */
 public class Status implements Comparable<Status>, Serializable {
 
-    private final User user;
-    private final long date;
-    private final String message;
+    private User user;
+    private long date;
+    private String message;
+
+    private Status() {
+    }
 
     public Status(User user, long date, String message) {
         this.user = user;
@@ -29,6 +32,16 @@ public class Status implements Comparable<Status>, Serializable {
 
     public String getMessage() {
         return message;
+    }
+
+    public void setUser(User user) { this.user = user; }
+
+    public void setDate(long date) {
+        this.date = date;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     @Override

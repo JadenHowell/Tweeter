@@ -68,4 +68,12 @@ public class FeedRequest extends Request {
     public Status getLastStatus() {
         return lastStatus;
     }
+
+    public void setUserAlias(String userAlias) {
+        this.userAlias = userAlias;
+    }
+
+    public void setLastStatus(Status lastStatus) {
+        this.lastStatus = lastStatus;
+    }
 }
