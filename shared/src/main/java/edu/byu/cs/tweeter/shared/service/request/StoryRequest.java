@@ -77,4 +77,8 @@ public class StoryRequest extends Request {
     public Status getLastStatus() {
         return lastStatus;
     }
+
+    public void setLastStatus(Status lastStatus) {
+        this.lastStatus = lastStatus;
+    }
 }

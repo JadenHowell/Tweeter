@@ -197,9 +197,9 @@ public class StatusDAO {
      * @return the statuses.
      */
     List<Status> getDummyStory(String userAlias) {
-        List<Status> allStatus = Arrays.asList(status1, status5, status2, status3, status4, status1, status2, status3, status4,
-                status1, status5, status2, status3, status4, status1, status2, status3, status4,
-                status1, status5, status2, status3, status4, status1, status2, status3, status4);
+        List<Status> allStatus = Arrays.asList(status1, status2, status3, status4, status5, status6, status7, status8,
+                status9, status10, status11, status12, status13, status14, status15, status16, status17,
+                status18, status19, status20, status21, status22, status23, status24, status25);
         List<Status> returnList = new ArrayList<>();
         for (int i = 0; i < allStatus.size(); i++) {
             if (allStatus.get(i).getUser().getAlias().equals("@TestUser")) { //TODO: .equals(userAlias)

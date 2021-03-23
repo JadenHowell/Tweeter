@@ -292,6 +292,7 @@ class StatusDAOTest {
         PostRequest request = new PostRequest(status1);
         PostResponse response = mStatusDAOSpy.post(request);
 
+        Assertions.assertTrue(response.isSuccess());
         Assertions.assertEquals(response.getMessage(), "Post Successful!");
     }
 
