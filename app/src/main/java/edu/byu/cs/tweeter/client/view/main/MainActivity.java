@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity
     public static final String CURRENT_USER_KEY = "CurrentUser";
     public static final String AUTH_TOKEN_KEY = "AuthTokenKey";
     private User user;
+    private AuthToken authToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity
             throw new RuntimeException("User not passed to activity");
         }
 
-        AuthToken authToken = (AuthToken) getIntent().getSerializableExtra(AUTH_TOKEN_KEY);
+        authToken = (AuthToken) getIntent().getSerializableExtra(AUTH_TOKEN_KEY);
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager(), user, authToken);
         ViewPager viewPager = findViewById(R.id.view_pager);
@@ -97,11 +98,11 @@ public class MainActivity extends AppCompatActivity
         //create CountPresenter and the two count tasks, execute async count tasks.
         CountPresenter countPresenter = new CountPresenter(this);
         GetFollowerCountTask followerCountTask = new GetFollowerCountTask(countPresenter, this);
-        FollowerCountRequest followerCountRequest = new FollowerCountRequest(user.getAlias());
+        FollowerCountRequest followerCountRequest = new FollowerCountRequest(user.getAlias(), authToken);
         followerCountTask.execute(followerCountRequest);
 
         GetFollowingCountTask followingCountTask = new GetFollowingCountTask(countPresenter, this);
-        FollowingCountRequest followingCountRequest = new FollowingCountRequest(user.getAlias());
+        FollowingCountRequest followingCountRequest = new FollowingCountRequest(user.getAlias(), authToken);
         followingCountTask.execute(followingCountRequest);
     }
 
@@ -111,7 +112,7 @@ public class MainActivity extends AppCompatActivity
             //Toast.makeText(this, "Clicked logout", Toast.LENGTH_SHORT).show();
             LogoutPresenter logoutPresenter = new LogoutPresenter(this);
             LogoutTask logoutTask = new LogoutTask(logoutPresenter, this);
-            LogoutRequest logoutRequest = new LogoutRequest(user.getAlias());
+            LogoutRequest logoutRequest = new LogoutRequest(user.getAlias(), authToken);
             logoutTask.execute(logoutRequest);
             Toast.makeText(this, "Logout successful", Toast.LENGTH_SHORT).show();
         }

@@ -120,7 +120,7 @@ public class PostDialogFragment extends DialogFragment implements PostPresenter.
 
     private void post(Status status) {
         PostTask postTask = new PostTask(presenter, this);
-        PostRequest request = new PostRequest(status);
+        PostRequest request = new PostRequest(status, authToken);
         postTask.execute(request);
     }
 

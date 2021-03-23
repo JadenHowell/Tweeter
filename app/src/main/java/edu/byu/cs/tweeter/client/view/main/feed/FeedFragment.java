@@ -200,7 +200,7 @@ public class FeedFragment extends Fragment implements FeedPresenter.View, UserPr
         UserPresenter userPresenter = new UserPresenter(this);
 
         GetUserTask getUserTask = new GetUserTask(userPresenter, this);
-        UserRequest request = new UserRequest(userAlias);
+        UserRequest request = new UserRequest(userAlias, authToken);
         getUserTask.execute(request);
     }
 
@@ -337,7 +337,7 @@ public class FeedFragment extends Fragment implements FeedPresenter.View, UserPr
             addLoadingFooter();
 
             GetFeedTask getFeedTask = new GetFeedTask(presenter, this);
-            FeedRequest request = new FeedRequest(user.getAlias(), PAGE_SIZE, (lastStatus == null ? null : lastStatus));
+            FeedRequest request = new FeedRequest(user.getAlias(), PAGE_SIZE, (lastStatus == null ? null : lastStatus), authToken);
             getFeedTask.execute(request);
         }
 

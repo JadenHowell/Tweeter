@@ -53,7 +53,8 @@ public class OtherUserActivity extends AppCompatActivity
     public static final String OTHER_USER_KEY = "OtherUser";
 
     FollowButtonPresenter buttonPresenter;
-    User loggedInUser;
+    User loggedInUser, otherUser;
+    AuthToken authToken;
 
     private boolean followButtonState = true;
 
@@ -63,7 +64,9 @@ public class OtherUserActivity extends AppCompatActivity
         setContentView(R.layout.activity_other_user);
 
         loggedInUser = (User) getIntent().getSerializableExtra(LOGGED_IN_USER_KEY);
-        User otherUser = (User) getIntent().getSerializableExtra(OTHER_USER_KEY);
+        otherUser = (User) getIntent().getSerializableExtra(OTHER_USER_KEY);
+        authToken = (AuthToken) getIntent().getSerializableExtra(AUTH_TOKEN_KEY);
+
         if(loggedInUser == null) {
             throw new RuntimeException("Logged in user not passed to activity");
         }else if(otherUser == null){
@@ -84,7 +87,7 @@ public class OtherUserActivity extends AppCompatActivity
         follow_unfollowButton.setOnClickListener(view ->
                 {
                     ChangeFollowStateTask changeFollowStateTask = new ChangeFollowStateTask(buttonPresenter, this);
-                    ChangeFollowStateRequest changeFollowStateRequest = new ChangeFollowStateRequest(loggedInUser.getAlias(), otherUser.getAlias());
+                    ChangeFollowStateRequest changeFollowStateRequest = new ChangeFollowStateRequest(loggedInUser.getAlias(), otherUser.getAlias(), authToken);
                     changeFollowStateTask.execute(changeFollowStateRequest);
                 }
         );
@@ -107,14 +110,14 @@ public class OtherUserActivity extends AppCompatActivity
         //create CountPresenter and the two count tasks, execute async count tasks.
         CountPresenter countPresenter = new CountPresenter(this);
         GetFollowerCountTask followerCountTask = new GetFollowerCountTask(countPresenter, this);
-        FollowerCountRequest followerCountRequest = new FollowerCountRequest(otherUser.getAlias());
+        FollowerCountRequest followerCountRequest = new FollowerCountRequest(otherUser.getAlias(), authToken);
         followerCountTask.execute(followerCountRequest);
         GetFollowingCountTask followingCountTask = new GetFollowingCountTask(countPresenter, this);
-        FollowingCountRequest followingCountRequest = new FollowingCountRequest(otherUser.getAlias());
+        FollowingCountRequest followingCountRequest = new FollowingCountRequest(otherUser.getAlias(), authToken);
         followingCountTask.execute(followingCountRequest);
 
         GetIsFollowingTask isFollowingTask = new GetIsFollowingTask(buttonPresenter, this);
-        IsFollowingRequest isFollowingRequest = new IsFollowingRequest(loggedInUser.getAlias(), otherUser.getAlias());
+        IsFollowingRequest isFollowingRequest = new IsFollowingRequest(loggedInUser.getAlias(), otherUser.getAlias(), authToken);
         isFollowingTask.execute(isFollowingRequest);
     }
 
@@ -124,7 +127,7 @@ public class OtherUserActivity extends AppCompatActivity
             //Toast.makeText(this, "Clicked logout", Toast.LENGTH_SHORT).show();
             LogoutPresenter logoutPresenter = new LogoutPresenter(this);
             LogoutTask logoutTask = new LogoutTask(logoutPresenter, this);
-            LogoutRequest logoutRequest = new LogoutRequest(loggedInUser.getAlias());
+            LogoutRequest logoutRequest = new LogoutRequest(loggedInUser.getAlias(), authToken);
             logoutTask.execute(logoutRequest);
             Toast.makeText(this, "Logout successful", Toast.LENGTH_SHORT).show();
         }
