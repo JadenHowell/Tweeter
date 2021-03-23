@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
@@ -53,7 +54,7 @@ class StatusDAOTest {
         List<Status> statuses = Collections.emptyList();
         Mockito.when(mStatusDAOSpy.getDummyFeed(user1.getAlias())).thenReturn(statuses);
 
-        FeedRequest request = new FeedRequest(user1.getAlias(), 10, null);
+        FeedRequest request = new FeedRequest(user1.getAlias(), 10, null, new AuthToken("@TestUser", "nonsenseToken"));
         FeedResponse response = mStatusDAOSpy.getFeed(request);
 
         Assertions.assertEquals(0, response.getStatusList().size());
@@ -65,7 +66,7 @@ class StatusDAOTest {
         List<Status> statuses = Collections.singletonList(status2);
         Mockito.when(mStatusDAOSpy.getDummyFeed(user1.getAlias())).thenReturn(statuses);
 
-        FeedRequest request = new FeedRequest(user1.getAlias(), 10, null);
+        FeedRequest request = new FeedRequest(user1.getAlias(), 10, null, new AuthToken("@TestUser", "nonsenseToken"));
         FeedResponse response = mStatusDAOSpy.getFeed(request);
 
         Assertions.assertEquals(1, response.getStatusList().size());
@@ -78,7 +79,7 @@ class StatusDAOTest {
         List<Status> statuses = Arrays.asList(status2, status3);
         Mockito.when(mStatusDAOSpy.getDummyFeed(user3.getAlias())).thenReturn(statuses);
 
-        FeedRequest request = new FeedRequest(user3.getAlias(), 2, null);
+        FeedRequest request = new FeedRequest(user3.getAlias(), 2, null, new AuthToken("@TestUser", "nonsenseToken"));
         FeedResponse response = mStatusDAOSpy.getFeed(request);
 
         Assertions.assertEquals(2, response.getStatusList() .size());
@@ -92,7 +93,7 @@ class StatusDAOTest {
         List<Status> statuses = Arrays.asList(status2, status3, status4, status5, status6, status7);
         Mockito.when(mStatusDAOSpy.getDummyFeed(user5.getAlias())).thenReturn(statuses);
 
-        FeedRequest request = new FeedRequest(user5.getAlias(), 2, null);
+        FeedRequest request = new FeedRequest(user5.getAlias(), 2, null, new AuthToken("@TestUser", "nonsenseToken"));
         FeedResponse response = mStatusDAOSpy.getFeed(request);
 
         // Verify first page
@@ -102,7 +103,7 @@ class StatusDAOTest {
         Assertions.assertTrue(response.getHasMorePages());
 
         // Get and verify second page
-        request = new FeedRequest(user5.getAlias(), 2, response.getStatusList().get(1));
+        request = new FeedRequest(user5.getAlias(), 2, response.getStatusList().get(1), new AuthToken("@TestUser", "nonsenseToken"));
         response = mStatusDAOSpy.getFeed(request);
 
         Assertions.assertEquals(2, response.getStatusList().size());
@@ -111,7 +112,7 @@ class StatusDAOTest {
         Assertions.assertTrue(response.getHasMorePages());
 
         // Get and verify third page
-        request = new FeedRequest(user5.getAlias(), 2, response.getStatusList().get(1));
+        request = new FeedRequest(user5.getAlias(), 2, response.getStatusList().get(1), new AuthToken("@TestUser", "nonsenseToken"));
         response = mStatusDAOSpy.getFeed(request);
 
         Assertions.assertEquals(2, response.getStatusList().size());
@@ -126,7 +127,7 @@ class StatusDAOTest {
         List<Status> statuses = Arrays.asList(status2, status3, status4, status5, status6, status7, status8);
         Mockito.when(mStatusDAOSpy.getDummyFeed(user6.getAlias())).thenReturn(statuses);
 
-        FeedRequest request = new FeedRequest(user6.getAlias(), 2, null);
+        FeedRequest request = new FeedRequest(user6.getAlias(), 2, null, new AuthToken("@TestUser", "nonsenseToken"));
         FeedResponse response = mStatusDAOSpy.getFeed(request);
 
         // Verify first page
@@ -136,7 +137,7 @@ class StatusDAOTest {
         Assertions.assertTrue(response.getHasMorePages());
 
         // Get and verify second page
-        request = new FeedRequest(user6.getAlias(), 2, response.getStatusList().get(1));
+        request = new FeedRequest(user6.getAlias(), 2, response.getStatusList().get(1), new AuthToken("@TestUser", "nonsenseToken"));
         response = mStatusDAOSpy.getFeed(request);
 
         Assertions.assertEquals(2, response.getStatusList().size());
@@ -145,7 +146,7 @@ class StatusDAOTest {
         Assertions.assertTrue(response.getHasMorePages());
 
         // Get and verify third page
-        request = new FeedRequest(user6.getAlias(), 2, response.getStatusList().get(1));
+        request = new FeedRequest(user6.getAlias(), 2, response.getStatusList().get(1), new AuthToken("@TestUser", "nonsenseToken"));
         response = mStatusDAOSpy.getFeed(request);
 
         Assertions.assertEquals(2, response.getStatusList().size());
@@ -154,7 +155,7 @@ class StatusDAOTest {
         Assertions.assertTrue(response.getHasMorePages());
 
         // Get and verify fourth page
-        request = new FeedRequest(user6.getAlias(), 2, response.getStatusList().get(1));
+        request = new FeedRequest(user6.getAlias(), 2, response.getStatusList().get(1), new AuthToken("@TestUser", "nonsenseToken"));
         response = mStatusDAOSpy.getFeed(request);
 
         Assertions.assertEquals(1, response.getStatusList().size());
@@ -173,7 +174,7 @@ class StatusDAOTest {
         List<Status> statuses = Collections.emptyList();
         Mockito.when(mStatusDAOSpy.getDummyStory(user1.getAlias())).thenReturn(statuses);
 
-        StoryRequest request = new StoryRequest(user1.getAlias(), 10, null);
+        StoryRequest request = new StoryRequest(user1.getAlias(), 10, null, new AuthToken("@TestUser", "nonsenseToken"));
         StoryResponse response = mStatusDAOSpy.getStory(request);
 
         Assertions.assertEquals(0, response.getStatusList().size());
@@ -185,7 +186,7 @@ class StatusDAOTest {
         List<Status> statuses = Collections.singletonList(status2);
         Mockito.when(mStatusDAOSpy.getDummyStory(user1.getAlias())).thenReturn(statuses);
 
-        StoryRequest request = new StoryRequest(user1.getAlias(), 10, null);
+        StoryRequest request = new StoryRequest(user1.getAlias(), 10, null, new AuthToken("@TestUser", "nonsenseToken"));
         StoryResponse response = mStatusDAOSpy.getStory(request);
 
         Assertions.assertEquals(1, response.getStatusList().size());
@@ -198,7 +199,7 @@ class StatusDAOTest {
         List<Status> statuses = Arrays.asList(status2, status3);
         Mockito.when(mStatusDAOSpy.getDummyStory(user3.getAlias())).thenReturn(statuses);
 
-        StoryRequest request = new StoryRequest(user3.getAlias(), 2, null);
+        StoryRequest request = new StoryRequest(user3.getAlias(), 2, null, new AuthToken("@TestUser", "nonsenseToken"));
         StoryResponse response = mStatusDAOSpy.getStory(request);
 
         Assertions.assertEquals(2, response.getStatusList() .size());
@@ -212,7 +213,7 @@ class StatusDAOTest {
         List<Status> statuses = Arrays.asList(status2, status3, status4, status5, status6, status7);
         Mockito.when(mStatusDAOSpy.getDummyStory(user5.getAlias())).thenReturn(statuses);
 
-        StoryRequest request = new StoryRequest(user5.getAlias(), 2, null);
+        StoryRequest request = new StoryRequest(user5.getAlias(), 2, null, new AuthToken("@TestUser", "nonsenseToken"));
         StoryResponse response = mStatusDAOSpy.getStory(request);
 
         // Verify first page
@@ -222,7 +223,7 @@ class StatusDAOTest {
         Assertions.assertTrue(response.getHasMorePages());
 
         // Get and verify second page
-        request = new StoryRequest(user5.getAlias(), 2, response.getStatusList().get(1));
+        request = new StoryRequest(user5.getAlias(), 2, response.getStatusList().get(1), new AuthToken("@TestUser", "nonsenseToken"));
         response = mStatusDAOSpy.getStory(request);
 
         Assertions.assertEquals(2, response.getStatusList().size());
@@ -231,7 +232,7 @@ class StatusDAOTest {
         Assertions.assertTrue(response.getHasMorePages());
 
         // Get and verify third page
-        request = new StoryRequest(user5.getAlias(), 2, response.getStatusList().get(1));
+        request = new StoryRequest(user5.getAlias(), 2, response.getStatusList().get(1), new AuthToken("@TestUser", "nonsenseToken"));
         response = mStatusDAOSpy.getStory(request);
 
         Assertions.assertEquals(2, response.getStatusList().size());
@@ -246,7 +247,7 @@ class StatusDAOTest {
         List<Status> statuses = Arrays.asList(status2, status3, status4, status5, status6, status7, status8);
         Mockito.when(mStatusDAOSpy.getDummyStory(user6.getAlias())).thenReturn(statuses);
 
-        StoryRequest request = new StoryRequest(user6.getAlias(), 2, null);
+        StoryRequest request = new StoryRequest(user6.getAlias(), 2, null, new AuthToken("@TestUser", "nonsenseToken"));
         StoryResponse response = mStatusDAOSpy.getStory(request);
 
         // Verify first page
@@ -256,7 +257,7 @@ class StatusDAOTest {
         Assertions.assertTrue(response.getHasMorePages());
 
         // Get and verify second page
-        request = new StoryRequest(user6.getAlias(), 2, response.getStatusList().get(1));
+        request = new StoryRequest(user6.getAlias(), 2, response.getStatusList().get(1), new AuthToken("@TestUser", "nonsenseToken"));
         response = mStatusDAOSpy.getStory(request);
 
         Assertions.assertEquals(2, response.getStatusList().size());
@@ -265,7 +266,7 @@ class StatusDAOTest {
         Assertions.assertTrue(response.getHasMorePages());
 
         // Get and verify third page
-        request = new StoryRequest(user6.getAlias(), 2, response.getStatusList().get(1));
+        request = new StoryRequest(user6.getAlias(), 2, response.getStatusList().get(1), new AuthToken("@TestUser", "nonsenseToken"));
         response = mStatusDAOSpy.getStory(request);
 
         Assertions.assertEquals(2, response.getStatusList().size());
@@ -274,7 +275,7 @@ class StatusDAOTest {
         Assertions.assertTrue(response.getHasMorePages());
 
         // Get and verify fourth page
-        request = new StoryRequest(user6.getAlias(), 2, response.getStatusList().get(1));
+        request = new StoryRequest(user6.getAlias(), 2, response.getStatusList().get(1), new AuthToken("@TestUser", "nonsenseToken"));
         response = mStatusDAOSpy.getStory(request);
 
         Assertions.assertEquals(1, response.getStatusList().size());
@@ -289,7 +290,7 @@ class StatusDAOTest {
 
     @Test
     public void testPost_returnsServiceResult() {
-        PostRequest request = new PostRequest(status1);
+        PostRequest request = new PostRequest(status1, new AuthToken("@TestUser", "nonsenseToken"));
         PostResponse response = mStatusDAOSpy.post(request);
 
         Assertions.assertTrue(response.isSuccess());

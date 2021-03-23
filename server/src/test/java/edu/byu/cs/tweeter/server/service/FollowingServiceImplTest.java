@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.util.Arrays;
 
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.FollowingRequest;
@@ -33,7 +34,7 @@ public class FollowingServiceImplTest {
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png");
 
         // Setup a request object to use in the tests
-        request = new FollowingRequest(currentUser.getAlias(), 3, null);
+        request = new FollowingRequest(currentUser.getAlias(), 3, null, new AuthToken("@TestUser", "nonsenseToken"));
 
         // Setup a mock FollowingDAO that will return known responses
         expectedResponse = new FollowingResponse(Arrays.asList(resultUser1, resultUser2, resultUser3), false);

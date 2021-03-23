@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import edu.byu.cs.tweeter.server.dao.FollowingDAO;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.service.FollowingCountService;
 import edu.byu.cs.tweeter.shared.service.request.FollowingCountRequest;
 import edu.byu.cs.tweeter.shared.service.response.FollowingCountResponse;
@@ -20,7 +21,7 @@ public class FollowingCountServiceImplTest {
 
     @BeforeEach
     public void setup(){
-        request = new FollowingCountRequest("@TestUser");
+        request = new FollowingCountRequest("@TestUser", new AuthToken("@TestUser", "nonsenseToken"));
         mockFollowingDAO = Mockito.mock(FollowingDAO.class);
         expectedResponse = new FollowingCountResponse(true, null, 10);
         Mockito.when(mockFollowingDAO.getFolloweeCount(request)).thenReturn(expectedResponse);

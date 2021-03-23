@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Calendar;
 
 import edu.byu.cs.tweeter.server.dao.StatusDAO;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
@@ -30,7 +31,7 @@ public class PostServiceImplTest {
                 Calendar.getInstance().getTime().getTime(), "Status1");
 
         // Setup a request object to use in the tests
-        request = new PostRequest(resultStatus1);
+        request = new PostRequest(resultStatus1, new AuthToken("@TestUser", "nonsenseToken"));
 
         // Setup a mock FollowingDAO that will return known responses
         expectedResponse = new PostResponse(true, null);

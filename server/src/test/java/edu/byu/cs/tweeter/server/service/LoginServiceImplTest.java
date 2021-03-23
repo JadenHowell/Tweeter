@@ -23,8 +23,8 @@ public class LoginServiceImplTest {
 
     @BeforeEach
     public void setup() {
-        request = new LoginRequest();
-        expectedResponse = new LoginResponse(new User("first", "last", "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), new AuthToken());
+        request = new LoginRequest("@TestUser", "password");
+        expectedResponse = new LoginResponse(new User("first", "last", "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), new AuthToken("@TestUser", "nonsenseToken"));
         mockLoginDAO = Mockito.mock(LoginDAO.class);
         Mockito.when(mockLoginDAO.login(request)).thenReturn(expectedResponse);
         loginServiceImplSpy = Mockito.spy(LoginServiceImpl.class);

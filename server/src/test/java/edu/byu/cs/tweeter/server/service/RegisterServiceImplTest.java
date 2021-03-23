@@ -23,8 +23,8 @@ public class RegisterServiceImplTest {
 
     @BeforeEach
     public void setup() {
-        request = new RegisterRequest();
-        expectedResponse = new RegisterResponse(new User("first", "last", "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), new AuthToken());
+        request = new RegisterRequest("first", "last", "@TestUser", "password");
+        expectedResponse = new RegisterResponse(new User("first", "last", "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), new AuthToken("@TestUser", "nonsenseToken"));
         mockRegisterDAO = Mockito.mock(RegisterDAO.class);
         Mockito.when(mockRegisterDAO.register(request)).thenReturn(expectedResponse);
         registerServiceImplSpy = Mockito.spy(RegisterServiceImpl.class);

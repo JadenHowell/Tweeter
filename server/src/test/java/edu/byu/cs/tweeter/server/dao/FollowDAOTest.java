@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.service.request.ChangeFollowStateRequest;
 import edu.byu.cs.tweeter.shared.service.request.IsFollowingRequest;
 
@@ -19,14 +20,14 @@ public class FollowDAOTest {
 
     @Test
     public void testIsFollowing(){
-        IsFollowingRequest request = new IsFollowingRequest("@TestUser", "@OtherUser");
+        IsFollowingRequest request = new IsFollowingRequest("@TestUser", "@OtherUser", new AuthToken("@TestUser", "nonsenseToken"));
         Assertions.assertTrue(followDAOSpy.getIsFollowing(request).getIsFollowing());
         Assertions.assertNotNull(followDAOSpy.getIsFollowing(request));
     }
 
     @Test
     public void testChangeFollowState(){
-        ChangeFollowStateRequest request = new ChangeFollowStateRequest("@TestUser", "@OtherUser");
+        ChangeFollowStateRequest request = new ChangeFollowStateRequest("@TestUser", "@OtherUser", new AuthToken("@TestUser", "nonsenseToken"));
         Assertions.assertTrue(followDAOSpy.changeFollowState(request).getNewFollowingState());
         Assertions.assertNotNull(followDAOSpy.changeFollowState(request));
     }

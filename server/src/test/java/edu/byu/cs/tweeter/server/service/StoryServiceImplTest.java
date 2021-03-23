@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import edu.byu.cs.tweeter.server.dao.StatusDAO;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
@@ -38,7 +39,7 @@ public class StoryServiceImplTest {
                 Calendar.getInstance().getTime().getTime(), "Status3");
 
         // Setup a request object to use in the tests
-        request = new StoryRequest(currentUser.getAlias(), 3, null);
+        request = new StoryRequest(currentUser.getAlias(), 3, null, new AuthToken("@TestUser", "nonsenseToken"));
 
         // Setup a mock FollowingDAO that will return known responses
         expectedResponse = new StoryResponse(Arrays.asList(resultStatus1, resultStatus2, resultStatus3), false);
