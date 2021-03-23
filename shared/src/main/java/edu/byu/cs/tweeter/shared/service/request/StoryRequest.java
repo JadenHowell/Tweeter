@@ -1,5 +1,7 @@
 package edu.byu.cs.tweeter.shared.service.request;
 
+import edu.byu.cs.tweeter.shared.domain.Status;
+
 /**
  * Contains all the information needed to make a request to have the server return the next page of
  * statuses for a specified story.
@@ -8,7 +10,7 @@ public class StoryRequest extends Request {
 
     private String userAlias;
     private int limit;
-    private String lastStatus;
+    private Status lastStatus;
 
     /**
      * Allows construction of the object from Json. Private so it won't be called in normal code.
@@ -24,7 +26,7 @@ public class StoryRequest extends Request {
      *                     there was no previous request or if no statuses were returned in the
      *                     previous request).
      */
-    public StoryRequest(String userAlias, int limit, String lastStatus) {
+    public StoryRequest(String userAlias, int limit, Status lastStatus) {
         this.userAlias = userAlias;
         this.limit = limit;
         this.lastStatus = lastStatus;
@@ -37,6 +39,15 @@ public class StoryRequest extends Request {
      */
     public String getUserAlias() {
         return userAlias;
+    }
+
+    /**
+     * Sets the user alias.
+     *
+     * @param userAlias the user alis.
+     */
+    public void setUserAlias(String userAlias) {
+        this.userAlias = userAlias;
     }
 
     /**
@@ -63,7 +74,7 @@ public class StoryRequest extends Request {
      *
      * @return the last status.
      */
-    public String getLastStatus() {
+    public Status getLastStatus() {
         return lastStatus;
     }
 }
