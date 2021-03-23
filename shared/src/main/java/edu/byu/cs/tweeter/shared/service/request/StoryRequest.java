@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.shared.service.request;
 
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.Status;
 
 /**
@@ -26,7 +27,8 @@ public class StoryRequest extends Request {
      *                     there was no previous request or if no statuses were returned in the
      *                     previous request).
      */
-    public StoryRequest(String userAlias, int limit, Status lastStatus) {
+    public StoryRequest(String userAlias, int limit, Status lastStatus, AuthToken authToken){
+        super(authToken);
         this.userAlias = userAlias;
         this.limit = limit;
         this.lastStatus = lastStatus;

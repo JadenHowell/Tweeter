@@ -1,5 +1,7 @@
 package edu.byu.cs.tweeter.shared.service.request;
 
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
+
 public class IsFollowingRequest extends Request{
     private String rootUserAlias;
     private String otherUserAlias;
@@ -10,7 +12,8 @@ public class IsFollowingRequest extends Request{
      * @param rootUserAlias the alias of the user who is logged in.
      * @param otherUserAlias the alias of the user to check if following
      */
-    public IsFollowingRequest(String rootUserAlias, String otherUserAlias) {
+    public IsFollowingRequest(String rootUserAlias, String otherUserAlias, AuthToken authToken){
+        super(authToken);
         this.rootUserAlias = rootUserAlias;
         this.otherUserAlias = otherUserAlias;
     }

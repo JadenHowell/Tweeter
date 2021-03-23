@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.shared.service.request;
 
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.Status;
 
 /**
@@ -19,7 +20,8 @@ public class PostRequest extends Request {
      *
      * @param status to be posted.
      */
-    public PostRequest(Status status) {
+    public PostRequest(Status status, AuthToken authToken){
+        super(authToken);
         this.status = status;
     }
 

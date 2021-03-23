@@ -7,11 +7,7 @@ public class RegisterRequest extends Request {
     private String username;
     private String password;
 
-    public RegisterRequest() {
-        this.firstName = "dummy_first_name";
-        this.lastName = "dummy_last_name";
-        this.username = "dummy_username";
-        this.password = "dummy_password";
+    private RegisterRequest() {
     }
 
     public RegisterRequest(String firstName, String lastName, String username, String password) {

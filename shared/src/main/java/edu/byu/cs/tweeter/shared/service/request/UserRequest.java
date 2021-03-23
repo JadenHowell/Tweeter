@@ -1,5 +1,7 @@
 package edu.byu.cs.tweeter.shared.service.request;
 
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
+
 public class UserRequest extends Request{
     private String userAlias;
 
@@ -13,7 +15,8 @@ public class UserRequest extends Request{
      *
      * @param userAlias the alias of the user who is to be returned.
      */
-    public UserRequest(String userAlias){
+    public UserRequest(String userAlias, AuthToken authToken){
+        super(authToken);
         this.userAlias = userAlias;
     }
 
