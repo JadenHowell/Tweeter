@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.LogoutRequest;
 import edu.byu.cs.tweeter.shared.service.response.LogoutResponse;
@@ -28,8 +29,8 @@ public class LogoutServiceTest {
     @BeforeEach
     public void setup() throws IOException, TweeterRemoteException {
         // Setup request objects to use in the tests
-        validRequest = new LogoutRequest("@TestUser");
-        invalidRequest = new LogoutRequest(null);
+        validRequest = new LogoutRequest("@TestUser", new AuthToken("@TestUser", "nonsenseToken"));
+        invalidRequest = new LogoutRequest(null, null);
 
         // Setup a mock ServerFacade that will return known responses
         successResponse = new LogoutResponse(true, null);

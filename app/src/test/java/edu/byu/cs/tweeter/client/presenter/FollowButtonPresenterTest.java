@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.service.ChangeFollowStateServiceProxy;
 import edu.byu.cs.tweeter.client.model.service.IsFollowingServiceProxy;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.ChangeFollowStateRequest;
 import edu.byu.cs.tweeter.shared.service.request.IsFollowingRequest;
@@ -27,10 +28,10 @@ public class FollowButtonPresenterTest {
 
     @BeforeEach
     public void setup() throws IOException, TweeterRemoteException {
-        request = new IsFollowingRequest("@TestUser", "@OtherUser");
+        request = new IsFollowingRequest("@TestUser", "@OtherUser", new AuthToken("@TestUser", "nonsenseToken"));
         response = new IsFollowingResponse(true, null, true);
 
-        changeStateRequest = new ChangeFollowStateRequest("@TestUser", "@OtherUser");
+        changeStateRequest = new ChangeFollowStateRequest("@TestUser", "@OtherUser", new AuthToken("@TestUser", "nonsenseToken"));
         changeStateResponse = new ChangeFollowStateResponse(true, null, true);
 
         mockChangeStateService = Mockito.mock(ChangeFollowStateServiceProxy.class);

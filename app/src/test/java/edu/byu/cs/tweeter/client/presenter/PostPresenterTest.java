@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Calendar;
 
 import edu.byu.cs.tweeter.client.model.service.PostServiceProxy;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
@@ -28,7 +29,7 @@ public class PostPresenterTest {
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"),
                 Calendar.getInstance().getTime().getTime(), "Status1");
 
-        request = new PostRequest(resultStatus1);
+        request = new PostRequest(resultStatus1, new AuthToken("@TestUser", "nonsenseToken"));
         response = new PostResponse(true, "Post Successful");
 
         // Create a mock PostService

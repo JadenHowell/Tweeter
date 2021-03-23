@@ -11,6 +11,7 @@ import java.util.List;
 
 import edu.byu.cs.tweeter.client.model.service.FeedServiceProxy;
 import edu.byu.cs.tweeter.client.model.service.Service;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
@@ -66,7 +67,7 @@ public class GetFeedIntegrationTest {
 
     @Test
     public void shouldFetchResponse_when_basicRequest() throws IOException, TweeterRemoteException {
-        request = new FeedRequest("@TestUser",10,null);
+        request = new FeedRequest("@TestUser",10,null, new AuthToken("@TestUser", "nonsenseToken"));
         List<Status> responseStatuses = Arrays.asList(status1,status2,status3,status4,status5,status6,status7,status8,status9,status10);
         expectedResponse = new FeedResponse(responseStatuses, true);
         FeedResponse response = (FeedResponse) feedService.serve(request);
@@ -84,7 +85,7 @@ public class GetFeedIntegrationTest {
 
     @Test
     public void shouldFetchResponse_when_lastFolloweeAliasNotNull() throws IOException, TweeterRemoteException {
-        request = new FeedRequest("@TestUser",10, status15);
+        request = new FeedRequest("@TestUser",10, status15, new AuthToken("@TestUser", "nonsenseToken"));
         List<Status> responseStatuses = Arrays.asList(status16,status17,status18,status19,status20,status21,status22,status23,status24,status25);
         expectedResponse = new FeedResponse(responseStatuses, true);
         FeedResponse response = (FeedResponse) feedService.serve(request);
@@ -102,7 +103,7 @@ public class GetFeedIntegrationTest {
 
     @Test
     public void shouldFetchEmptyResponse_when_lastFolloweeAliasIsLastFollower() throws IOException, TweeterRemoteException {
-        request = new FeedRequest("@TestUser",10, status25);
+        request = new FeedRequest("@TestUser",10, status25, new AuthToken("@TestUser", "nonsenseToken"));
         List<Status> responseStatuses = Arrays.asList();
         expectedResponse = new FeedResponse(responseStatuses, true);
         FeedResponse response = (FeedResponse) feedService.serve(request);

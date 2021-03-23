@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.util.Arrays;
 
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
@@ -40,8 +41,8 @@ public class FollowerServiceProxyTest {
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png");
 
         // Setup request objects to use in the tests
-        validRequest = new FollowerRequest(currentUser.getAlias(), 3, null);
-        invalidRequest = new FollowerRequest(null, 0, null);
+        validRequest = new FollowerRequest(currentUser.getAlias(), 3, null, new AuthToken("@TestUser", "nonsenseToken"));
+        invalidRequest = new FollowerRequest(null, 0, null, null);
 
         // Setup a mock ServerFacade that will return known responses
         successResponse = new FollowerResponse(Arrays.asList(resultUser1, resultUser2, resultUser3), false);

@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.service.UserServiceProxy;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.UserRequest;
@@ -25,7 +26,7 @@ public class UserPresenterTest {
         User user1 = new User("FirstName1", "LastName1",
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
 
-        request = new UserRequest(user1.getAlias());
+        request = new UserRequest(user1.getAlias(), new AuthToken("@TestUser", "nonsenseToken"));
         response = new UserResponse(true, "User returned", user1);
 
         // Create a mock UserService

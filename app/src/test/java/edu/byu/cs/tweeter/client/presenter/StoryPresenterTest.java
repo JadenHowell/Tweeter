@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import edu.byu.cs.tweeter.client.model.service.StoryServiceProxy;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.service.StoryService;
@@ -38,7 +39,7 @@ public class StoryPresenterTest {
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png"),
                 Calendar.getInstance().getTime().getTime(), "Status3");
 
-        request = new StoryRequest(currentUser.getAlias(), 3, null);
+        request = new StoryRequest(currentUser.getAlias(), 3, null, new AuthToken("@TestUser", "nonsenseToken"));
         response = new StoryResponse(Arrays.asList(resultStatus1, resultStatus2, resultStatus3), false);
 
         // Create a mock StoryService

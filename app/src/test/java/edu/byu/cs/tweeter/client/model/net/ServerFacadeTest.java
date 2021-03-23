@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.Follow;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
@@ -42,7 +43,7 @@ class ServerFacadeTest {
     void testGetFollowees_noFolloweesForUser() throws IOException, TweeterRemoteException {
         List<User> followees = Collections.emptyList();
         FollowingResponse expResp = new FollowingResponse(followees, false);
-        FollowingRequest request = new FollowingRequest(user1.getAlias(), 10, null);
+        FollowingRequest request = new FollowingRequest(user1.getAlias(), 10, null, new AuthToken("@TestUser", "nonsenseToken"));
         Mockito.when(mockClientCommunicator.doPost(FOLLOWEES_URL_PATH, request, null, FollowingResponse.class)).thenReturn(expResp);
         FollowingResponse response = serverFacadeSpy.getFollowees(request);
 
@@ -54,7 +55,7 @@ class ServerFacadeTest {
     void testGetFollowees_oneFollowerForUser_limitGreaterThanUsers() throws IOException, TweeterRemoteException {
         List<User> followees = Collections.singletonList(user2);
         FollowingResponse expResp = new FollowingResponse(followees, false);
-        FollowingRequest request = new FollowingRequest(user1.getAlias(), 10, null);
+        FollowingRequest request = new FollowingRequest(user1.getAlias(), 10, null, new AuthToken("@TestUser", "nonsenseToken"));
         Mockito.when(mockClientCommunicator.doPost(FOLLOWEES_URL_PATH, request, null, FollowingResponse.class)).thenReturn(expResp);
         FollowingResponse response = serverFacadeSpy.getFollowees(request);
 
@@ -67,7 +68,7 @@ class ServerFacadeTest {
     void testGetFollowees_twoFollowersForUser_limitEqualsUsers() throws IOException, TweeterRemoteException {
         List<User> followees = Arrays.asList(user2, user3);
         FollowingResponse expectedResponse = new FollowingResponse(followees, false);
-        FollowingRequest request = new FollowingRequest(user3.getAlias(), 2, null);
+        FollowingRequest request = new FollowingRequest(user3.getAlias(), 2, null, new AuthToken("@TestUser", "nonsenseToken"));
         Mockito.when(mockClientCommunicator.doPost(FOLLOWEES_URL_PATH, request, null, FollowingResponse.class)).thenReturn(expectedResponse);
         FollowingResponse response = serverFacadeSpy.getFollowees(request);
 
@@ -86,7 +87,7 @@ class ServerFacadeTest {
         FollowingResponse expResp2 = new FollowingResponse(followees2, true);
         FollowingResponse expResp3 = new FollowingResponse(followees3, false);
 
-        FollowingRequest request = new FollowingRequest(user5.getAlias(), 2, null);
+        FollowingRequest request = new FollowingRequest(user5.getAlias(), 2, null, new AuthToken("@TestUser", "nonsenseToken"));
         Mockito.when(mockClientCommunicator.doPost(FOLLOWEES_URL_PATH, request, null, FollowingResponse.class))
                 .thenReturn(expResp1).thenReturn(expResp2).thenReturn(expResp3);
         FollowingResponse response = serverFacadeSpy.getFollowees(request);
@@ -126,7 +127,7 @@ class ServerFacadeTest {
         FollowingResponse expResp3 = new FollowingResponse(followees3, true);
         FollowingResponse expResp4 = new FollowingResponse(followees4, false);
 
-        FollowingRequest request = new FollowingRequest(user5.getAlias(), 2, null);
+        FollowingRequest request = new FollowingRequest(user5.getAlias(), 2, null, new AuthToken("@TestUser", "nonsenseToken"));
         Mockito.when(mockClientCommunicator.doPost(FOLLOWEES_URL_PATH, request, null, FollowingResponse.class))
                 .thenReturn(expResp1).thenReturn(expResp2).thenReturn(expResp3).thenReturn(expResp4);
         FollowingResponse response = serverFacadeSpy.getFollowees(request);

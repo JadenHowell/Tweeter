@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
 
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
@@ -45,8 +46,8 @@ public class StoryServiceTest {
         Calendar.getInstance().getTime().getTime(), "Status3");
 
         // Setup request objects to use in the tests
-        validRequest = new StoryRequest(currentUser.getAlias(), 3, null);
-        invalidRequest = new StoryRequest(null, 0, null);
+        validRequest = new StoryRequest(currentUser.getAlias(), 3, null, new AuthToken("@TestUser", "nonsenseToken"));
+        invalidRequest = new StoryRequest(null, 0, null, null);
 
         // Setup a mock ServerFacade that will return known responses
         successResponse = new StoryResponse(Arrays.asList(resultStatus1, resultStatus2, resultStatus3), false);
