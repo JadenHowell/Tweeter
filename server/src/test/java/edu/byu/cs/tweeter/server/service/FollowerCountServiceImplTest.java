@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import edu.byu.cs.tweeter.server.dao.FollowerDAO;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.service.request.FollowerCountRequest;
 import edu.byu.cs.tweeter.shared.service.response.FollowerCountResponse;
 
@@ -17,7 +18,7 @@ public class FollowerCountServiceImplTest {
 
     @BeforeEach
     public void setup(){
-        request = new FollowerCountRequest("@TestUser");
+        request = new FollowerCountRequest("@TestUser", new AuthToken("@TestUser", "nonsenseToken"));
         mockFollowerDAO = Mockito.mock(FollowerDAO.class);
         expectedResponse = new FollowerCountResponse(true, null, 10);
         Mockito.when(mockFollowerDAO.getFollowerCount(request)).thenReturn(expectedResponse);

@@ -8,6 +8,7 @@ import java.util.Calendar;
 
 import edu.byu.cs.tweeter.client.model.service.PostServiceProxy;
 import edu.byu.cs.tweeter.client.model.service.Service;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
@@ -26,7 +27,7 @@ public class PostIntegrationTests {
 
         postService = new PostServiceProxy();
         PostResponse expectedResponse = new PostResponse(true, "Post Successful!");
-        PostRequest request = new PostRequest(resultStatus1);
+        PostRequest request = new PostRequest(resultStatus1, new AuthToken("@TestUser", "nonsenseToken"));
         PostResponse response = (PostResponse) postService.serve(request);
         Assertions.assertEquals(expectedResponse.isSuccess(), response.isSuccess());
         Assertions.assertEquals(expectedResponse.getMessage(), response.getMessage());

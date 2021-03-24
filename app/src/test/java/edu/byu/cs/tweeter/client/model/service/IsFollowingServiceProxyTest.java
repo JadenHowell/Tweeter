@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.IsFollowingRequest;
 import edu.byu.cs.tweeter.shared.service.response.IsFollowingResponse;
@@ -29,8 +30,8 @@ public class IsFollowingServiceProxyTest {
     @BeforeEach
     public void setup() throws IOException, TweeterRemoteException {
         // Setup request objects to use in the tests
-        validRequest = new IsFollowingRequest("@TestUser", "@OtherUser");
-        invalidRequest = new IsFollowingRequest(null, null);
+        validRequest = new IsFollowingRequest("@TestUser", "@OtherUser", new AuthToken("@TestUser", "nonsenseToken"));
+        invalidRequest = new IsFollowingRequest(null, null, null);
 
         // Setup a mock ServerFacade that will return known responses
         successResponse = new IsFollowingResponse(true, null, true);

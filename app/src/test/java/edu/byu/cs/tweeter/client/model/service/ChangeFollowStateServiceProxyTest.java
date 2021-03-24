@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.ChangeFollowStateRequest;
 import edu.byu.cs.tweeter.shared.service.response.ChangeFollowStateResponse;
@@ -29,8 +30,8 @@ public class ChangeFollowStateServiceProxyTest {
     @BeforeEach
     public void setup() throws IOException, TweeterRemoteException {
         // Setup request objects to use in the tests
-        validRequest = new ChangeFollowStateRequest("@TestUser", "@OtherUser");
-        invalidRequest = new ChangeFollowStateRequest(null, null);
+        validRequest = new ChangeFollowStateRequest("@TestUser", "@OtherUser", new AuthToken("@TestUser", "nonsenseToken"));
+        invalidRequest = new ChangeFollowStateRequest(null, null, null);
 
         // Setup a mock ServerFacade that will return known responses
         successResponse = new ChangeFollowStateResponse(true, null, true);

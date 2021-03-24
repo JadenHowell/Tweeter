@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.server.dao.FollowDAO;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.ChangeFollowStateRequest;
 import edu.byu.cs.tweeter.shared.service.response.ChangeFollowStateResponse;
@@ -23,7 +24,7 @@ public class ChangeFollowStateServiceImplTest {
         changeFollowStateServiceSpy = Mockito.spy(ChangeFollowStateServiceImpl.class);
         mockFollowDAO = Mockito.mock(FollowDAO.class);
         expectedResponse = new ChangeFollowStateResponse(true, null, true);
-        request = new ChangeFollowStateRequest("@TestUser","@OtherUser");
+        request = new ChangeFollowStateRequest("@TestUser","@OtherUser", new AuthToken("@TestUser", "nonsenseToken"));
         Mockito.when(mockFollowDAO.changeFollowState(request)).thenReturn(expectedResponse);
         Mockito.when(changeFollowStateServiceSpy.getFollowDAO()).thenReturn(mockFollowDAO);
     }

@@ -1,0 +1,7 @@
+Hypothetically, the regex I set up in the response integration will automatically scan any exceptions thrown,
+and look through their messages. If they see a matching regex they will respond with the proper status code.
+
+If you want to force a request to look a certain way, then you need to create a model that accurately shows
+what the request body will look like. Upon making the model, go to the method's Method Request, and set request
+validator to validate the message body. If the message body doesn't match what is expected, then it will return
+with a 400 error code.

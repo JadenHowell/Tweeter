@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
@@ -34,8 +35,8 @@ public class UserServiceTest {
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
 
         // Setup request objects to use in the tests
-        validRequest = new UserRequest("@TestUser");
-        invalidRequest = new UserRequest(null);
+        validRequest = new UserRequest("@TestUser", new AuthToken("@TestUser", "nonsenseToken"));
+        invalidRequest = new UserRequest(null, null);
 
         // Setup a mock ServerFacade that will return known responses
         successResponse = new UserResponse(true, null, user1);

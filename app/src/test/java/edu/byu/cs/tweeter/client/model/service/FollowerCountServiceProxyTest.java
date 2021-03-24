@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.FollowerCountRequest;
 import edu.byu.cs.tweeter.shared.service.response.FollowerCountResponse;
@@ -29,8 +30,8 @@ public class FollowerCountServiceProxyTest {
     @BeforeEach
     public void setup() throws IOException, TweeterRemoteException {
         // Setup request objects to use in the tests
-        validRequest = new FollowerCountRequest("@TestUser");
-        invalidRequest = new FollowerCountRequest(null);
+        validRequest = new FollowerCountRequest("@TestUser", new AuthToken("@TestUser", "nonsenseToken"));
+        invalidRequest = new FollowerCountRequest(null, null);
 
         // Setup a mock ServerFacade that will return known responses
         successResponse = new FollowerCountResponse(true, null, 7);

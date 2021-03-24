@@ -1,9 +1,6 @@
 package edu.byu.cs.tweeter.server.service;
 
-import java.io.IOException;
-
 import edu.byu.cs.tweeter.server.dao.FollowDAO;
-import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.IsFollowingService;
 import edu.byu.cs.tweeter.shared.service.request.IsFollowingRequest;
 import edu.byu.cs.tweeter.shared.service.response.IsFollowingResponse;

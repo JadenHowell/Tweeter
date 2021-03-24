@@ -11,6 +11,7 @@ import java.util.List;
 
 import edu.byu.cs.tweeter.client.model.service.Service;
 import edu.byu.cs.tweeter.client.model.service.StoryServiceProxy;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
@@ -66,7 +67,7 @@ public class GetStoryIntegrationTest {
 
     @Test
     public void shouldFetchResponse_when_basicRequest() throws IOException, TweeterRemoteException {
-        request = new StoryRequest("@TestUser",5,null);
+        request = new StoryRequest("@TestUser",5,null, new AuthToken("@TestUser", "nonsenseToken"));
         List<Status> responseStatuses = Arrays.asList(status2,status3,status4,status10,status11);
         expectedResponse = new StoryResponse(responseStatuses, true);
         StoryResponse response = (StoryResponse) storyService.serve(request);
@@ -84,7 +85,7 @@ public class GetStoryIntegrationTest {
 
     @Test
     public void shouldFetchResponse_when_lastFolloweeAliasNotNull() throws IOException, TweeterRemoteException {
-        request = new StoryRequest("@TestUser",5, status11);
+        request = new StoryRequest("@TestUser",5, status11, new AuthToken("@TestUser", "nonsenseToken"));
         List<Status> responseStatuses = Arrays.asList(status12,status20,status21,status22);
         expectedResponse = new StoryResponse(responseStatuses, true);
         StoryResponse response = (StoryResponse) storyService.serve(request);
@@ -102,7 +103,7 @@ public class GetStoryIntegrationTest {
 
     @Test
     public void shouldFetchEmptyResponse_when_lastFolloweeAliasIsLastFollower() throws IOException, TweeterRemoteException {
-        request = new StoryRequest("@TestUser",5, status22);
+        request = new StoryRequest("@TestUser",5, status22, new AuthToken("@TestUser", "nonsenseToken"));
         List<Status> responseStatuses = Arrays.asList();
         expectedResponse = new StoryResponse(responseStatuses, true);
         StoryResponse response = (StoryResponse) storyService.serve(request);

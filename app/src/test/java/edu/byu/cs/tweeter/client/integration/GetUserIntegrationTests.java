@@ -9,6 +9,7 @@ import java.io.IOException;
 import edu.byu.cs.tweeter.client.model.service.Service;
 import edu.byu.cs.tweeter.client.model.service.StoryServiceProxy;
 import edu.byu.cs.tweeter.client.model.service.UserServiceProxy;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.UserRequest;
@@ -28,7 +29,7 @@ public class GetUserIntegrationTests {
     @Test
     public void postSuccess() throws IOException, TweeterRemoteException {
         UserResponse expectedResponse = new UserResponse(true, "User returned", testUser);
-        UserRequest request = new UserRequest("@TestUser");
+        UserRequest request = new UserRequest("@TestUser", new AuthToken("@TestUser", "nonsenseToken"));
         UserResponse response = (UserResponse) userService.serve(request);
         Assertions.assertEquals(expectedResponse.isSuccess(), response.isSuccess());
         Assertions.assertEquals(expectedResponse.getMessage(), response.getMessage());
@@ -37,7 +38,7 @@ public class GetUserIntegrationTests {
     @Test
     public void postFail() throws IOException, TweeterRemoteException {
         UserResponse expectedResponse = new UserResponse(true, "User \"@fakeuser\" not found");
-        UserRequest request = new UserRequest("@fakeuser");
+        UserRequest request = new UserRequest("@fakeuser", new AuthToken("@TestUser", "nonsenseToken"));
         UserResponse response = (UserResponse) userService.serve(request);
         Assertions.assertEquals(expectedResponse.isSuccess(), response.isSuccess());
         Assertions.assertEquals(expectedResponse.getMessage(), response.getMessage());

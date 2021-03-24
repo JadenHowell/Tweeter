@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import edu.byu.cs.tweeter.client.model.service.FollowerCountServiceProxy;
 import edu.byu.cs.tweeter.client.model.service.FollowingCountServiceProxy;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.FollowerCountRequest;
 import edu.byu.cs.tweeter.shared.service.request.FollowingCountRequest;
@@ -27,10 +28,10 @@ public class CountPresenterTest {
 
     @BeforeEach
     public void setup() throws IOException, TweeterRemoteException {
-        followingCountRequest = new FollowingCountRequest("@TestUser");
+        followingCountRequest = new FollowingCountRequest("@TestUser", new AuthToken("@TestUser", "nonsenseToken"));
         followingCountResponse = new FollowingCountResponse(true, null, 7);
 
-        followerCountRequest = new FollowerCountRequest("@TestUser");
+        followerCountRequest = new FollowerCountRequest("@TestUser", new AuthToken("@TestUser", "nonsenseToken"));
         followerCountResponse = new FollowerCountResponse(true, null, 7);
 
         mockFollowerCountServiceProxy = Mockito.mock(FollowerCountServiceProxy.class);

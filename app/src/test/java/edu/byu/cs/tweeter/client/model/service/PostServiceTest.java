@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.util.Calendar;
 
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.client.model.net.ServerFacade;
@@ -36,8 +37,8 @@ public class PostServiceTest {
                 Calendar.getInstance().getTime().getTime(), "Status1");
 
         // Setup request objects to use in the tests
-        validRequest = new PostRequest(resultStatus1);
-        invalidRequest = new PostRequest(null);
+        validRequest = new PostRequest(resultStatus1, new AuthToken("@TestUser", "nonsenseToken"));
+        invalidRequest = new PostRequest(null, null);
 
         // Setup a mock ServerFacade that will return known responses
         successResponse = new PostResponse(true, null);

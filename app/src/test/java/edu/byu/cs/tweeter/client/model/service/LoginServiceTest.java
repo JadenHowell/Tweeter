@@ -34,7 +34,7 @@ public class LoginServiceTest {
         invalidRequest = new LoginRequest(null, null);
 
         // Setup a mock ServerFacade that will return known responses
-        successResponse = new LoginResponse(new User("first3", "last3", "username", "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), new AuthToken());
+        successResponse = new LoginResponse(new User("first3", "last3", "username", "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), new AuthToken("@TestUser", "nonsenseToken"));
         ServerFacade mockServerFacade = Mockito.mock(ServerFacade.class);
         Mockito.when(mockServerFacade.login(validRequest)).thenReturn(successResponse);
 

@@ -8,9 +8,7 @@ public class LoginRequest extends Request {
     private String username;
     private String password;
 
-    public LoginRequest() {
-        this.username = "user_alias";
-        this.password = "password";
+    private LoginRequest() {
     }
 
     /**

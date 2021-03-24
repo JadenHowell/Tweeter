@@ -24,7 +24,7 @@ public class RegisterPresenterTest {
     @BeforeEach
     public void setup() throws IOException, TweeterRemoteException {
         request = new RegisterRequest("first", "last", "username", "password");
-        response = new RegisterResponse(new User("first", "last", "url"), new AuthToken());
+        response = new RegisterResponse(new User("first", "last", "url"), new AuthToken("@TestUser", "nonsenseToken"));
 
         mockRegisterService = Mockito.mock(RegisterServiceProxy.class);
         Mockito.when(mockRegisterService.serve(request)).thenReturn(response);

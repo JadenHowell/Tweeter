@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import edu.byu.cs.tweeter.client.model.service.FeedServiceProxy;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.service.FeedService;
@@ -38,7 +39,7 @@ public class FeedPresenterTest {
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png"),
                 Calendar.getInstance().getTime().getTime(), "Status3");
 
-        request = new FeedRequest(currentUser.getAlias(), 3, null);
+        request = new FeedRequest(currentUser.getAlias(), 3, null, new AuthToken("@TestUser", "nonsenseToken"));
         response = new FeedResponse(Arrays.asList(resultStatus1, resultStatus2, resultStatus3), false);
 
         // Create a mock FeedService

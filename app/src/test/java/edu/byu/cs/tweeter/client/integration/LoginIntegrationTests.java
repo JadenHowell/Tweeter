@@ -20,7 +20,7 @@ public class LoginIntegrationTests {
     @Test
     public void loginIsSuccess() throws IOException, TweeterRemoteException {
         loginService = new LoginServiceProxy();
-        LoginResponse expectedResponse = new LoginResponse(new User("first", "last", "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), new AuthToken());
+        LoginResponse expectedResponse = new LoginResponse(new User("first", "last", "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), new AuthToken("@TestUser", "nonsenseToken"));
         LoginRequest request = new LoginRequest("username","password");
         LoginResponse response = (LoginResponse) loginService.serve(request);
         Assertions.assertEquals(expectedResponse.getUser(), response.getUser());

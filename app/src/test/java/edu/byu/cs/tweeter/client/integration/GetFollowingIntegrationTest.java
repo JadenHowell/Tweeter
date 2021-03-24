@@ -10,6 +10,7 @@ import java.util.List;
 
 import edu.byu.cs.tweeter.client.model.service.FollowingServiceProxy;
 import edu.byu.cs.tweeter.client.model.service.Service;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.FollowerRequest;
@@ -53,7 +54,7 @@ public class GetFollowingIntegrationTest {
 
     @Test
     public void shouldFetchResponse_when_basicRequest() throws IOException, TweeterRemoteException {
-        request = new FollowingRequest("@TestUser",10,null);
+        request = new FollowingRequest("@TestUser",10,null, new AuthToken("@TestUser", "nonsenseToken"));
         List<User> responseUsers = Arrays.asList(user1,user2,user3,user4,user5,user6,user7,user8,user9,user10);
         expectedResponse = new FollowingResponse(responseUsers, true);
         FollowingResponse response = (FollowingResponse) followingService.serve(request);
@@ -71,7 +72,7 @@ public class GetFollowingIntegrationTest {
 
     @Test
     public void shouldFetchResponse_when_lastFolloweeAliasNotNull() throws IOException, TweeterRemoteException {
-        request = new FollowingRequest("@TestUser",10,"@ElizabethEngle");
+        request = new FollowingRequest("@TestUser",10,"@ElizabethEngle", new AuthToken("@TestUser", "nonsenseToken"));
         List<User> responseUsers = Arrays.asList(user11,user12,user13,user14,user15,user16,user17,user18,user19,user20);
         expectedResponse = new FollowingResponse(responseUsers, true);
         FollowingResponse response = (FollowingResponse) followingService.serve(request);
@@ -89,7 +90,7 @@ public class GetFollowingIntegrationTest {
 
     @Test
     public void shouldFetchEmptyResponse_when_lastFolloweeAliasIsLastFollower() throws IOException, TweeterRemoteException {
-        request = new FollowingRequest("@TestUser",10,"@JillJohnson");
+        request = new FollowingRequest("@TestUser",10,"@JillJohnson", new AuthToken("@TestUser", "nonsenseToken"));
         List<User> responseUsers = Arrays.asList();
         expectedResponse = new FollowingResponse(responseUsers, true);
         FollowingResponse response = (FollowingResponse) followingService.serve(request);

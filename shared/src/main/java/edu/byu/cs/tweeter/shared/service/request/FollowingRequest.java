@@ -1,5 +1,7 @@
 package edu.byu.cs.tweeter.shared.service.request;
 
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
+
 /**
  * Contains all the information needed to make a request to have the server return the next page of
  * followees for a specified follower.
@@ -24,7 +26,8 @@ public class FollowingRequest extends Request {
      *                     there was no previous request or if no followees were returned in the
      *                     previous request).
      */
-    public FollowingRequest(String followerAlias, int limit, String lastFolloweeAlias) {
+    public FollowingRequest(String followerAlias, int limit, String lastFolloweeAlias, AuthToken authToken){
+        super(authToken);
         this.followerAlias = followerAlias;
         this.limit = limit;
         this.lastFolloweeAlias = lastFolloweeAlias;

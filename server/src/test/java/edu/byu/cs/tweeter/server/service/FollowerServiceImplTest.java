@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import edu.byu.cs.tweeter.server.dao.FollowerDAO;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.FollowerRequest;
@@ -33,7 +34,7 @@ public class FollowerServiceImplTest {
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png");
 
         // Setup a request object to use in the tests
-        request = new FollowerRequest(currentUser.getAlias(), 3, null);
+        request = new FollowerRequest(currentUser.getAlias(), 3, null, new AuthToken("@TestUser", "nonsenseToken"));
 
         // Setup a mock FollowingDAO that will return known responses
         expectedResponse = new FollowerResponse(Arrays.asList(resultUser1, resultUser2, resultUser3), false);

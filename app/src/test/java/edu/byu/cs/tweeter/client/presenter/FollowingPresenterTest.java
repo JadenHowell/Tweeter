@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.util.Arrays;
 
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.client.model.service.FollowingServiceProxy;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
@@ -32,7 +33,7 @@ public class FollowingPresenterTest {
         User resultUser3 = new User("FirstName3", "LastName3",
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png");
 
-        request = new FollowingRequest(currentUser.getAlias(), 3, null);
+        request = new FollowingRequest(currentUser.getAlias(), 3, null, new AuthToken("@TestUser", "nonsenseToken"));
         response = new FollowingResponse(Arrays.asList(resultUser1, resultUser2, resultUser3), false);
 
         // Create a mock FollowingService

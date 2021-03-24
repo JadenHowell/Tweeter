@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.server.dao.UserDAO;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.UserRequest;
@@ -26,7 +27,7 @@ public class UserServiceImplTest {
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
 
         // Setup a request object to use in the tests
-        request = new UserRequest("@TestUser");
+        request = new UserRequest("@TestUser", new AuthToken("@TestUser", "nonsenseToken"));
 
         // Setup a mock FollowingDAO that will return known responses
         expectedResponse = new UserResponse(true, null, user1);

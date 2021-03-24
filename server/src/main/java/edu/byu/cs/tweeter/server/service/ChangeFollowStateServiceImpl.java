@@ -1,7 +1,5 @@
 package edu.byu.cs.tweeter.server.service;
 
-import java.io.IOException;
-
 import edu.byu.cs.tweeter.server.dao.FollowDAO;
 import edu.byu.cs.tweeter.shared.service.ChangeFollowStateService;
 import edu.byu.cs.tweeter.shared.service.request.ChangeFollowStateRequest;

@@ -8,6 +8,7 @@ import java.io.IOException;
 import edu.byu.cs.tweeter.client.model.service.FollowerCountServiceProxy;
 import edu.byu.cs.tweeter.client.model.service.FollowingCountServiceProxy;
 import edu.byu.cs.tweeter.client.model.service.Service;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.FollowerCountRequest;
 import edu.byu.cs.tweeter.shared.service.request.FollowingCountRequest;
@@ -23,7 +24,7 @@ public class FollowIntegrationTests {
     public void returnsCorrectFollowerCount() throws IOException, TweeterRemoteException {
         followerCountService = new FollowerCountServiceProxy();
         FollowerCountResponse expectedResponse = new FollowerCountResponse(true, null, 15);
-        FollowerCountRequest request = new FollowerCountRequest("@TestUser");
+        FollowerCountRequest request = new FollowerCountRequest("@TestUser", new AuthToken("@TestUser", "nonsenseToken"));
         FollowerCountResponse response = (FollowerCountResponse) followerCountService.serve(request);
         Assertions.assertEquals(expectedResponse.getCount(), response.getCount());
         Assertions.assertTrue(response.isSuccess());
@@ -33,7 +34,7 @@ public class FollowIntegrationTests {
     public void returnsCorrectFollowingCount() throws IOException, TweeterRemoteException {
         followingCountService = new FollowingCountServiceProxy();
         FollowingCountResponse expectedResponse = new FollowingCountResponse(true, null, 20);
-        FollowingCountRequest request = new FollowingCountRequest("@TestUser");
+        FollowingCountRequest request = new FollowingCountRequest("@TestUser", new AuthToken("@TestUser", "nonsenseToken"));
         FollowingCountResponse response = (FollowingCountResponse) followingCountService.serve(request);
         Assertions.assertEquals(expectedResponse.getCount(), response.getCount());
         Assertions.assertTrue(response.isSuccess());

@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import java.io.IOException;
 
 import edu.byu.cs.tweeter.server.dao.LogoutDAO;
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.LogoutRequest;
 import edu.byu.cs.tweeter.shared.service.response.LogoutResponse;
@@ -21,7 +22,7 @@ public class LogoutServiceImplTest {
 
     @BeforeEach
     public void setup() {
-        request = new LogoutRequest();
+        request = new LogoutRequest("@TestUser", new AuthToken("@TestUser", "nonsenseToken"));
         expectedResponse = new LogoutResponse(true, "Great work, you logged out!");
         mockLogoutDAO = Mockito.mock(LogoutDAO.class);
         Mockito.when(mockLogoutDAO.logout(request)).thenReturn(expectedResponse);
