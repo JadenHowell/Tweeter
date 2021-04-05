@@ -1,6 +1,10 @@
 apply plugin: 'java-library'
 apply plugin: 'com.github.johnrengelman.shadow'
 
+repositories {
+    mavenCentral()
+}
+
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
@@ -13,4 +17,6 @@ dependencies {
     implementation group: 'com.amazonaws', name: 'aws-lambda-java-core', version: '1.2.0'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.5.2'
     testImplementation group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-core', version: '1.11.547'
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-dynamodb', version: '1.11.547'
 }
