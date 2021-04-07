@@ -1,16 +1,41 @@
 package edu.byu.cs.tweeter.server.dao;
 
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.Table;
+
 import java.util.Arrays;
 import java.util.List;
 
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
+import edu.byu.cs.tweeter.shared.service.request.RegisterRequest;
 import edu.byu.cs.tweeter.shared.service.request.UserRequest;
+import edu.byu.cs.tweeter.shared.service.response.RegisterResponse;
 import edu.byu.cs.tweeter.shared.service.response.UserResponse;
 
 /**
  * A DAO for accessing 'following' data from the database.
  */
 public class UserDAO {
+
+    private static final String TableName = "user";
+    private static final String HandleAttr = "handle";
+    private static final String AliasAttr = "user_alias";
+
+    // DynamoDB client
+    private static AmazonDynamoDB amazonDynamoDB = AmazonDynamoDBClientBuilder
+            .standard()
+            .withRegion("us-west-2")
+            .build();
+    private static DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
+
+    private static boolean isNonEmptyString(String value) {
+        return (value != null && value.length() > 0);
+    }
+
     private static final String MALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png";
     private static final String FEMALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png";
 
@@ -46,5 +71,14 @@ public class UserDAO {
             }
         }
         return new UserResponse(true, "User \"" + request.getUserAlias() + "\" not found");
+    }
+
+    public RegisterResponse register(RegisterRequest request) {
+        Table table = dynamoDB.getTable(TableName);
+        Item item = new Item()
+                .withPrimaryKey(HandleAttr, request.getUsername())
+                .withString(AliasAttr, request.getUsername());
+        table.putItem(item);
+        return new RegisterResponse(new User(request.getFirstName(),request.getLastName(), MALE_IMAGE_URL), new AuthToken());
     }
 }

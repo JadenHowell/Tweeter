@@ -8,16 +8,10 @@ import java.util.List;
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.service.request.FeedRequest;
-import edu.byu.cs.tweeter.shared.service.request.PostRequest;
-import edu.byu.cs.tweeter.shared.service.request.StoryRequest;
 import edu.byu.cs.tweeter.shared.service.response.FeedResponse;
-import edu.byu.cs.tweeter.shared.service.response.PostResponse;
-import edu.byu.cs.tweeter.shared.service.response.StoryResponse;
 
-/**
- * A DAO for accessing 'following' data from the database.
- */
-public class StatusDAO {
+public class FeedDAO {
+
     private static final String MALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png";
     private static final String FEMALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png";
 
@@ -126,92 +120,5 @@ public class StatusDAO {
         return Arrays.asList(status1, status2, status3, status4, status5, status6, status7, status8,
                 status9, status10, status11, status12, status13, status14, status15, status16, status17,
                 status18, status19, status20, status21, status22, status23, status24, status25);
-    }
-
-    /**
-     * Returns the statuses that the user specified in the request has in their story. Uses information in
-     * the request object to limit the number of statuses returned and to return the next set of
-     * statuses after any that were returned in a previous request. The current implementation
-     * returns generated data and doesn't actually make a network request.
-     *
-     * @param request contains information about the user whose statuses are to be returned and any
-     *                other information required to satisfy the request.
-     * @return the story response.
-     */
-    public StoryResponse getStory(StoryRequest request) {
-        assert request.getLimit() > 0;
-        assert request.getUserAlias() != null;
-
-        List<Status> allStatuses = getDummyStory(request.getUserAlias());
-        List<Status> responseStatuses = new ArrayList<>(request.getLimit());
-
-        boolean hasMorePages = false;
-
-        if (request.getLimit() > 0) {
-            int statusesIndex = getStoryStartingIndex(request.getLastStatus(), allStatuses);
-
-            for (int limitCounter = 0; statusesIndex < allStatuses.size() && limitCounter < request.getLimit(); statusesIndex++, limitCounter++) {
-                responseStatuses.add(allStatuses.get(statusesIndex));
-            }
-
-            hasMorePages = statusesIndex < allStatuses.size();
-        }
-
-        return new StoryResponse(responseStatuses, hasMorePages);
-    }
-
-    /**
-     * Determines the index for the first status in the specified 'allStatuses' list that should
-     * be returned in the current request. This will be the index of the next statuses after the
-     * specified 'lastStatus'.
-     *
-     * @param lastStatus  the alias of the last status that was returned in the previous
-     *                    request or null if there was no previous request.
-     * @param allStatuses the generated list of statuses from which we are returning paged results.
-     * @return the index of the first status to be returned.
-     */
-    private int getStoryStartingIndex(Status lastStatus, List<Status> allStatuses) {
-
-        int statusesIndex = 0;
-
-        if (lastStatus != null) {
-            // This is a paged request for something after the first page. Find the first item
-            // we should return
-            for (int i = 0; i < allStatuses.size(); i++) {
-                if (lastStatus.getMessage().equals(allStatuses.get(i).getMessage())) { // FIXME use date instead
-                    // We found the index of the last item returned last time. Increment to get
-                    // to the first one we should return
-                    statusesIndex = i + 1;
-                    break;
-                }
-            }
-        }
-
-        return statusesIndex;
-    }
-
-    /**
-     * Returns the list of dummy story data. This is written as a separate method to allow
-     * mocking of the story.
-     *
-     * @return the statuses.
-     */
-    List<Status> getDummyStory(String userAlias) {
-        List<Status> allStatus = Arrays.asList(status1, status2, status3, status4, status5, status6, status7, status8,
-                status9, status10, status11, status12, status13, status14, status15, status16, status17,
-                status18, status19, status20, status21, status22, status23, status24, status25);
-        List<Status> returnList = new ArrayList<>();
-        for (int i = 0; i < allStatus.size(); i++) {
-            if (allStatus.get(i).getUser().getAlias().equals("@TestUser")) { //TODO: .equals(userAlias)
-                returnList.add(allStatus.get(i));
-            }
-        }
-        return returnList;
-    }
-
-
-
-    public PostResponse post(PostRequest request) {
-        return new PostResponse(true, "Post Successful!");
     }
 }
