@@ -1,6 +1,6 @@
 package edu.byu.cs.tweeter.server.service;
 
-import edu.byu.cs.tweeter.server.dao.StatusDAO;
+import edu.byu.cs.tweeter.server.dao.StoryDAO;
 import edu.byu.cs.tweeter.shared.service.PostService;
 import edu.byu.cs.tweeter.shared.service.request.PostRequest;
 import edu.byu.cs.tweeter.shared.service.response.PostResponse;
@@ -13,7 +13,7 @@ public class PostServiceImpl implements PostService {
     /**
      * Returns the users that the user specified in the request is following. Uses information in
      * the request object to limit the number of statuses returned and to return the next set of
-     * statuses after any that were returned in a previous request. Uses the {@link StatusDAO} to
+     * statuses after any that were returned in a previous request. Uses the {@link StoryDAO} to
      * get the statuses.
      *
      * @param request contains the data required to fulfill the request.
@@ -25,13 +25,13 @@ public class PostServiceImpl implements PostService {
     }
 
     /**
-     * Returns an instance of {@link StatusDAO}. Allows mocking of the FollowingDAO class
+     * Returns an instance of {@link StoryDAO}. Allows mocking of the FollowingDAO class
      * for testing purposes. All usages of FollowingDAO should get their FollowingDAO
      * instance from this method to allow for mocking of the instance.
      *
      * @return the instance.
      */
-    StatusDAO getStatusDAO() {
-        return new StatusDAO();
+    StoryDAO getStatusDAO() {
+        return new StoryDAO();
     }
 }

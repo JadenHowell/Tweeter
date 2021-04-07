@@ -1,6 +1,6 @@
 package edu.byu.cs.tweeter.server.service;
 
-import edu.byu.cs.tweeter.server.dao.StatusDAO;
+import edu.byu.cs.tweeter.server.dao.StoryDAO;
 import edu.byu.cs.tweeter.shared.service.StoryService;
 import edu.byu.cs.tweeter.shared.service.request.StoryRequest;
 import edu.byu.cs.tweeter.shared.service.response.StoryResponse;
@@ -13,7 +13,7 @@ public class StoryServiceImpl implements StoryService {
     /**
      * Returns the users that the user specified in the request is following. Uses information in
      * the request object to limit the number of followees returned and to return the next set of
-     * followees after any that were returned in a previous request. Uses the {@link StatusDAO} to
+     * followees after any that were returned in a previous request. Uses the {@link StoryDAO} to
      * get the followees.
      *
      * @param request contains the data required to fulfill the request.
@@ -25,13 +25,13 @@ public class StoryServiceImpl implements StoryService {
     }
 
     /**
-     * Returns an instance of {@link StatusDAO}. Allows mocking of the FollowingDAO class
+     * Returns an instance of {@link StoryDAO}. Allows mocking of the FollowingDAO class
      * for testing purposes. All usages of FollowingDAO should get their FollowingDAO
      * instance from this method to allow for mocking of the instance.
      *
      * @return the instance.
      */
-    StatusDAO getStatusDAO() {
-        return new StatusDAO();
+    StoryDAO getStatusDAO() {
+        return new StoryDAO();
     }
 }

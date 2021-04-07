@@ -11,8 +11,12 @@ import java.util.List;
 
 import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
+import edu.byu.cs.tweeter.shared.service.request.FollowerCountRequest;
+import edu.byu.cs.tweeter.shared.service.request.FollowingCountRequest;
 import edu.byu.cs.tweeter.shared.service.request.RegisterRequest;
 import edu.byu.cs.tweeter.shared.service.request.UserRequest;
+import edu.byu.cs.tweeter.shared.service.response.FollowerCountResponse;
+import edu.byu.cs.tweeter.shared.service.response.FollowingCountResponse;
 import edu.byu.cs.tweeter.shared.service.response.RegisterResponse;
 import edu.byu.cs.tweeter.shared.service.response.UserResponse;
 
@@ -74,11 +78,41 @@ public class UserDAO {
     }
 
     public RegisterResponse register(RegisterRequest request) {
+        /*System.out.print("\tRegistering User!\n");
         Table table = dynamoDB.getTable(TableName);
         Item item = new Item()
                 .withPrimaryKey(HandleAttr, request.getUsername())
                 .withString(AliasAttr, request.getUsername());
         table.putItem(item);
-        return new RegisterResponse(new User(request.getFirstName(),request.getLastName(), MALE_IMAGE_URL), new AuthToken());
+        return new RegisterResponse(new User(request.getFirstName(),request.getLastName(), MALE_IMAGE_URL), new AuthToken(request.getUsername(), "dummyToken"));*/
+        return new RegisterResponse(new User("first_name","last_name","https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), new AuthToken(request.getUsername(),"dummyToken"));
+    }
+
+    /**
+     * Gets the count of users from the database that the user specified is following. The
+     * current implementation uses generated data and doesn't actually access a database.
+     *
+     * @param request the request holding info about whose count of how many following is desired.
+     * @return said count.
+     */
+    public FollowerCountResponse getFollowerCount(FollowerCountRequest request) {
+        // TODO: uses the dummy data.  Replace with a real implementation.
+        String userAlias = request.getFolloweeAlias();
+        FollowerCountResponse response = new FollowerCountResponse(true, null, 0);
+        return response;
+    }
+
+    /**
+     * Gets the count of users from the database that the user specified is following. The
+     * current implementation uses generated data and doesn't actually access a database.
+     *
+     * @param request the request containing info about whose count of how many following is desired.
+     * @return said count.
+     */
+    public FollowingCountResponse getFolloweeCount(FollowingCountRequest request) {
+        // TODO: uses the dummy data.  Replace with a real implementation.
+        String userAlias = request.getFollowerAlias();
+        FollowingCountResponse response = new FollowingCountResponse(true, null, 0);
+        return response;
     }
 }

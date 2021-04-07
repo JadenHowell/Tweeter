@@ -9,7 +9,7 @@ import edu.byu.cs.tweeter.shared.service.response.LogoutResponse;
 
 public class AuthTokenDAO {
     public LoginResponse login(LoginRequest request) {
-        return new LoginResponse(new User("first1", "last1", "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), new AuthToken());
+        return new LoginResponse(new User("first1", "last1", "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), new AuthToken(request.getUsername(),"dummyToken"));
     }
 
     public LogoutResponse logout(LogoutRequest request) {

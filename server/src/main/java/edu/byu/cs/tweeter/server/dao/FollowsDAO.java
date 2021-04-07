@@ -73,19 +73,6 @@ public class FollowsDAO {
     public boolean getDummyState(){
         return Math.random() > .5;
     }
-    /**
-     * Gets the count of users from the database that the user specified is following. The
-     * current implementation uses generated data and doesn't actually access a database.
-     *
-     * @param request the request holding info about whose count of how many following is desired.
-     * @return said count.
-     */
-    public FollowerCountResponse getFollowerCount(FollowerCountRequest request) {
-        // TODO: uses the dummy data.  Replace with a real implementation.
-        String userAlias = request.getFolloweeAlias();
-        FollowerCountResponse response = new FollowerCountResponse(true, null, getDummyFollowers().size());
-        return response;
-    }
 
     public FollowerResponse getFollowers(FollowerRequest request) {
         // TODO: Generates dummy data. Replace with a real implementation.
@@ -151,19 +138,6 @@ public class FollowsDAO {
     List<User> getDummyFollowers() {
         return Arrays.asList(user2, user3, user4, user5, user7, user8, user9, user10,
                 user12, user13, user14, user16, user17, user19, user20);
-    }
-    /**
-     * Gets the count of users from the database that the user specified is following. The
-     * current implementation uses generated data and doesn't actually access a database.
-     *
-     * @param request the request containing info about whose count of how many following is desired.
-     * @return said count.
-     */
-    public FollowingCountResponse getFolloweeCount(FollowingCountRequest request) {
-        // TODO: uses the dummy data.  Replace with a real implementation.
-        String userAlias = request.getFollowerAlias();
-        FollowingCountResponse response = new FollowingCountResponse(true, null, getDummyFollowees().size());
-        return response;
     }
 
     /**
