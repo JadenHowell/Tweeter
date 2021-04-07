@@ -4,6 +4,7 @@ import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
 
 public class RegisterResponse extends Response {
+
     private User user;
     private AuthToken authToken;
 
@@ -17,4 +18,6 @@ public class RegisterResponse extends Response {
 
     public User getUser() { return user;}
     public AuthToken getAuthToken() {return authToken;}
+    public void setUser(User user) {this.user = user;}
+    public void setAuthToken(AuthToken authToken) {this.authToken = authToken;}
 }
