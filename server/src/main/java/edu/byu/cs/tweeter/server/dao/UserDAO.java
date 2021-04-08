@@ -86,7 +86,6 @@ public class UserDAO {
                 .withString(lastAttr, request.getLastName());
         table.putItem(item);
         return new RegisterResponse(new User(request.getFirstName(),request.getLastName(), MALE_IMAGE_URL), new AuthToken(request.getUsername(), "dummyToken"));
-        //return new RegisterResponse(new User("first_name","last_name","https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), new AuthToken(request.getUsername(),"dummyToken"));
     }
 
     /**

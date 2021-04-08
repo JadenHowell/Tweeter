@@ -248,8 +248,6 @@ public class ServerFacade {
         } else {
             throw new RuntimeException(response.getMessage());
         }
-        //User user = new User("One", "Two", "@OneTwo", "https://www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png");
-        //return new RegisterResponse(user, new AuthToken());
     }
 
 
