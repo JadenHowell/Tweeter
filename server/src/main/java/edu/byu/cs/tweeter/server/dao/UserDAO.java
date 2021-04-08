@@ -26,8 +26,9 @@ import edu.byu.cs.tweeter.shared.service.response.UserResponse;
 public class UserDAO {
 
     private static final String TableName = "user";
-    private static final String HandleAttr = "handle";
-    private static final String AliasAttr = "user_alias";
+    private static final String HandleAttr = "alias";
+    private static final String firstAttr = "first_name";
+    private static final String lastAttr = "last_name";
 
     // DynamoDB client
     private static AmazonDynamoDB amazonDynamoDB = AmazonDynamoDBClientBuilder
@@ -81,7 +82,8 @@ public class UserDAO {
         Table table = dynamoDB.getTable(TableName);
         Item item = new Item()
                 .withPrimaryKey(HandleAttr, request.getUsername())
-                .withString(AliasAttr, request.getUsername());
+                .withString(firstAttr, request.getFirstName())
+                .withString(lastAttr, request.getLastName());
         table.putItem(item);
         return new RegisterResponse(new User(request.getFirstName(),request.getLastName(), MALE_IMAGE_URL), new AuthToken(request.getUsername(), "dummyToken"));
         //return new RegisterResponse(new User("first_name","last_name","https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), new AuthToken(request.getUsername(),"dummyToken"));
