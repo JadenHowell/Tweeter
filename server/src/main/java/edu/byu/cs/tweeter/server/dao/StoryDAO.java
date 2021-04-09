@@ -1,5 +1,11 @@
 package edu.byu.cs.tweeter.server.dao;
 
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.document.DynamoDB;
+import com.amazonaws.services.dynamodbv2.document.Item;
+import com.amazonaws.services.dynamodbv2.document.Table;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -13,6 +19,19 @@ import edu.byu.cs.tweeter.shared.service.response.PostResponse;
 import edu.byu.cs.tweeter.shared.service.response.StoryResponse;
 
 public class StoryDAO {
+
+    private static final String TableName = "story";
+    private static final String HandleAttr = "alias";
+    private static final String TimestampAttr = "timestamp";
+    private static final String MessageAttr = "message";
+
+    // DynamoDB client
+    private static final AmazonDynamoDB amazonDynamoDB = AmazonDynamoDBClientBuilder
+            .standard()
+            .withRegion("us-west-2")
+            .build();
+    private static final DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
+
     private static final String MALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png";
     private static final String FEMALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png";
 
@@ -131,6 +150,12 @@ public class StoryDAO {
     }
 
     public PostResponse post(PostRequest request) {
+        Table table = dynamoDB.getTable(TableName);
+        Item item = new Item()
+                .withPrimaryKey(HandleAttr, /*request.getUser().getUser().getAlias()*/ "myUser")
+                .withString(TimestampAttr, /*request.getUser().getDate()*/"myTimestamp")
+                .withString(MessageAttr, request.getUser().getMessage()/*"myMessage"*/);
+        table.putItem(item);
         return new PostResponse(true, "Post Successful!");
     }
 }

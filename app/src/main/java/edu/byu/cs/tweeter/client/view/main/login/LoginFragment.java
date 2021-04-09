@@ -61,8 +61,7 @@ public class LoginFragment extends Fragment implements LoginPresenter.View, Logi
             EditText loginPassword = (EditText)view.findViewById(R.id.LoginPassword);
 
             /**
-             * Makes a login request. The user is hard-coded, so it doesn't matter what data we put
-             * in the LoginRequest object.
+             * Makes a login request.
              *
              * @param view the view object that was clicked.
              */

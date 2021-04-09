@@ -92,8 +92,7 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
         registerButton.setOnClickListener(new View.OnClickListener() {
 
             /**
-             * Makes a login request. The user is hard-coded, so it doesn't matter what data we put
-             * in the LoginRequest object.
+             * Makes a register request.
              *
              * @param view the view object that was clicked.
              */
