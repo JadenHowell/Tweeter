@@ -29,6 +29,7 @@ public class UserDAO {
     private static final String HandleAttr = "alias";
     private static final String firstAttr = "first_name";
     private static final String lastAttr = "last_name";
+    private static final String passwordAttr = "password";
 
     // DynamoDB client
     private static AmazonDynamoDB amazonDynamoDB = AmazonDynamoDBClientBuilder
@@ -83,7 +84,8 @@ public class UserDAO {
         Item item = new Item()
                 .withPrimaryKey(HandleAttr, request.getUsername())
                 .withString(firstAttr, request.getFirstName())
-                .withString(lastAttr, request.getLastName());
+                .withString(lastAttr, request.getLastName())
+                .withString(passwordAttr, request.getPassword());
         table.putItem(item);
         return new RegisterResponse(new User(request.getFirstName(),request.getLastName(), MALE_IMAGE_URL), new AuthToken(request.getUsername(), "dummyToken"));
     }

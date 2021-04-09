@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -56,6 +57,9 @@ public class LoginFragment extends Fragment implements LoginPresenter.View, Logi
         Button loginButton = view.findViewById(R.id.LoginButton);
         loginButton.setOnClickListener(new View.OnClickListener() {
 
+            EditText loginUsername = (EditText)view.findViewById(R.id.LoginUsername);
+            EditText loginPassword = (EditText)view.findViewById(R.id.LoginPassword);
+
             /**
              * Makes a login request. The user is hard-coded, so it doesn't matter what data we put
              * in the LoginRequest object.
@@ -67,8 +71,10 @@ public class LoginFragment extends Fragment implements LoginPresenter.View, Logi
                 loginInToast = Toast.makeText(getContext(), "Logging In", Toast.LENGTH_LONG);
                 loginInToast.show();
 
-                // It doesn't matter what values we put here. We will be logged in with a hard-coded dummy user.
-                LoginRequest loginRequest = new LoginRequest("dummyUserName", "dummyPassword");
+                String username = loginUsername.getText().toString();
+                String password = loginPassword.getText().toString();
+
+                LoginRequest loginRequest = new LoginRequest(username, password);
                 LoginTask loginTask = new LoginTask(presenter, LoginFragment.this);
                 loginTask.execute(loginRequest);
             }
