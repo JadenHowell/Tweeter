@@ -3,18 +3,18 @@ package edu.byu.cs.tweeter.shared.service.request;
 import edu.byu.cs.tweeter.shared.domain.AuthToken;
 
 public class FollowerCountRequest extends Request{
-    private String followeeAlias;
+    private String userAlias;
 
-    public FollowerCountRequest(String followeeAlias, AuthToken authToken){
+    public FollowerCountRequest(String userAlias, AuthToken authToken){
         super(authToken);
-        this.followeeAlias = followeeAlias;
+        this.userAlias = userAlias;
     }
 
     private FollowerCountRequest(){}
 
-    public String getFolloweeAlias(){return followeeAlias;}
+    public String getUserAlias(){return userAlias;}
 
-    public void setFolloweeAlias(String followeeAlias) {
-        this.followeeAlias = followeeAlias;
+    public void setUserAlias(String userAlias) {
+        this.userAlias = userAlias;
     }
 }

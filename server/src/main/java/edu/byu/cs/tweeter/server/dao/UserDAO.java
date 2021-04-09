@@ -30,6 +30,8 @@ public class UserDAO {
     private static final String firstAttr = "first_name";
     private static final String lastAttr = "last_name";
     private static final String passwordAttr = "password";
+    private static final String followerCountAttr = "follower_count";
+    private static final String followeeCountAttr = "followee_count";
 
     // DynamoDB client
     private static AmazonDynamoDB amazonDynamoDB = AmazonDynamoDBClientBuilder
@@ -85,23 +87,26 @@ public class UserDAO {
                 .withPrimaryKey(HandleAttr, request.getUsername())
                 .withString(firstAttr, request.getFirstName())
                 .withString(lastAttr, request.getLastName())
-                .withString(passwordAttr, request.getPassword());
+                .withString(passwordAttr, request.getPassword())
+                .withInt(followerCountAttr, 0)
+                .withInt(followeeCountAttr, 0);
         table.putItem(item);
         return new RegisterResponse(new User(request.getFirstName(),request.getLastName(), MALE_IMAGE_URL), new AuthToken(request.getUsername(), "dummyToken"));
     }
 
     /**
-     * Gets the count of users from the database that the user specified is following. The
-     * current implementation uses generated data and doesn't actually access a database.
+     * Gets the count of users from the database that the user specified is following.
      *
      * @param request the request holding info about whose count of how many following is desired.
      * @return said count.
      */
     public FollowerCountResponse getFollowerCount(FollowerCountRequest request) {
-        // TODO: uses the dummy data.  Replace with a real implementation.
-        String userAlias = request.getFolloweeAlias();
-        FollowerCountResponse response = new FollowerCountResponse(true, null, 0);
-        return response;
+        Table table = dynamoDB.getTable(TableName);
+        Item item = table.getItem(HandleAttr, request.getUserAlias());
+        if(item != null)
+            return new FollowerCountResponse(true, null, item.getInt(followerCountAttr));
+        else
+            return new FollowerCountResponse(true, null, 0);
     }
 
     /**
@@ -112,9 +117,11 @@ public class UserDAO {
      * @return said count.
      */
     public FollowingCountResponse getFolloweeCount(FollowingCountRequest request) {
-        // TODO: uses the dummy data.  Replace with a real implementation.
-        String userAlias = request.getFollowerAlias();
-        FollowingCountResponse response = new FollowingCountResponse(true, null, 0);
-        return response;
+        Table table = dynamoDB.getTable(TableName);
+        Item item = table.getItem(HandleAttr, request.getUserAlias());
+        if(item != null)
+            return new FollowingCountResponse(true, null, item.getInt(followeeCountAttr));
+        else
+            return new FollowingCountResponse(true, null, 0);
     }
 }

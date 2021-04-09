@@ -35,14 +35,14 @@ public class AuthTokenDAO {
         // search the user table for the user in the request
         Table table = dynamoDB.getTable(TableName);
         Item item = table.getItem(UsernameAttr, request.getUsername());
-        // if the user is found in the user table, return it.
-        if(item != null)
-            return new LoginResponse(new User(item.getString(FirstAttr), item.getString(LastAttr), "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), new AuthToken(request.getUsername(),"dummyToken"));
+        if(item != null) // if the user is found in the user table, return it.
+            return new LoginResponse(new User(item.getString(FirstAttr), item.getString(LastAttr), item.getString(UsernameAttr), "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), new AuthToken(request.getUsername(),"dummyToken"));
         else
-            return new LoginResponse(new User("Not", "Found", "https://image.pngaaa.com/171/85171-middle.png"), new AuthToken(request.getUsername(),"dummyToken"));
+            return new LoginResponse(new User("Not", "Found", "NotAPerson", "https://image.pngaaa.com/171/85171-middle.png"), new AuthToken(request.getUsername(),"dummyToken"));
     }
 
     public LogoutResponse logout(LogoutRequest request) {
+        // invalidate auth token
         return new LogoutResponse(true, "Good job, you logged out");
     }
 }
