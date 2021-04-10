@@ -25,6 +25,7 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/RegisterFirstName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/loginActivityFirstName" />
@@ -35,6 +36,7 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/RegisterLastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/loginActivityLastName" />
@@ -45,6 +47,7 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/RegisterUsername"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/loginActivityUsername" />
@@ -55,6 +58,7 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/RegisterPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/loginActivityPassword"

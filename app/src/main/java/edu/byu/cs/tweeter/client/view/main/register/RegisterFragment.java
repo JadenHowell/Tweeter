@@ -11,11 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
@@ -79,13 +83,16 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
                 }
             });
 
+        EditText registerFirstName = (EditText)view.findViewById(R.id.RegisterFirstName);
+        EditText registerLastName = (EditText)view.findViewById(R.id.RegisterLastName);
+        EditText registerUsername = (EditText)view.findViewById(R.id.RegisterUsername);
+        EditText registerPassword = (EditText)view.findViewById(R.id.RegisterPassword);
 
         Button registerButton = view.findViewById(R.id.RegisterButton);
         registerButton.setOnClickListener(new View.OnClickListener() {
 
             /**
-             * Makes a login request. The user is hard-coded, so it doesn't matter what data we put
-             * in the LoginRequest object.
+             * Makes a register request.
              *
              * @param view the view object that was clicked.
              */
@@ -94,8 +101,12 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
                 registerToast = Toast.makeText(getContext(), "Registering New User", Toast.LENGTH_LONG);
                 registerToast.show();
 
-                // It doesn't matter what values we put here. We will be logged in with a hard-coded dummy user.
-                RegisterRequest registerRequest = new RegisterRequest("New","User","dummyUserName", "dummyPassword");
+                String firstName = registerFirstName.getText().toString();
+                String lastName = registerLastName.getText().toString();
+                String username = registerUsername.getText().toString();
+                String password = registerPassword.getText().toString();
+
+                RegisterRequest registerRequest = new RegisterRequest(firstName,lastName,username, password);
                 RegisterTask registerTask = new RegisterTask(presenter, RegisterFragment.this);
                 registerTask.execute(registerRequest);
             }

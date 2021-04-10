@@ -1,6 +1,6 @@
 package edu.byu.cs.tweeter.server.service;
 
-import edu.byu.cs.tweeter.server.dao.LoginDAO;
+import edu.byu.cs.tweeter.server.dao.AuthTokenDAO;
 import edu.byu.cs.tweeter.shared.service.LoginService;
 import edu.byu.cs.tweeter.shared.service.request.LoginRequest;
 import edu.byu.cs.tweeter.shared.service.response.LoginResponse;
@@ -11,7 +11,7 @@ public class LoginServiceImpl implements LoginService {
         return logMeInDAO().login(request);
     }
 
-    LoginDAO logMeInDAO() {
-        return new LoginDAO();
+    AuthTokenDAO logMeInDAO() {
+        return new AuthTokenDAO();
     }
 }
