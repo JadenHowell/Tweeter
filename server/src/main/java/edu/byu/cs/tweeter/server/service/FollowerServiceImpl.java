@@ -1,9 +1,16 @@
 package edu.byu.cs.tweeter.server.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.byu.cs.tweeter.server.dao.FollowsDAO;
+import edu.byu.cs.tweeter.server.dao.UserDAO;
+import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.service.FollowerService;
 import edu.byu.cs.tweeter.shared.service.request.FollowerRequest;
+import edu.byu.cs.tweeter.shared.service.request.UserRequest;
 import edu.byu.cs.tweeter.shared.service.response.FollowerResponse;
+import edu.byu.cs.tweeter.shared.service.response.FollowingResponse;
 
 public class FollowerServiceImpl implements FollowerService {
 
@@ -18,7 +25,14 @@ public class FollowerServiceImpl implements FollowerService {
      */
     @Override
     public FollowerResponse getFollowers(FollowerRequest request) {
-        return getFollowerDAO().getFollowers(request);
+        List<String> followers = getFollowerDAO().getFollowers(request);
+        UserDAO userDAO = getUserDAO();
+        List<User> result = new ArrayList<>();
+        for(String follower : followers){
+            result.add(userDAO.getUser(new UserRequest(follower, request.getAuthToken())).getUser());
+        }
+        FollowerResponse response = new FollowerResponse(result, true);
+        return response;
     }
 
     /**
@@ -30,5 +44,16 @@ public class FollowerServiceImpl implements FollowerService {
      */
     FollowsDAO getFollowerDAO() {
         return new FollowsDAO();
+    }
+
+    /**
+     * Returns an instance of {@link UserDAO}. Allows mocking of the UserDAO class
+     * for testing purposes. All usages of UserDAO should get their UserDAO
+     * instance from this method to allow for mocking of the instance.
+     *
+     * @return the instance.
+     */
+    UserDAO getUserDAO() {
+        return new UserDAO();
     }
 }
