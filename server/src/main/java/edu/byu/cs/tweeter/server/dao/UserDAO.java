@@ -91,7 +91,7 @@ public class UserDAO {
                 .withInt(followerCountAttr, 0)
                 .withInt(followeeCountAttr, 0);
         table.putItem(item);
-        return new RegisterResponse(new User(request.getFirstName(),request.getLastName(), MALE_IMAGE_URL), new AuthToken(request.getUsername(), "dummyToken"));
+        return new RegisterResponse(new User(request.getFirstName(),request.getLastName(), request.getUsername(), MALE_IMAGE_URL), new AuthToken(request.getUsername(), "dummyToken"));
     }
 
     /**
