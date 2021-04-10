@@ -1,5 +1,17 @@
 package edu.byu.cs.tweeter.server.dao;
 
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
+import com.amazonaws.services.dynamodbv2.document.*;
+import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
+import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
+import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
+import com.amazonaws.services.dynamodbv2.document.spec.UpdateItemSpec;
+import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.QueryResult;
+import com.amazonaws.services.dynamodbv2.model.ReturnValue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +31,15 @@ import edu.byu.cs.tweeter.shared.service.response.FollowingResponse;
 import edu.byu.cs.tweeter.shared.service.response.IsFollowingResponse;
 
 public class FollowsDAO {
+    private AmazonDynamoDB client = AmazonDynamoDBClientBuilder.standard()
+            .withRegion("us-west-2")
+            .build();
+    private DynamoDB dynamoDB = new DynamoDB(client);
+    private Table table = dynamoDB.getTable("follows");
+
+    private String PRIMARY_KEY = "follower_handle";
+    private String SORT_KEY = "followee_handle";
+
     // This is the hard coded follower data returned by the 'getFollowers()' method
     private static final String MALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png";
     private static final String FEMALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png";
@@ -50,8 +71,47 @@ public class FollowsDAO {
      * @return the new follow state
      */
     public ChangeFollowStateResponse changeFollowState(ChangeFollowStateRequest request){
-        //TODO: replace with actual implementation
-        ChangeFollowStateResponse response = new ChangeFollowStateResponse(true, null, getDummyState());
+        //first, need to find out if they are following, then do opposite.
+        IsFollowingRequest query = new IsFollowingRequest(request.getRootUserAlias(), request.getOtherUserAlias(), request.getAuthToken());
+        IsFollowingResponse answer = getIsFollowing(query);
+        boolean currentlyFollowing = answer.getIsFollowing();
+        ChangeFollowStateResponse response = null;
+        if(currentlyFollowing){
+            response = stopFollowing(request);
+        } else {
+            response = startFollowing(request);
+        }
+
+        return response;
+    }
+
+    private ChangeFollowStateResponse stopFollowing(ChangeFollowStateRequest request){
+        DeleteItemSpec spec = new DeleteItemSpec()
+                .withPrimaryKey(PRIMARY_KEY, request.getRootUserAlias(), SORT_KEY, request.getOtherUserAlias());
+        DeleteItemOutcome outcome = null;
+        ChangeFollowStateResponse response = null;
+        try {
+            outcome = table.deleteItem(spec); //If we don't throw an error, delete worked
+            response = new ChangeFollowStateResponse(true, null, false);
+        }
+        catch (Exception e) {
+            response = new ChangeFollowStateResponse(false, null, true);
+        }
+        return response;
+    }
+
+    private ChangeFollowStateResponse startFollowing(ChangeFollowStateRequest request){
+        ChangeFollowStateResponse response = null;
+        try {
+            PutItemOutcome outcome = table.putItem(new Item()
+                    .withPrimaryKey(PRIMARY_KEY, request.getRootUserAlias(), SORT_KEY, request.getOtherUserAlias()));
+
+            //If we get here, it worked
+            response = new ChangeFollowStateResponse(true, null, true);
+        }
+        catch (Exception e) {
+            response = new ChangeFollowStateResponse(false, null, false);
+        }
         return response;
     }
 
@@ -61,8 +121,16 @@ public class FollowsDAO {
      * @return the current state of following or not
      */
     public IsFollowingResponse getIsFollowing(IsFollowingRequest request){
-        //TODO: replace with actual implementation
-        IsFollowingResponse response = new IsFollowingResponse(true, null, getDummyState());
+        GetItemSpec spec = new GetItemSpec()
+                .withPrimaryKey(PRIMARY_KEY, request.getRootUserAlias(),
+                        SORT_KEY, request.getOtherUserAlias());
+        Item outcome = table.getItem(spec);
+        IsFollowingResponse response = null;
+        if(outcome != null){  //if the outcome is null, that means the follows does not exist
+            response = new IsFollowingResponse(true, null, true);
+        } else {
+            response = new IsFollowingResponse(true, null, false);
+        }
         return response;
     }
 
