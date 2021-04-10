@@ -70,15 +70,24 @@ public class UserDAO {
     private final User testUser = new User("Test", "User", MALE_IMAGE_URL);
 
     public UserResponse getUser(UserRequest request) {
-        List<User> allUsers = Arrays.asList(testUser, user1, user2, user3, user4, user5, user6, user7,
-                user8, user9, user10, user11, user12, user13, user14, user15, user16, user17, user18,
-                user19, user20);
-        for (User user : allUsers) {
-            if (user.getAlias().equals(request.getUserAlias())) {
-                return new UserResponse(true, "User returned", user);
-            }
-        }
-        return new UserResponse(true, "User \"" + request.getUserAlias() + "\" not found");
+
+        Table table = dynamoDB.getTable(TableName);
+        Item item = table.getItem(HandleAttr, request.getUserAlias());
+        if(item != null)
+            return new UserResponse(true, "User returned", new User(item.getString(firstAttr), item.getString(lastAttr), item.getString(HandleAttr), MALE_IMAGE_URL));
+        else
+            return new UserResponse(true, "User \"" + request.getUserAlias() + "\" not found");
+
+//        List<User> allUsers = Arrays.asList(testUser, user1, user2, user3, user4, user5, user6, user7,
+//                user8, user9, user10, user11, user12, user13, user14, user15, user16, user17, user18,
+//                user19, user20);
+//
+//        for (User user : allUsers) {
+//            if (user.getAlias().equals(request.getUserAlias())) {
+//                return new UserResponse(true, "User returned", user);
+//            }
+//        }
+//        return new UserResponse(true, "User \"" + request.getUserAlias() + "\" not found");
     }
 
     public RegisterResponse register(RegisterRequest request) {
