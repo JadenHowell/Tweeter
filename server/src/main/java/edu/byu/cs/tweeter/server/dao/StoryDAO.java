@@ -5,16 +5,23 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.QueryRequest;
+import com.amazonaws.services.dynamodbv2.model.QueryResult;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.service.request.PostRequest;
 import edu.byu.cs.tweeter.shared.service.request.StoryRequest;
+import edu.byu.cs.tweeter.shared.service.request.UserRequest;
 import edu.byu.cs.tweeter.shared.service.response.PostResponse;
 import edu.byu.cs.tweeter.shared.service.response.StoryResponse;
 
@@ -83,6 +90,7 @@ public class StoryDAO {
         assert request.getUserAlias() != null;
 
         List<Status> allStatuses = getDummyStory(request.getUserAlias());
+        //List<Status> allStatuses = getUsersStory(request.getUserAlias());
         List<Status> responseStatuses = new ArrayList<>(request.getLimit());
 
         boolean hasMorePages = false;
@@ -98,6 +106,35 @@ public class StoryDAO {
         }
 
         return new StoryResponse(responseStatuses, hasMorePages);
+    }
+
+    public List<Status> getUsersStory(String userAlias) {
+        List<Status> returnList = new ArrayList<>(); // this list of statuses will be returned
+
+        UserDAO myUserDAO = new UserDAO();
+        User myUser = myUserDAO.getUser(new UserRequest(userAlias, new AuthToken(userAlias, "dummyToken"))).getUser();
+
+        Map<String, String> attrNames = new HashMap<String, String>();
+        attrNames.put("#handle", HandleAttr); // look for statuses based on username
+
+        Map<String, AttributeValue> attrValues = new HashMap<>();
+        attrValues.put(":alias", new AttributeValue().withS(userAlias)); // look for statuses posted by user
+
+        QueryRequest queryRequest = new QueryRequest() // create request object
+                .withTableName(TableName)
+                .withKeyConditionExpression("#handle = :alias")
+                .withExpressionAttributeNames(attrNames)
+                .withExpressionAttributeValues(attrValues);
+
+        QueryResult queryResult = amazonDynamoDB.query(queryRequest); // make the request, capture result
+        List<Map<String, AttributeValue>> items = queryResult.getItems();
+        if (items != null) {
+            for (Map<String, AttributeValue> item : items) { // add each item to our return object
+                Status myStatus = new Status(myUser, Long.parseLong(item.get(TimestampAttr).toString()), item.get(MessageAttr).toString());
+                returnList.add(myStatus);
+            }
+        }
+        return returnList;
     }
 
     /**

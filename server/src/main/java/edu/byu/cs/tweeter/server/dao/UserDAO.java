@@ -49,7 +49,7 @@ public class UserDAO {
 
     private final User user1 = new User("Allen", "Anderson", MALE_IMAGE_URL);
     private final User user2 = new User("Amy", "Ames", FEMALE_IMAGE_URL);
-    private final User user3 = new User("Bob", "Bobson", MALE_IMAGE_URL);
+    private final User user3 = new User("Dillon", "Johnson", "@dillthedude", MALE_IMAGE_URL);
     private final User user4 = new User("Bonnie", "Beatty", FEMALE_IMAGE_URL);
     private final User user5 = new User("Chris", "Colston", MALE_IMAGE_URL);
     private final User user6 = new User("Cindy", "Coats", FEMALE_IMAGE_URL);
