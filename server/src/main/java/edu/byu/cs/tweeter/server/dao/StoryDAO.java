@@ -152,9 +152,9 @@ public class StoryDAO {
     public PostResponse post(PostRequest request) {
         Table table = dynamoDB.getTable(TableName);
         Item item = new Item()
-                .withPrimaryKey(HandleAttr, /*request.getUser().getUser().getAlias()*/ "myUser")
-                .withString(TimestampAttr, /*request.getUser().getDate()*/"myTimestamp")
-                .withString(MessageAttr, request.getUser().getMessage()/*"myMessage"*/);
+                .withPrimaryKey(HandleAttr, request.getStatus().getUser().getAlias())
+                .withString(TimestampAttr, Long.toString(request.getStatus().getDate()))
+                .withString(MessageAttr, request.getStatus().getMessage());
         table.putItem(item);
         return new PostResponse(true, "Post Successful!");
     }

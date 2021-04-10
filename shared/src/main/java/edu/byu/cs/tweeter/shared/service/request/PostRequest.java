@@ -30,8 +30,9 @@ public class PostRequest extends Request {
      *
      * @return the user.
      */
-    public Status getUser() {
+    public Status getStatus() {
         return status;
     }
 
+    public void setStatus(Status status) { this.status = status; }
 }
