@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserResponse getUser(UserRequest request) {
-        return getUserDAO().getUser(request);
+        return getUserDAO().getUser(request.getUserAlias());
     }
 
     /**

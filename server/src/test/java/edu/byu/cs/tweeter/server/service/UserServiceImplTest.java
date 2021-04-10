@@ -32,7 +32,7 @@ public class UserServiceImplTest {
         // Setup a mock FollowingDAO that will return known responses
         expectedResponse = new UserResponse(true, null, user1);
         mockUserDAO = Mockito.mock(UserDAO.class);
-        Mockito.when(mockUserDAO.getUser(request)).thenReturn(expectedResponse);
+        Mockito.when(mockUserDAO.getUser(request.getUserAlias())).thenReturn(expectedResponse);
 
         userServiceImplSpy = Mockito.spy(UserServiceImpl.class);
         Mockito.when(userServiceImplSpy.getUserDAO()).thenReturn(mockUserDAO);

@@ -5,6 +5,8 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
+import com.password4j.Hash;
+import com.password4j.Password;
 
 import java.util.Arrays;
 import java.util.List;
@@ -69,25 +71,31 @@ public class UserDAO {
     private final User user20 = new User("Jill", "Johnson", FEMALE_IMAGE_URL);
     private final User testUser = new User("Test", "User", MALE_IMAGE_URL);
 
-    public UserResponse getUser(UserRequest request) {
+    public UserResponse getUser(String userAlias) {
         List<User> allUsers = Arrays.asList(testUser, user1, user2, user3, user4, user5, user6, user7,
                 user8, user9, user10, user11, user12, user13, user14, user15, user16, user17, user18,
                 user19, user20);
         for (User user : allUsers) {
-            if (user.getAlias().equals(request.getUserAlias())) {
+            if (user.getAlias().equals(userAlias)) {
                 return new UserResponse(true, "User returned", user);
             }
         }
-        return new UserResponse(true, "User \"" + request.getUserAlias() + "\" not found");
+        return new UserResponse(true, "User \"" + userAlias + "\" not found");
     }
 
     public RegisterResponse register(RegisterRequest request) {
         Table table = dynamoDB.getTable(TableName);
+        Hash hashOutput = Password.hash(request.getPassword())
+                .addRandomSalt()
+                .withPBKDF2();
+        String hash = hashOutput.getResult();
+        String salt = hashOutput.getSalt();
+        String hashsalt = hash + salt;
         Item item = new Item()
                 .withPrimaryKey(HandleAttr, request.getUsername())
                 .withString(firstAttr, request.getFirstName())
                 .withString(lastAttr, request.getLastName())
-                .withString(passwordAttr, request.getPassword())
+                .withString(passwordAttr, hashsalt)
                 .withInt(followerCountAttr, 0)
                 .withInt(followeeCountAttr, 0);
         table.putItem(item);
