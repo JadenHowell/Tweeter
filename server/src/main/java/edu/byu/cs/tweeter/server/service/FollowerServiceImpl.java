@@ -31,7 +31,11 @@ public class FollowerServiceImpl implements FollowerService {
         for(String follower : followers){
             result.add(userDAO.getUser(follower).getUser());
         }
-        FollowerResponse response = new FollowerResponse(result, true);
+        boolean hasMore = true;
+        if(result.size() == 0){
+            hasMore = false;
+        }
+        FollowerResponse response = new FollowerResponse(result, hasMore);
         return response;
     }
 

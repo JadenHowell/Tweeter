@@ -5,7 +5,10 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.document.UpdateItemOutcome;
 import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
+import com.amazonaws.services.dynamodbv2.document.spec.UpdateItemSpec;
+import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.password4j.Hash;
 import com.password4j.Password;
 
@@ -14,10 +17,12 @@ import java.util.List;
 
 import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
+import edu.byu.cs.tweeter.shared.service.request.ChangeFollowStateRequest;
 import edu.byu.cs.tweeter.shared.service.request.FollowerCountRequest;
 import edu.byu.cs.tweeter.shared.service.request.FollowingCountRequest;
 import edu.byu.cs.tweeter.shared.service.request.RegisterRequest;
 import edu.byu.cs.tweeter.shared.service.request.UserRequest;
+import edu.byu.cs.tweeter.shared.service.response.ChangeFollowStateResponse;
 import edu.byu.cs.tweeter.shared.service.response.FollowerCountResponse;
 import edu.byu.cs.tweeter.shared.service.response.FollowingCountResponse;
 import edu.byu.cs.tweeter.shared.service.response.IsFollowingResponse;
@@ -110,5 +115,35 @@ public class UserDAO {
             return new FollowingCountResponse(true, null, item.getInt(followeeCountAttr));
         else
             return new FollowingCountResponse(true, null, 0);
+    }
+
+    public void updateFollowCounts(ChangeFollowStateRequest request, ChangeFollowStateResponse stateResponse){
+        if(stateResponse.isSuccess()){
+            Table table = dynamoDB.getTable(TableName);
+            boolean isFollowing = stateResponse.getNewFollowingState();
+            String rootUserAlias = request.getRootUserAlias();
+            String otherUserAlias = request.getOtherUserAlias();
+            int followeeCount = getFolloweeCount(new FollowingCountRequest(rootUserAlias, request.getAuthToken())).getCount();
+            int followerCount = getFollowerCount(new FollowerCountRequest(otherUserAlias, request.getAuthToken())).getCount();
+            if(isFollowing){
+                followeeCount ++;
+                followerCount ++;
+            } else {
+                followeeCount --;
+                followerCount --;
+            }
+            UpdateItemSpec rootSpec = new UpdateItemSpec().withPrimaryKey(HandleAttr, rootUserAlias)
+                    .withUpdateExpression("set followee_count = :r")
+                    .withValueMap(new ValueMap().withInt(":r", followeeCount));
+            UpdateItemSpec otherSpec = new UpdateItemSpec().withPrimaryKey(HandleAttr, otherUserAlias)
+                    .withUpdateExpression("set follower_count = :r")
+                    .withValueMap(new ValueMap().withInt(":r", followerCount));
+            try{
+                table.updateItem(rootSpec);
+                table.updateItem(otherSpec);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
     }
 }

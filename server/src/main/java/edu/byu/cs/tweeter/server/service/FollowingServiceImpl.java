@@ -31,10 +31,13 @@ public class FollowingServiceImpl implements FollowingService {
         UserDAO userDAO = getUserDAO();
         List<User> result = new ArrayList<>();
         for(String followee : followees){
-            System.out.println("Another followee: " + followee);
             result.add(userDAO.getUser(followee).getUser());
         }
-        FollowingResponse response = new FollowingResponse(result, true);
+        boolean hasMore = true;
+        if(result.size() == 0){
+            hasMore = false;
+        }
+        FollowingResponse response = new FollowingResponse(result, hasMore);
         return response;
     }
 

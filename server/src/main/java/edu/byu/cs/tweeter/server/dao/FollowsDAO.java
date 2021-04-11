@@ -105,9 +105,9 @@ public class FollowsDAO {
         Item outcome = table.getItem(spec);
         IsFollowingResponse response = null;
         if(outcome != null){  //if the outcome is null, that means the follows does not exist
-            response = new IsFollowingResponse(true, null, false);
-        } else {
             response = new IsFollowingResponse(true, null, true);
+        } else {
+            response = new IsFollowingResponse(true, null, false);
         }
         return response;
     }
@@ -142,8 +142,13 @@ public class FollowsDAO {
         List<String> followers = new ArrayList<>();
         try {
             outcome = index.query(spec);
-            for (Item item : outcome) {
-                followers.add(item.getString(item.getString("follower_handle")));
+            if (outcome == null){
+                return followers;
+            }
+            Iterator<Item> itemIterator = outcome.iterator();
+            while (itemIterator.hasNext()) {
+                Item item = itemIterator.next();
+                followers.add(item.getString("follower_handle"));
             }
         }
         catch (Exception e) {
@@ -182,8 +187,13 @@ public class FollowsDAO {
         List<String> followees = new ArrayList<>();
         try {
             outcome = table.query(spec);
-            for (Item item : outcome) {
-                followees.add(item.getString(item.getString("followee_handle")));
+            if(outcome == null){
+                return followees;
+            }
+            Iterator<Item> itemIterator = outcome.iterator();
+            while (itemIterator.hasNext()) {
+                Item item = itemIterator.next();
+                followees.add(item.getString("followee_handle"));
             }
         }
         catch (Exception e) {
