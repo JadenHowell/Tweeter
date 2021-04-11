@@ -7,7 +7,7 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.server.dao.RegisterDAO;
+import edu.byu.cs.tweeter.server.dao.UserDAO;
 import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
@@ -18,17 +18,16 @@ public class RegisterServiceImplTest {
 
     private RegisterRequest request;
     private RegisterResponse expectedResponse;
-    private RegisterDAO mockRegisterDAO;
+    private UserDAO mockUserDAO;
     private RegisterServiceImpl registerServiceImplSpy;
 
     @BeforeEach
     public void setup() {
         request = new RegisterRequest("first", "last", "@TestUser", "password");
         expectedResponse = new RegisterResponse(new User("first", "last", "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), new AuthToken("@TestUser", "nonsenseToken"));
-        mockRegisterDAO = Mockito.mock(RegisterDAO.class);
-        Mockito.when(mockRegisterDAO.register(request)).thenReturn(expectedResponse);
+        mockUserDAO = Mockito.mock(UserDAO.class);
         registerServiceImplSpy = Mockito.spy(RegisterServiceImpl.class);
-        Mockito.when(registerServiceImplSpy.registerMeBro()).thenReturn(mockRegisterDAO);
+        Mockito.when(registerServiceImplSpy.getUserDAO()).thenReturn(mockUserDAO);
     }
 
     @Test

@@ -10,6 +10,8 @@ public class RegisterResponse extends Response {
 
     public RegisterResponse(String message) {super(false, message);}
 
+    public RegisterResponse(Boolean success, String message) {super(success, message);}
+
     public RegisterResponse(User user, AuthToken authToken) {
         super(true, null);
         this.user = user;

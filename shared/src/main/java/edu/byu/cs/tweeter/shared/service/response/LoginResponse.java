@@ -20,6 +20,9 @@ public class LoginResponse extends Response {
         super(false, message);
     }
 
+    public LoginResponse(Boolean success, String message) {
+        super(success, message);
+    }
     /**
      * Creates a response indicating that the corresponding request was successful.
      *
