@@ -70,6 +70,9 @@ public class GetFollowingTask extends AsyncTask<FollowingRequest, Void, Followin
      */
     @Override
     protected void onPostExecute(FollowingResponse followingResponse) {
+        if(!followingResponse.isSuccess()) {
+            exception = new Exception(followingResponse.getMessage());
+        }
         if(exception != null) {
             observer.handleException(exception);
         } else {

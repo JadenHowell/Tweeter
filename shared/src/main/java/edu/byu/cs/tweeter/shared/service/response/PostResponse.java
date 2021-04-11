@@ -5,6 +5,10 @@ package edu.byu.cs.tweeter.shared.service.response;
  */
 public class PostResponse extends Response {
 
+    public PostResponse(String message) {
+        super(false, message);
+    }
+
     /**
      * Creates a response indicating that the corresponding request was unsuccessful.
      *

@@ -70,6 +70,9 @@ public class GetFeedTask extends AsyncTask<FeedRequest, Void, FeedResponse> {
      */
     @Override
     protected void onPostExecute(FeedResponse feedResponse) {
+        if(!feedResponse.isSuccess()) {
+            exception = new Exception(feedResponse.getMessage());
+        }
         if(exception != null) {
             observer.handleException(exception);
         } else {

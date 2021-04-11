@@ -3,6 +3,7 @@ package edu.byu.cs.tweeter.server.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.byu.cs.tweeter.server.dao.AuthTokenDAO;
 import edu.byu.cs.tweeter.server.dao.FollowsDAO;
 import edu.byu.cs.tweeter.server.dao.UserDAO;
 import edu.byu.cs.tweeter.shared.domain.User;
@@ -27,6 +28,9 @@ public class FollowingServiceImpl implements FollowingService {
      */
     @Override
     public FollowingResponse getFollowees(FollowingRequest request) {
+        if (!getAuthTokenDAO().checkAuthToken(request.getAuthToken())) {
+            return new FollowingResponse("AuthToken not found or expired, please logout than back in!");
+        }
         List<String> followees = getFollowingDAO().getFollowees(request);
         UserDAO userDAO = getUserDAO();
         List<User> result = new ArrayList<>();
@@ -62,4 +66,6 @@ public class FollowingServiceImpl implements FollowingService {
     UserDAO getUserDAO() {
         return new UserDAO();
     }
+
+    AuthTokenDAO getAuthTokenDAO() { return new AuthTokenDAO(); }
 }

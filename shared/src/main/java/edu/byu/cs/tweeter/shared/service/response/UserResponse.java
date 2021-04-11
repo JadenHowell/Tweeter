@@ -20,7 +20,7 @@ public class UserResponse extends Response{
 
     /**
      * Creates a response indicating that the corresponding request was unsuccessful. Sets the
-     * success and more pages indicators to false.
+     * success and message.
      *
      * @param success a boolean that represents the request was unsuccessful.
      * @param message a message describing why the request was unsuccessful.

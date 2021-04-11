@@ -7,7 +7,7 @@ import edu.byu.cs.tweeter.shared.service.response.LogoutResponse;
 
 public class LogoutServiceImpl implements LogoutService {
     @Override
-    public LogoutResponse logout(LogoutRequest request) { return logMeOutDAO().logout(request); }
+    public LogoutResponse logout(LogoutRequest request) { return getAuthTokenDAO().logout(request); }
 
-    AuthTokenDAO logMeOutDAO() { return new AuthTokenDAO(); }
+    AuthTokenDAO getAuthTokenDAO() { return new AuthTokenDAO(); }
 }

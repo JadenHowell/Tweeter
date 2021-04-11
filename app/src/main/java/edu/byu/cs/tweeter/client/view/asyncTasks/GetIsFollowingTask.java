@@ -66,6 +66,9 @@ public class GetIsFollowingTask extends AsyncTask<IsFollowingRequest, Void, IsFo
      */
     @Override
     protected void onPostExecute(IsFollowingResponse isFollowingResponse) {
+        if(!isFollowingResponse.isSuccess()) {
+            exception = new Exception(isFollowingResponse.getMessage());
+        }
         if(exception != null) {
             observer.handleException(exception);
         } else {

@@ -1,13 +1,18 @@
 package edu.byu.cs.tweeter.server.service;
 
+import edu.byu.cs.tweeter.server.dao.AuthTokenDAO;
 import edu.byu.cs.tweeter.server.dao.UserDAO;
 import edu.byu.cs.tweeter.shared.service.FollowingCountService;
 import edu.byu.cs.tweeter.shared.service.request.FollowingCountRequest;
+import edu.byu.cs.tweeter.shared.service.response.FollowerResponse;
 import edu.byu.cs.tweeter.shared.service.response.FollowingCountResponse;
 
 public class FollowingCountServiceImpl implements FollowingCountService {
     @Override
     public FollowingCountResponse getFollowingCount(FollowingCountRequest request) {
+        if (!getAuthTokenDAO().checkAuthToken(request.getAuthToken())) {
+            return new FollowingCountResponse("AuthToken not found or expired, please logout than back in!");
+        }
         return getFollowingDAO().getFolloweeCount(request);
     }
 
@@ -21,4 +26,6 @@ public class FollowingCountServiceImpl implements FollowingCountService {
     UserDAO getFollowingDAO() {
         return new UserDAO();
     }
+
+    AuthTokenDAO getAuthTokenDAO() { return new AuthTokenDAO(); }
 }
