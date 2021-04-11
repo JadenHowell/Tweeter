@@ -57,7 +57,7 @@ public class LoginTask extends AsyncTask<LoginRequest, Void, LoginResponse> {
         try {
             loginResponse = presenter.login(loginRequests[0]);
 
-            if(loginResponse.isSuccess()) {
+            if(loginResponse.isSuccess() && loginResponse.getMessage() == null) {
                 loadImage(loginResponse.getUser());
             }
         } catch (IOException | TweeterRemoteException ex) {
@@ -91,7 +91,7 @@ public class LoginTask extends AsyncTask<LoginRequest, Void, LoginResponse> {
     protected void onPostExecute(LoginResponse loginResponse) {
         if(exception != null) {
             observer.handleException(exception);
-        } else if(loginResponse.isSuccess()) {
+        } else if(loginResponse.isSuccess() && loginResponse.getMessage() == null) {
             observer.loginSuccessful(loginResponse);
         } else {
             observer.loginUnsuccessful(loginResponse);
