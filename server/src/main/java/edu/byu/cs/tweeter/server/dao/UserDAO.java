@@ -9,18 +9,12 @@ import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
 import com.password4j.Hash;
 import com.password4j.Password;
 
-import java.util.Arrays;
-import java.util.List;
-
-import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.service.request.FollowerCountRequest;
 import edu.byu.cs.tweeter.shared.service.request.FollowingCountRequest;
 import edu.byu.cs.tweeter.shared.service.request.RegisterRequest;
-import edu.byu.cs.tweeter.shared.service.request.UserRequest;
 import edu.byu.cs.tweeter.shared.service.response.FollowerCountResponse;
 import edu.byu.cs.tweeter.shared.service.response.FollowingCountResponse;
-import edu.byu.cs.tweeter.shared.service.response.RegisterResponse;
 import edu.byu.cs.tweeter.shared.service.response.UserResponse;
 
 /**
