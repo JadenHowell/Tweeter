@@ -12,10 +12,6 @@ import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.password4j.Hash;
 import com.password4j.Password;
 
-import java.util.Arrays;
-import java.util.List;
-
-import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.service.request.ChangeFollowStateRequest;
 import edu.byu.cs.tweeter.shared.service.request.FollowerCountRequest;
@@ -50,7 +46,6 @@ public class UserDAO {
     private static DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
 
     private static final String MALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png";
-    private static final String FEMALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/daisy_duck.png";
 
     public UserResponse getUser(String userAlias) {
         GetItemSpec spec = new GetItemSpec()
@@ -62,12 +57,19 @@ public class UserDAO {
             response = new UserResponse(true, "",
                     new User(outcome.getString(firstAttr), outcome.getString(lastAttr), outcome.getString(HandleAttr), MALE_IMAGE_URL));
         } else {
-            response = new UserResponse(false, userAlias + " not found", null);
+            response = new UserResponse(true, userAlias + " not found", null);
         }
         return response;
     }
 
-    public RegisterResponse register(RegisterRequest request) {
+    public String getHash(String userAlias) {
+        Table table = dynamoDB.getTable(TableName);
+        GetItemSpec spec = new GetItemSpec().withPrimaryKey(HandleAttr, userAlias);
+        Item item = table.getItem(spec);
+        return item.getString(passwordAttr);
+    }
+
+    public void putUser(RegisterRequest request) {
         Table table = dynamoDB.getTable(TableName);
         Hash hashOutput = Password.hash(request.getPassword())
                 .addRandomSalt()
@@ -83,7 +85,6 @@ public class UserDAO {
                 .withInt(followerCountAttr, 0)
                 .withInt(followeeCountAttr, 0);
         table.putItem(item);
-        return new RegisterResponse(new User(request.getFirstName(),request.getLastName(), request.getUsername(), MALE_IMAGE_URL), new AuthToken(request.getUsername(), "dummyToken"));
     }
 
     /**

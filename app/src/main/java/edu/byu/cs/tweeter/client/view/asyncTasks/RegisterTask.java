@@ -40,7 +40,7 @@ public class RegisterTask extends AsyncTask<RegisterRequest, Void, RegisterRespo
         try {
             registerResponse = presenter.register(registerRequests[0]);
 
-            if(registerResponse.isSuccess()) {
+            if(registerResponse.isSuccess() && registerResponse.getMessage() == null) {
                 loadImage(registerResponse.getUser());
             }
         } catch (IOException | TweeterRemoteException ex) {
@@ -62,7 +62,7 @@ public class RegisterTask extends AsyncTask<RegisterRequest, Void, RegisterRespo
     protected void onPostExecute(RegisterResponse registerResponse) {
         if(exception != null) {
             observer.handleException(exception);
-        } else if(registerResponse.isSuccess()) {
+        } else if(registerResponse.isSuccess() && registerResponse.getMessage() == null) {
             observer.registerSuccessful(registerResponse);
         } else {
             observer.registerUnsuccessful(registerResponse);
