@@ -1,6 +1,16 @@
 package edu.byu.cs.tweeter.server.service;
 
+import com.amazonaws.services.sqs.AmazonSQS;
+import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
+import com.amazonaws.services.sqs.model.MessageAttributeValue;
+import com.amazonaws.services.sqs.model.SendMessageRequest;
+import com.amazonaws.services.sqs.model.SendMessageResult;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import edu.byu.cs.tweeter.server.dao.StoryDAO;
+import edu.byu.cs.tweeter.server.lambda.QueueRetrievalHandler;
 import edu.byu.cs.tweeter.shared.service.PostService;
 import edu.byu.cs.tweeter.shared.service.request.PostRequest;
 import edu.byu.cs.tweeter.shared.service.response.PostResponse;
@@ -9,6 +19,9 @@ import edu.byu.cs.tweeter.shared.service.response.PostResponse;
  * Contains the business logic for getting the users a user is following.
  */
 public class PostServiceImpl implements PostService {
+
+    private String queueURL = "https://sqs.us-west-2.amazonaws.com/349051798382/fetchFollowersQueue";
+    private AmazonSQS sqs = AmazonSQSClientBuilder.defaultClient();
 
     /**
      * Returns the users that the user specified in the request is following. Uses information in
@@ -21,7 +34,23 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public PostResponse post(PostRequest request) {
-        return getStatusDAO().post(request);
+        PostResponse response =  getStatusDAO().post(request);
+
+        Map<String, MessageAttributeValue> messageAttributes = new HashMap<>();
+        messageAttributes.put(QueueRetrievalHandler.POSTER_ATTR, new MessageAttributeValue()
+                .withDataType("String")
+                .withStringValue(request.getStatus().getUser().getAlias()));
+        messageAttributes.put(QueueRetrievalHandler.TIMESTAMP_ATTR, new MessageAttributeValue()
+                .withDataType("Number")
+                .withStringValue(String.valueOf(request.getStatus().getDate())));
+
+        SendMessageRequest send_msg_request = new SendMessageRequest()
+                .withQueueUrl(queueURL)
+                .withMessageBody(request.getStatus().getMessage())
+                .withMessageAttributes(messageAttributes);
+        sqs.sendMessage(send_msg_request);
+
+        return response;
     }
 
     /**
