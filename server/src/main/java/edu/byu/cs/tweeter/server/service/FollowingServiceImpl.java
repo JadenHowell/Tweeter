@@ -31,7 +31,8 @@ public class FollowingServiceImpl implements FollowingService {
         UserDAO userDAO = getUserDAO();
         List<User> result = new ArrayList<>();
         for(String followee : followees){
-            result.add(userDAO.getUser(new UserRequest(followee, request.getAuthToken())).getUser());
+            System.out.println("Another followee: " + followee);
+            result.add(userDAO.getUser(followee).getUser());
         }
         FollowingResponse response = new FollowingResponse(result, true);
         return response;

@@ -105,9 +105,9 @@ public class FollowsDAO {
         Item outcome = table.getItem(spec);
         IsFollowingResponse response = null;
         if(outcome != null){  //if the outcome is null, that means the follows does not exist
-            response = new IsFollowingResponse(true, null, true);
-        } else {
             response = new IsFollowingResponse(true, null, false);
+        } else {
+            response = new IsFollowingResponse(true, null, true);
         }
         return response;
     }
@@ -147,7 +147,8 @@ public class FollowsDAO {
             }
         }
         catch (Exception e) {
-            System.err.println(e.getMessage());
+            System.out.println("Failed query");
+            e.printStackTrace();
         }
         return followers;
     }
@@ -178,7 +179,7 @@ public class FollowsDAO {
         }
 
         ItemCollection<QueryOutcome> outcome = null;
-        List<String> followees = null;
+        List<String> followees = new ArrayList<>();
         try {
             outcome = table.query(spec);
             for (Item item : outcome) {
@@ -186,8 +187,8 @@ public class FollowsDAO {
             }
         }
         catch (Exception e) {
-            System.err.println(e.getMessage());
-
+            System.out.println("Failed query");
+            e.printStackTrace();
         }
         return followees;
     }

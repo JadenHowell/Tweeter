@@ -29,7 +29,7 @@ public class FollowerServiceImpl implements FollowerService {
         UserDAO userDAO = getUserDAO();
         List<User> result = new ArrayList<>();
         for(String follower : followers){
-            result.add(userDAO.getUser(new UserRequest(follower, request.getAuthToken())).getUser());
+            result.add(userDAO.getUser(follower).getUser());
         }
         FollowerResponse response = new FollowerResponse(result, true);
         return response;
