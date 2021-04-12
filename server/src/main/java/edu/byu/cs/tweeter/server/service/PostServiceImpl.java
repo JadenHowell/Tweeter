@@ -34,7 +34,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostResponse post(PostRequest request) {
         if (!getAuthTokenDAO().checkAuthToken(request.getAuthToken())) {
-            return new PostResponse("AuthToken not found or expired, please logout than back in!");
+            return new PostResponse(false, "AuthToken not found or expired, please logout than back in!");
         }
 
         PostResponse response =  getStatusDAO().post(request);
@@ -54,7 +54,6 @@ public class PostServiceImpl implements PostService {
         sqs.sendMessage(send_msg_request);
 
         return response;
-        return getStatusDAO().post(request);
     }
 
     /**
