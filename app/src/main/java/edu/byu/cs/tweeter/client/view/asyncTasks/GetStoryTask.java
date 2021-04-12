@@ -70,6 +70,9 @@ public class GetStoryTask extends AsyncTask<StoryRequest, Void, StoryResponse> {
      */
     @Override
     protected void onPostExecute(StoryResponse storyResponse) {
+        if(!storyResponse.isSuccess()) {
+            exception = new Exception(storyResponse.getMessage());
+        }
         if(exception != null) {
             observer.handleException(exception);
         } else {

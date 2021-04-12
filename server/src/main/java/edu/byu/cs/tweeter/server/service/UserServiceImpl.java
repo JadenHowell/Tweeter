@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.server.service;
 
+import edu.byu.cs.tweeter.server.dao.AuthTokenDAO;
 import edu.byu.cs.tweeter.server.dao.UserDAO;
 import edu.byu.cs.tweeter.shared.service.UserService;
 import edu.byu.cs.tweeter.shared.service.request.UserRequest;
@@ -21,6 +22,9 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public UserResponse getUser(UserRequest request) {
+        if (!getAuthTokenDAO().checkAuthToken(request.getAuthToken())) {
+            return new UserResponse(true, "AuthToken not found or expired, please logout than back in!", null);
+        }
         return getUserDAO().getUser(request.getUserAlias());
     }
 
@@ -34,4 +38,6 @@ public class UserServiceImpl implements UserService {
     UserDAO getUserDAO() {
         return new UserDAO();
     }
+
+    AuthTokenDAO getAuthTokenDAO() { return new AuthTokenDAO(); }
 }

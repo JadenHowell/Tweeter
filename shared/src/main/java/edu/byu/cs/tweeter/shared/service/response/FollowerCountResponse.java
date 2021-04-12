@@ -3,6 +3,10 @@ package edu.byu.cs.tweeter.shared.service.response;
 public class FollowerCountResponse extends Response{
     int count;
 
+    public FollowerCountResponse(String message) {
+        super(false, message);
+    }
+
     public FollowerCountResponse(boolean success, String message, int count){
         super(success, message);
         this.count = count;

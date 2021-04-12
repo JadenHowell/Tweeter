@@ -5,10 +5,9 @@ import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import com.amazonaws.services.sqs.model.MessageAttributeValue;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
 import com.amazonaws.services.sqs.model.SendMessageResult;
-
 import java.util.HashMap;
 import java.util.Map;
-
+import edu.byu.cs.tweeter.server.dao.AuthTokenDAO;
 import edu.byu.cs.tweeter.server.dao.StoryDAO;
 import edu.byu.cs.tweeter.server.lambda.QueueRetrievalHandler;
 import edu.byu.cs.tweeter.shared.service.PostService;
@@ -34,6 +33,10 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public PostResponse post(PostRequest request) {
+        if (!getAuthTokenDAO().checkAuthToken(request.getAuthToken())) {
+            return new PostResponse("AuthToken not found or expired, please logout than back in!");
+        }
+
         PostResponse response =  getStatusDAO().post(request);
 
         Map<String, MessageAttributeValue> messageAttributes = new HashMap<>();
@@ -51,6 +54,7 @@ public class PostServiceImpl implements PostService {
         sqs.sendMessage(send_msg_request);
 
         return response;
+        return getStatusDAO().post(request);
     }
 
     /**
@@ -63,4 +67,6 @@ public class PostServiceImpl implements PostService {
     StoryDAO getStatusDAO() {
         return new StoryDAO();
     }
+
+    AuthTokenDAO getAuthTokenDAO() { return new AuthTokenDAO(); }
 }

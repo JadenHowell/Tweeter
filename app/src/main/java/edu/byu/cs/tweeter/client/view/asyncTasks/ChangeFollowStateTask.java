@@ -66,9 +66,12 @@ public class ChangeFollowStateTask extends AsyncTask<ChangeFollowStateRequest, V
      */
     @Override
     protected void onPostExecute(ChangeFollowStateResponse changeFollowStateResponse) {
+        if(!changeFollowStateResponse.isSuccess()) {
+            exception = new Exception(changeFollowStateResponse.getMessage());
+        }
         if(exception != null) {
             observer.handleException(exception);
-        } else {
+        } else  {
             observer.changeButtonStateRetrieved(changeFollowStateResponse);
         }
     }
