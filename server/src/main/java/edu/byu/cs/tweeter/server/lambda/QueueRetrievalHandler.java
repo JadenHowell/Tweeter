@@ -8,7 +8,11 @@ import com.amazonaws.services.sqs.model.MessageAttributeValue;
 import com.amazonaws.services.sqs.model.SendMessageRequest;
 
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,10 +35,14 @@ public class QueueRetrievalHandler implements RequestHandler<SQSEvent, Void> {
             String alias = attributeMap.get(POSTER_ATTR).getStringValue();
             String timestamp = attributeMap.get(TIMESTAMP_ATTR).getStringValue();
 
-            //get getting pages of 25 until there are no more followers
             FollowsDAO followsDAO = getFollowsDAO();
-            List<String> followers = followsDAO.getFollowers(new FollowerRequest(alias, 25, null, null));
-            while(followers.size() > 0){
+            List<String> f = followsDAO.getFollowers(new FollowerRequest(alias, 10000, null, null));
+            LinkedList<String> followers = new LinkedList<>(f);
+            for(int i = 0; i<400; i ++) {
+                if(followers.size() == 0){
+                    break;
+                }
+                List<String> batchOfFollowers = get25(followers);
                 Map<String, MessageAttributeValue> messageAttributes = new HashMap<>();
                 messageAttributes.put(UpdateFeedsHandler.POSTER_ATTR, new MessageAttributeValue()
                         .withDataType("String")
@@ -44,7 +52,7 @@ public class QueueRetrievalHandler implements RequestHandler<SQSEvent, Void> {
                         .withStringValue(String.valueOf(timestamp)));
                 messageAttributes.put(UpdateFeedsHandler.FOLLOWERS_ATTR, new MessageAttributeValue()
                         .withDataType("String")
-                        .withStringValue(new Gson().toJson(followers)));
+                        .withStringValue(new Gson().toJson(batchOfFollowers)));
 
                 SendMessageRequest send_msg_request = new SendMessageRequest()
                         .withQueueUrl(feedsQueueURL)
@@ -54,6 +62,17 @@ public class QueueRetrievalHandler implements RequestHandler<SQSEvent, Void> {
             }
         }
         return null;
+    }
+
+    private static List<String> get25(List<String> original){
+        List<String> toReturn = new LinkedList<>();
+        for(int i = 0; i < 25; i ++){
+            if(original.size()==0){
+                break;
+            }
+            toReturn.add(original.remove(0));
+        }
+        return toReturn;
     }
 
     private FollowsDAO getFollowsDAO(){
