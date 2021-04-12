@@ -16,6 +16,7 @@ public class RegisterServiceImpl implements RegisterService {
             return new RegisterResponse(true, "Username already exists, pick a new one or login.");
         }
         getUserDAO().putUser(request);
+
         return new RegisterResponse(new User(request.getFirstName(),request.getLastName(),
                 request.getUsername(), MALE_IMAGE_URL), getAuthTokenDAO().newAuthToken(request.getUsername()));
     }

@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Objects;
 
 import edu.byu.cs.tweeter.R;
@@ -38,6 +39,7 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
     private static final String USER_KEY = "UserKey";
     private static final String AUTH_TOKEN_KEY = "AuthTokenKey";
     private Toast registerToast;
+    private byte[] byteArray;
 
     private User user;
     private AuthToken authToken;
@@ -75,6 +77,7 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
                     },
                     100);
         }
+
         takePictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
                 public void onClick(View view) {
@@ -107,6 +110,7 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
                 String password = registerPassword.getText().toString();
 
                 RegisterRequest registerRequest = new RegisterRequest(firstName,lastName,username, password);
+                registerRequest.setPhoto(byteArray);
                 RegisterTask registerTask = new RegisterTask(presenter, RegisterFragment.this);
                 registerTask.execute(registerRequest);
             }
@@ -118,7 +122,11 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 100){
-            Bitmap captureImage = (Bitmap) data.getExtras().get("data");
+            Bitmap bmp = (Bitmap) data.getExtras().get("data");
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byteArray = stream.toByteArray();
+            bmp.recycle();
         }
     }
 
