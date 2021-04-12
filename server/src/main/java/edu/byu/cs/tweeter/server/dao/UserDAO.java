@@ -46,8 +46,6 @@ public class UserDAO {
             .build();
     private static DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
 
-    private static final String MALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png";
-
     public UserResponse getUser(String userAlias) {
         GetItemSpec spec = new GetItemSpec()
                 .withPrimaryKey(HandleAttr, userAlias);
