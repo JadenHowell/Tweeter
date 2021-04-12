@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.server.service;
 
+import edu.byu.cs.tweeter.server.dao.AuthTokenDAO;
 import edu.byu.cs.tweeter.server.dao.StoryDAO;
 import edu.byu.cs.tweeter.shared.service.StoryService;
 import edu.byu.cs.tweeter.shared.service.request.StoryRequest;
@@ -21,6 +22,9 @@ public class StoryServiceImpl implements StoryService {
      */
     @Override
     public StoryResponse getStory(StoryRequest request) {
+        if (!getAuthTokenDAO().checkAuthToken(request.getAuthToken())) {
+            return new StoryResponse("AuthToken not found or expired, please logout than back in!");
+        }
         return getStatusDAO().getStory(request);
     }
 
@@ -34,4 +38,6 @@ public class StoryServiceImpl implements StoryService {
     StoryDAO getStatusDAO() {
         return new StoryDAO();
     }
+
+    AuthTokenDAO getAuthTokenDAO() { return new AuthTokenDAO(); }
 }

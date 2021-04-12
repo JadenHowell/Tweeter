@@ -67,6 +67,9 @@ public class GetFollowingCountTask extends AsyncTask<FollowingCountRequest, Void
      */
     @Override
     protected void onPostExecute(FollowingCountResponse followingCountResponse) {
+        if(!followingCountResponse.isSuccess()) {
+            exception = new Exception(followingCountResponse.getMessage());
+        }
         if(exception != null) {
             observer.handleException(exception);
         } else {

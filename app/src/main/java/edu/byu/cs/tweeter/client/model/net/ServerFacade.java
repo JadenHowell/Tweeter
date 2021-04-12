@@ -114,7 +114,7 @@ public class ServerFacade {
             throws IOException, TweeterRemoteException {
         FollowingResponse response = clientCommunicator.doPost(FOLLOWEES_URL_PATH, request, null, FollowingResponse.class);
 
-        if(response.isSuccess()) {
+        if(response.getClass() == FollowingResponse.class) {
             return response;
         } else {
             throw new RuntimeException(response.getMessage());
@@ -134,7 +134,7 @@ public class ServerFacade {
     public FollowerResponse getFollowers(FollowerRequest request) throws IOException, TweeterRemoteException {
         FollowerResponse response = clientCommunicator.doPost(FOLLOWERS_URL_PATH, request, null, FollowerResponse.class);
 
-        if(response.isSuccess()) {
+        if(response.getClass() == FollowerResponse.class) {
             return response;
         } else {
             throw new RuntimeException(response.getMessage());
@@ -150,7 +150,7 @@ public class ServerFacade {
     public FollowingCountResponse getFollowingCount(FollowingCountRequest request) throws IOException, TweeterRemoteException {
         FollowingCountResponse response = clientCommunicator.doPost(FOLLOWING_COUNT_URL_PATH, request, null, FollowingCountResponse.class);
 
-        if(response.isSuccess()) {
+        if(response.getClass() == FollowingCountResponse.class) {
             return response;
         } else {
             throw new RuntimeException(response.getMessage());
@@ -166,7 +166,7 @@ public class ServerFacade {
     public FollowerCountResponse getFollowerCount(FollowerCountRequest request) throws IOException, TweeterRemoteException {
         FollowerCountResponse response = clientCommunicator.doPost(FOLLOWER_COUNT_URL_PATH, request, null, FollowerCountResponse.class);
 
-        if(response.isSuccess()) {
+        if(response.getClass() == FollowerCountResponse.class) {
             return response;
         } else {
             throw new RuntimeException(response.getMessage());
@@ -176,7 +176,7 @@ public class ServerFacade {
     public IsFollowingResponse getIsFollowing(IsFollowingRequest request) throws IOException, TweeterRemoteException {
         IsFollowingResponse response = clientCommunicator.doPost(IS_FOLLOWING_URL_PATH, request, null, IsFollowingResponse.class);
 
-        if(response.isSuccess()){
+        if(response.getClass() == IsFollowingResponse.class){
             return response;
         } else{
             throw new RuntimeException(response.getMessage());
@@ -186,7 +186,7 @@ public class ServerFacade {
     public ChangeFollowStateResponse changeFollowState(ChangeFollowStateRequest request) throws IOException, TweeterRemoteException {
         ChangeFollowStateResponse response = clientCommunicator.doPost(CHANGE_FOLLOW_STATE_URL_PATH, request, null, ChangeFollowStateResponse.class);
 
-        if(response.isSuccess()){
+        if(response.getClass() == ChangeFollowStateResponse.class){
             return response;
         } else{
             throw new RuntimeException(response.getMessage());
@@ -197,7 +197,7 @@ public class ServerFacade {
             throws IOException, TweeterRemoteException {
         StoryResponse response = clientCommunicator.doPost(STORY_URL_PATH, request, null, StoryResponse.class);
 
-        if(response.isSuccess()) {
+        if(response.getClass() == StoryResponse.class) {
             return response;
         } else {
             throw new RuntimeException(response.getMessage());
@@ -208,7 +208,7 @@ public class ServerFacade {
             throws IOException, TweeterRemoteException {
         FeedResponse response = clientCommunicator.doPost(FEED_URL_PATH, request, null, FeedResponse.class);
 
-        if(response.isSuccess()) {
+        if(response.getClass() == FeedResponse.class) {
             return response;
         } else {
             throw new RuntimeException(response.getMessage());
@@ -219,7 +219,7 @@ public class ServerFacade {
             throws IOException, TweeterRemoteException {
         PostResponse response = clientCommunicator.doPost(POST_URL_PATH, request, null, PostResponse.class);
 
-        if(response.isSuccess()) {
+        if(response.getClass() == PostResponse.class) {
             return response;
         } else {
             throw new RuntimeException(response.getMessage());

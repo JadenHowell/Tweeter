@@ -70,9 +70,12 @@ public class GetFollowerTask extends AsyncTask<FollowerRequest, Void, FollowerRe
      */
     @Override
     protected void onPostExecute(FollowerResponse followerResponse) {
+        if(!followerResponse.isSuccess()) {
+            exception = new Exception(followerResponse.getMessage());
+        }
         if(exception != null) {
             observer.handleException(exception);
-        } else {
+        } else { 
             observer.followersRetrieved(followerResponse);
         }
     }

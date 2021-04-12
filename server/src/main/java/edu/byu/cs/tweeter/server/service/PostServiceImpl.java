@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.server.service;
 
+import edu.byu.cs.tweeter.server.dao.AuthTokenDAO;
 import edu.byu.cs.tweeter.server.dao.StoryDAO;
 import edu.byu.cs.tweeter.shared.service.PostService;
 import edu.byu.cs.tweeter.shared.service.request.PostRequest;
@@ -21,6 +22,9 @@ public class PostServiceImpl implements PostService {
      */
     @Override
     public PostResponse post(PostRequest request) {
+        if (!getAuthTokenDAO().checkAuthToken(request.getAuthToken())) {
+            return new PostResponse("AuthToken not found or expired, please logout than back in!");
+        }
         return getStatusDAO().post(request);
     }
 
@@ -34,4 +38,6 @@ public class PostServiceImpl implements PostService {
     StoryDAO getStatusDAO() {
         return new StoryDAO();
     }
+
+    AuthTokenDAO getAuthTokenDAO() { return new AuthTokenDAO(); }
 }

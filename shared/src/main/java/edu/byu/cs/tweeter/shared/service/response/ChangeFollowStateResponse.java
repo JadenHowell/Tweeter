@@ -9,5 +9,9 @@ public class ChangeFollowStateResponse extends Response {
         this.newFollowingState = newFollowingState;
     }
 
+    public ChangeFollowStateResponse(boolean success, String message){
+        super(success, message);
+    }
+
     public boolean getNewFollowingState(){return newFollowingState; }
 }
