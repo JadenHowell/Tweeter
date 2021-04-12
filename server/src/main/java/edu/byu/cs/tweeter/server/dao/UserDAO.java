@@ -35,6 +35,7 @@ public class UserDAO {
     private static final String firstAttr = "first_name";
     private static final String lastAttr = "last_name";
     private static final String passwordAttr = "password";
+    private static final String photoAttr = "photo_url";
     private static final String followerCountAttr = "follower_count";
     private static final String followeeCountAttr = "followee_count";
 
@@ -45,8 +46,6 @@ public class UserDAO {
             .build();
     private static DynamoDB dynamoDB = new DynamoDB(amazonDynamoDB);
 
-    private static final String MALE_IMAGE_URL = "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png";
-
     public UserResponse getUser(String userAlias) {
         GetItemSpec spec = new GetItemSpec()
                 .withPrimaryKey(HandleAttr, userAlias);
@@ -55,7 +54,7 @@ public class UserDAO {
         UserResponse response = null;
         if(outcome != null){  //if the outcome is null, that means the user does not exist
             response = new UserResponse(true, "",
-                    new User(outcome.getString(firstAttr), outcome.getString(lastAttr), outcome.getString(HandleAttr), MALE_IMAGE_URL));
+                    new User(outcome.getString(firstAttr), outcome.getString(lastAttr), outcome.getString(HandleAttr), outcome.getString(photoAttr)));
         } else {
             response = new UserResponse(true, userAlias + " not found", null);
         }
@@ -81,6 +80,7 @@ public class UserDAO {
                 .withPrimaryKey(HandleAttr, request.getUsername())
                 .withString(firstAttr, request.getFirstName())
                 .withString(lastAttr, request.getLastName())
+                .withString(photoAttr, request.getPhotoURL())
                 .withString(passwordAttr, hashsalt)
                 .withInt(followerCountAttr, 0)
                 .withInt(followeeCountAttr, 0);

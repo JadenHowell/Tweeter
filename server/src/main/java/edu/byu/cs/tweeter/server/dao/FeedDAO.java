@@ -7,6 +7,7 @@ import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.document.ItemCollection;
 import com.amazonaws.services.dynamodbv2.document.QueryOutcome;
 import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.document.TableWriteItems;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 
 import org.graalvm.compiler.lir.gen.ArithmeticLIRGenerator;
@@ -88,14 +89,18 @@ public class FeedDAO {
         return new FeedResponse(statuses, true);
     }
 
-    public void postToFeed(String alias, String posterAlias, String message, String timestamp) {
-        Table table = dynamoDB.getTable(TABLE_NAME);
-        Item item = new Item()
-                .withPrimaryKey(USER_ALIAS, alias)
-                .withString(TIMESTAMP_ATTR, timestamp)
-                .withString(MESSAGE_ATTR, message)
-                .withString(POSTER_ALIAS, posterAlias);
-        table.putItem(item);
-    }
+    public void postToFeed(List<String> followers, String posterAlias, String message, String timestamp) {
+        TableWriteItems writeItems = new TableWriteItems(TABLE_NAME);
+        for(int i = 0; i < followers.size(); i ++) {
+            Item item = new Item()
+                    .withPrimaryKey(USER_ALIAS, followers.get(i))
+                    .withString(TIMESTAMP_ATTR, timestamp)
+                    .withString(MESSAGE_ATTR, message)
+                    .withString(POSTER_ALIAS, posterAlias);
 
+            writeItems.addItemToPut(item);
+        }
+        System.out.println("doing batch write with message " + message);
+        dynamoDB.batchWriteItem(writeItems);
+    }
 }

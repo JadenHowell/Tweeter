@@ -28,9 +28,7 @@ public class UpdateFeedsHandler implements RequestHandler<SQSEvent, Void> {
             String stringFollowers = attributeMap.get(FOLLOWERS_ATTR).getStringValue();
             Type listType = new TypeToken<ArrayList<String>>() {}.getType();
             List<String> followers = (new Gson()).fromJson(stringFollowers, listType);
-            for(int i = 0; i < followers.size(); i ++){
-                feedDAO.postToFeed(followers.get(i), alias, message, timestamp);
-            }
+            feedDAO.postToFeed(followers, alias, message, timestamp);
         }
         return null;
     }

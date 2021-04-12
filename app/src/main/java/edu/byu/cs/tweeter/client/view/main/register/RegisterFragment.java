@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -21,6 +23,8 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.io.ByteArrayOutputStream;
+import java.util.Base64;
 import java.util.Objects;
 
 import edu.byu.cs.tweeter.R;
@@ -38,6 +42,7 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
     private static final String USER_KEY = "UserKey";
     private static final String AUTH_TOKEN_KEY = "AuthTokenKey";
     private Toast registerToast;
+    private byte[] byteArray;
 
     private User user;
     private AuthToken authToken;
@@ -75,6 +80,7 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
                     },
                     100);
         }
+
         takePictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
                 public void onClick(View view) {
@@ -96,6 +102,7 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
              *
              * @param view the view object that was clicked.
              */
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view) {
                 registerToast = Toast.makeText(getContext(), "Registering New User", Toast.LENGTH_LONG);
@@ -107,6 +114,8 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
                 String password = registerPassword.getText().toString();
 
                 RegisterRequest registerRequest = new RegisterRequest(firstName,lastName,username, password);
+                String s = Base64.getEncoder().encodeToString(byteArray);
+                registerRequest.setStringPhoto(s);
                 RegisterTask registerTask = new RegisterTask(presenter, RegisterFragment.this);
                 registerTask.execute(registerRequest);
             }
@@ -118,7 +127,11 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 100){
-            Bitmap captureImage = (Bitmap) data.getExtras().get("data");
+            Bitmap bmp = (Bitmap) data.getExtras().get("data");
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byteArray = stream.toByteArray();
+            bmp.recycle();
         }
     }
 
@@ -142,6 +155,5 @@ public class RegisterFragment extends Fragment implements RegisterPresenter.View
     public void handleException(Exception ex) {
         Log.e(LOG_TAG, ex.getMessage(), ex);
         Toast.makeText(getContext(), "Failed to login because of exception: " + ex.getMessage(), Toast.LENGTH_LONG).show();
-
     }
 }

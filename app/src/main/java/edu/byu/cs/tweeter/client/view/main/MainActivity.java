@@ -114,7 +114,6 @@ public class MainActivity extends AppCompatActivity
             LogoutTask logoutTask = new LogoutTask(logoutPresenter, this);
             LogoutRequest logoutRequest = new LogoutRequest(user.getAlias(), authToken);
             logoutTask.execute(logoutRequest);
-            Toast.makeText(this, "Logout successful", Toast.LENGTH_SHORT).show();
         }
         return true;
     }
@@ -140,6 +139,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void logoutSuccessful(LogoutResponse logoutResponse) {
+        Toast.makeText(this, "Logout successful", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
