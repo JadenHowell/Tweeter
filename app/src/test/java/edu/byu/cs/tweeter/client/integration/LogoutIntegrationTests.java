@@ -1,6 +1,7 @@
 package edu.byu.cs.tweeter.client.integration;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -16,6 +17,7 @@ public class LogoutIntegrationTests {
 
     private Service logoutService;
 
+    @Disabled
     @Test
     public void logoutIsSuccess() throws IOException, TweeterRemoteException {
         logoutService = new LogoutServiceProxy();

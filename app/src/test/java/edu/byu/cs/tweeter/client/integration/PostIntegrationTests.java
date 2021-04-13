@@ -1,6 +1,7 @@
 package edu.byu.cs.tweeter.client.integration;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ public class PostIntegrationTests {
 
     private Service postService;
 
+    @Disabled
     @Test
     public void postIsSuccess() throws IOException, TweeterRemoteException {
         Status resultStatus1 = new Status(new User("FirstName1", "LastName1",

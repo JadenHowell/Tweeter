@@ -8,7 +8,8 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.util.Calendar;
 
-import edu.byu.cs.tweeter.server.dao.StatusDAO;
+import edu.byu.cs.tweeter.server.dao.AuthTokenDAO;
+import edu.byu.cs.tweeter.server.dao.StoryDAO;
 import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.Status;
 import edu.byu.cs.tweeter.shared.domain.User;
@@ -20,35 +21,41 @@ public class PostServiceImplTest {
 
     private PostRequest request;
     private PostResponse expectedResponse;
-    private StatusDAO mockStatusDAO;
+    private StoryDAO mockStoryDAO;
     private PostServiceImpl postServiceImplSpy;
+    private AuthTokenDAO mockAuthTokenDAO;
 
     @BeforeEach
     public void setup() {
-        User currentUser = new User("FirstName", "LastName", null);
+        mockAuthTokenDAO = Mockito.mock(AuthTokenDAO.class);
+        AuthToken token = new AuthToken("@TestUser", "nonsenseToken");
+        Mockito.when(mockAuthTokenDAO.checkAuthToken(token)).thenReturn(true);
+
         Status resultStatus1 = new Status(new User("FirstName1", "LastName1",
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"),
                 Calendar.getInstance().getTime().getTime(), "Status1");
 
         // Setup a request object to use in the tests
-        request = new PostRequest(resultStatus1, new AuthToken("@TestUser", "nonsenseToken"));
+        request = new PostRequest(resultStatus1, token);
 
         // Setup a mock FollowingDAO that will return known responses
         expectedResponse = new PostResponse(true, null);
-        mockStatusDAO = Mockito.mock(StatusDAO.class);
-        Mockito.when(mockStatusDAO.post(request)).thenReturn(expectedResponse);
+        mockStoryDAO = Mockito.mock(StoryDAO.class);
+        Mockito.when(mockStoryDAO.post(request)).thenReturn(expectedResponse);
 
         postServiceImplSpy = Mockito.spy(PostServiceImpl.class);
-        Mockito.when(postServiceImplSpy.getStatusDAO()).thenReturn(mockStatusDAO);
+        Mockito.when(postServiceImplSpy.getStatusDAO()).thenReturn(mockStoryDAO);
+        Mockito.when(postServiceImplSpy.getAuthTokenDAO()).thenReturn(mockAuthTokenDAO);
     }
 
     /**
      * Verify that the {@link PostServiceImpl#post(PostRequest)}
-     * method returns the same result as the {@link StatusDAO} class.
+     * method returns the same result as the {@link StoryDAO} class.
      */
     @Test
     public void testPost_validRequest_correctResponse() throws IOException, TweeterRemoteException {
         PostResponse response = postServiceImplSpy.post(request);
-        Assertions.assertEquals(expectedResponse, response);
+        Assertions.assertNull(response.getMessage());
+        Assertions.assertTrue(response.isSuccess());
     }
 }

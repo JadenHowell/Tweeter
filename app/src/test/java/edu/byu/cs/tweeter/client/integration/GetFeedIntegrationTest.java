@@ -2,6 +2,7 @@ package edu.byu.cs.tweeter.client.integration;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -65,6 +66,7 @@ public class GetFeedIntegrationTest {
         feedService = new FeedServiceProxy();
     }
 
+    @Disabled
     @Test
     public void shouldFetchResponse_when_basicRequest() throws IOException, TweeterRemoteException {
         request = new FeedRequest("@TestUser",10,null, new AuthToken("@TestUser", "nonsenseToken"));
@@ -83,6 +85,7 @@ public class GetFeedIntegrationTest {
         Assertions.assertTrue(response.getHasMorePages());
     }
 
+    @Disabled
     @Test
     public void shouldFetchResponse_when_lastFolloweeAliasNotNull() throws IOException, TweeterRemoteException {
         request = new FeedRequest("@TestUser",10, status15, new AuthToken("@TestUser", "nonsenseToken"));
@@ -101,6 +104,7 @@ public class GetFeedIntegrationTest {
         Assertions.assertFalse(response.getHasMorePages());
     }
 
+    @Disabled
     @Test
     public void shouldFetchEmptyResponse_when_lastFolloweeAliasIsLastFollower() throws IOException, TweeterRemoteException {
         request = new FeedRequest("@TestUser",10, status25, new AuthToken("@TestUser", "nonsenseToken"));

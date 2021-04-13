@@ -36,7 +36,7 @@ public class RegisterServiceImpl implements RegisterService {
     AuthTokenDAO getAuthTokenDAO() { return new AuthTokenDAO(); }
 
     private void uploadPhoto(RegisterRequest request){
-        if(request.getStringPhoto().length() == 0){
+        if(request.getStringPhoto() == null || request.getStringPhoto().length() == 0){
             request.setPhotoURL(defaultPhoto);
             return;
         }

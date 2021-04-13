@@ -2,6 +2,7 @@ package edu.byu.cs.tweeter.client.integration;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -50,6 +51,7 @@ public class GetFollowerIntegrationTest {
         followerService = new FollowerServiceProxy();
     }
 
+    @Disabled
     @Test
     public void shouldFetchResponse_when_basicRequest() throws IOException, TweeterRemoteException {
         request = new FollowerRequest("@TestUser",8,null, new AuthToken("@TestUser", "nonsenseToken"));
@@ -68,6 +70,7 @@ public class GetFollowerIntegrationTest {
         Assertions.assertTrue(response.getHasMorePages());
     }
 
+    @Disabled
     @Test
     public void shouldFetchResponse_when_lastFollowerAliasNotNull() throws IOException, TweeterRemoteException {
         request = new FollowerRequest("@TestUser",8,"@ElizabethEngle", new AuthToken("@TestUser", "nonsenseToken"));
@@ -86,6 +89,7 @@ public class GetFollowerIntegrationTest {
         Assertions.assertFalse(response.getHasMorePages());
     }
 
+    @Disabled
     @Test
     public void shouldFetchEmptyResponse_when_lastFollowerAliasIsLastFollower() throws IOException, TweeterRemoteException {
         request = new FollowerRequest("@TestUser",10,"@JillJohnson", new AuthToken("@TestUser", "nonsenseToken"));
@@ -96,12 +100,4 @@ public class GetFollowerIntegrationTest {
         Assertions.assertFalse(response.getHasMorePages());
     }
 
-    /*
-    HOW do i make the server return a certain error code????
-    @Test
-    public void shouldThrowError_when_badRequest() throws IOException, TweeterRemoteException {
-        request = new FollowerRequest(null,-1,null);
-        Assertions.assertThrows(TweeterRemoteException.class, () -> followerService.serve(request));
-    }
-     */
 }

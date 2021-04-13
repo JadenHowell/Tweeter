@@ -18,9 +18,7 @@ public class LoginServiceImpl implements LoginService {
         String hash = getUserDAO().getHash(request.getUsername());
         String hashfromDB = hash.split("==")[0] + "==";
         String saltfromDB = hash.split("==")[1];
-        Boolean match = Password.check(request.getPassword(), hashfromDB)
-                .addSalt(saltfromDB)
-                .withPBKDF2();
+        boolean match = getMatch(request.getPassword(), saltfromDB, hashfromDB);
 
         if (match) {
             return new LoginResponse(getUserDAO().getUser(request.getUsername()).getUser(),
@@ -28,6 +26,12 @@ public class LoginServiceImpl implements LoginService {
         } else {
             return new LoginResponse(true, "Password is not correct.");
         }
+    }
+
+    public boolean getMatch(String password, String saltFromDB, String hashFromDB){
+        return Password.check(password, hashFromDB)
+                .addSalt(saltFromDB)
+                .withPBKDF2();
     }
 
     AuthTokenDAO getAuthTokenDAO() {

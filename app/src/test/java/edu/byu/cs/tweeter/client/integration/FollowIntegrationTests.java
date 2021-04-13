@@ -1,6 +1,7 @@
 package edu.byu.cs.tweeter.client.integration;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class FollowIntegrationTests {
     private Service followerCountService;
     private Service followingCountService;
 
+    @Disabled
     @Test
     public void returnsCorrectFollowerCount() throws IOException, TweeterRemoteException {
         followerCountService = new FollowerCountServiceProxy();
@@ -30,6 +32,7 @@ public class FollowIntegrationTests {
         Assertions.assertTrue(response.isSuccess());
     }
 
+    @Disabled
     @Test
     public void returnsCorrectFollowingCount() throws IOException, TweeterRemoteException {
         followingCountService = new FollowingCountServiceProxy();
