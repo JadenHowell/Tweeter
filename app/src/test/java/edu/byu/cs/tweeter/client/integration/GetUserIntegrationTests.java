@@ -2,6 +2,7 @@ package edu.byu.cs.tweeter.client.integration;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -26,6 +27,7 @@ public class GetUserIntegrationTests {
         userService = new UserServiceProxy();
     }
 
+    @Disabled
     @Test
     public void postSuccess() throws IOException, TweeterRemoteException {
         UserResponse expectedResponse = new UserResponse(true, "User returned", testUser);
@@ -35,6 +37,7 @@ public class GetUserIntegrationTests {
         Assertions.assertEquals(expectedResponse.getMessage(), response.getMessage());
     }
 
+    @Disabled
     @Test
     public void postFail() throws IOException, TweeterRemoteException {
         UserResponse expectedResponse = new UserResponse(true, "User \"@fakeuser\" not found");

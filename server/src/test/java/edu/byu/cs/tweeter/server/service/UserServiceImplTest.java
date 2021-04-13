@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.server.dao.AuthTokenDAO;
 import edu.byu.cs.tweeter.server.dao.UserDAO;
 import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.domain.User;
@@ -20,14 +21,18 @@ public class UserServiceImplTest {
     private UserResponse expectedResponse;
     private UserDAO mockUserDAO;
     private UserServiceImpl userServiceImplSpy;
+    private AuthTokenDAO mockAuthTokenDAO;
 
     @BeforeEach
     public void setup() {
+        mockAuthTokenDAO = Mockito.mock(AuthTokenDAO.class);
+        AuthToken token = new AuthToken("@TestUser", "nonsenseToken");
+        Mockito.when(mockAuthTokenDAO.checkAuthToken(token)).thenReturn(true);
         User user1 = new User("FirstName1", "LastName1",
                 "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
 
         // Setup a request object to use in the tests
-        request = new UserRequest("@TestUser", new AuthToken("@TestUser", "nonsenseToken"));
+        request = new UserRequest("@TestUser", token);
 
         // Setup a mock FollowingDAO that will return known responses
         expectedResponse = new UserResponse(true, null, user1);
@@ -36,6 +41,7 @@ public class UserServiceImplTest {
 
         userServiceImplSpy = Mockito.spy(UserServiceImpl.class);
         Mockito.when(userServiceImplSpy.getUserDAO()).thenReturn(mockUserDAO);
+        Mockito.when(userServiceImplSpy.getAuthTokenDAO()).thenReturn(mockAuthTokenDAO);
     }
 
     /**

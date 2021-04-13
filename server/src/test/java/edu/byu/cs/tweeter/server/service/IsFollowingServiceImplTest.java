@@ -7,7 +7,8 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.server.dao.FollowDAO;
+import edu.byu.cs.tweeter.server.dao.AuthTokenDAO;
+import edu.byu.cs.tweeter.server.dao.FollowsDAO;
 import edu.byu.cs.tweeter.shared.domain.AuthToken;
 import edu.byu.cs.tweeter.shared.net.TweeterRemoteException;
 import edu.byu.cs.tweeter.shared.service.request.IsFollowingRequest;
@@ -17,14 +18,19 @@ public class IsFollowingServiceImplTest {
     IsFollowingServiceImpl isFollowingServiceSpy;
     IsFollowingRequest request;
     IsFollowingResponse expectedResponse;
-    FollowDAO mockFollowDAO;
+    FollowsDAO mockFollowDAO;
+    AuthTokenDAO mockAuthTokenDAO;
 
     @BeforeEach
     public void setup(){
+        mockAuthTokenDAO = Mockito.mock(AuthTokenDAO.class);
+        AuthToken token = new AuthToken("@TestUser", "nonsenseToken");
+        Mockito.when(mockAuthTokenDAO.checkAuthToken(token)).thenReturn(true);
         isFollowingServiceSpy = Mockito.spy(IsFollowingServiceImpl.class);
-        mockFollowDAO = Mockito.mock(FollowDAO.class);
+        Mockito.when(isFollowingServiceSpy.getAuthTokenDAO()).thenReturn(mockAuthTokenDAO);
+        mockFollowDAO = Mockito.mock(FollowsDAO.class);
         expectedResponse = new IsFollowingResponse(true, null, true);
-        request = new IsFollowingRequest("@TestUser","@OtherUser", new AuthToken("@TestUser", "nonsenseToken"));
+        request = new IsFollowingRequest("@TestUser","@OtherUser", token);
         Mockito.when(mockFollowDAO.getIsFollowing(request)).thenReturn(expectedResponse);
         Mockito.when(isFollowingServiceSpy.getFollowDAO()).thenReturn(mockFollowDAO);
     }

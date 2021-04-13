@@ -2,6 +2,7 @@ package edu.byu.cs.tweeter.client.integration;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -65,6 +66,7 @@ public class GetStoryIntegrationTest {
         storyService = new StoryServiceProxy();
     }
 
+    @Disabled
     @Test
     public void shouldFetchResponse_when_basicRequest() throws IOException, TweeterRemoteException {
         request = new StoryRequest("@TestUser",5,null, new AuthToken("@TestUser", "nonsenseToken"));
@@ -83,6 +85,7 @@ public class GetStoryIntegrationTest {
         Assertions.assertTrue(response.getHasMorePages());
     }
 
+    @Disabled
     @Test
     public void shouldFetchResponse_when_lastFolloweeAliasNotNull() throws IOException, TweeterRemoteException {
         request = new StoryRequest("@TestUser",5, status11, new AuthToken("@TestUser", "nonsenseToken"));
@@ -101,6 +104,7 @@ public class GetStoryIntegrationTest {
         Assertions.assertFalse(response.getHasMorePages());
     }
 
+    @Disabled
     @Test
     public void shouldFetchEmptyResponse_when_lastFolloweeAliasIsLastFollower() throws IOException, TweeterRemoteException {
         request = new StoryRequest("@TestUser",5, status22, new AuthToken("@TestUser", "nonsenseToken"));

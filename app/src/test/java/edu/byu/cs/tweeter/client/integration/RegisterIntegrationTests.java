@@ -1,6 +1,7 @@
 package edu.byu.cs.tweeter.client.integration;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -17,6 +18,7 @@ public class RegisterIntegrationTests {
 
     private Service registerService;
 
+    @Disabled
     @Test
     public void registerisSuccess() throws IOException, TweeterRemoteException {
         registerService = new RegisterServiceProxy();
