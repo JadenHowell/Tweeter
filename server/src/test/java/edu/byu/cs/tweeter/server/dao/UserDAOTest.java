@@ -84,7 +84,7 @@ public class UserDAOTest {
 
     @Test
     public void returnsCorrectFollowerCount() {
-        FollowerCountResponse expectedResponse = new FollowerCountResponse(true, null, 1);
+        FollowerCountResponse expectedResponse = new FollowerCountResponse(true, null, 4);
         FollowerCountRequest request = new FollowerCountRequest("@ab", new AuthToken("@TestUser", "nonsenseToken"));
         FollowerCountResponse response = userDAO.getFollowerCount(request);
         Assertions.assertEquals(expectedResponse.getCount(), response.getCount());
@@ -93,7 +93,7 @@ public class UserDAOTest {
 
     @Test
     public void returnsCorrectFollowingCount() {
-        FollowingCountResponse expectedResponse = new FollowingCountResponse(true, null, 1);
+        FollowingCountResponse expectedResponse = new FollowingCountResponse(true, null, 7);
         FollowingCountRequest request = new FollowingCountRequest("@ab", new AuthToken("@TestUser", "nonsenseToken"));
         FollowingCountResponse response = userDAO.getFolloweeCount(request);
         Assertions.assertEquals(expectedResponse.getCount(), response.getCount());
