@@ -61,7 +61,7 @@ public class FeedDAO {
         QuerySpec spec = new QuerySpec().withKeyConditionExpression("#a = :a")
                 .withNameMap(nameMap).withValueMap(valueMap)
                 .withMaxResultSize(request.getLimit())
-                .withScanIndexForward(true);
+                .withScanIndexForward(false);
 
         if(request.getLastStatus() != null){
             spec.withExclusiveStartKey(TIMESTAMP_ATTR, request.getLastStatus().getDate());
@@ -85,7 +85,6 @@ public class FeedDAO {
             System.out.println("Failed query");
             e.printStackTrace();
         }
-        Collections.reverse(statuses);
         return new FeedResponse(statuses, true);
     }
 

@@ -58,7 +58,7 @@ public class StoryDAO {
         QuerySpec spec = new QuerySpec().withKeyConditionExpression("#a = :a")
                 .withNameMap(nameMap).withValueMap(valueMap)
                 .withMaxResultSize(request.getLimit())
-                .withScanIndexForward(true);
+                .withScanIndexForward(false);
 
         if(request.getLastStatus() != null){
             spec.withExclusiveStartKey(TimestampAttr, request.getLastStatus().getDate());
@@ -82,7 +82,6 @@ public class StoryDAO {
             System.out.println("Failed query");
             e.printStackTrace();
         }
-        Collections.reverse(statuses);
         return new StoryResponse(statuses, true);
     }
 
