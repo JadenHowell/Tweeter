@@ -93,7 +93,6 @@ public class FeedDAO {
 
             writeItems.addItemToPut(item);
         }
-        System.out.println("doing batch write with message " + message);
         BatchWriteItemOutcome outcome = dynamoDB.batchWriteItem(writeItems);
 
         while (outcome.getUnprocessedItems().size() > 0) {
