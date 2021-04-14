@@ -18,13 +18,13 @@ public class LoginIntegrationTests {
 
     private Service loginService;
 
-    @Disabled
     @Test
     public void loginIsSuccess() throws IOException, TweeterRemoteException {
         loginService = new LoginServiceProxy();
-        LoginResponse expectedResponse = new LoginResponse(new User("first1", "last1", "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png"), new AuthToken("@TestUser", "nonsenseToken"));
-        LoginRequest request = new LoginRequest("username","password");
+        LoginResponse expectedResponse = new LoginResponse(new User("Im", "followed", "@followed", "https://tweeter-prof-photos.s3-us-west-2.amazonaws.com/d3603033-cd11-4644-b7de-62dcf46de021"), new AuthToken("@followed", "nonsense"));
+        LoginRequest request = new LoginRequest("@followed","password");
         LoginResponse response = (LoginResponse) loginService.serve(request);
         Assertions.assertEquals(expectedResponse.getUser(), response.getUser());
+        Assertions.assertNotNull(response.getAuthToken());
     }
 }
