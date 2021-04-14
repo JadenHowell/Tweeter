@@ -6,31 +6,18 @@ import com.amazonaws.services.dynamodbv2.document.*;
 import com.amazonaws.services.dynamodbv2.document.spec.DeleteItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
-import com.amazonaws.services.dynamodbv2.document.spec.UpdateItemSpec;
-import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.QueryResult;
-import com.amazonaws.services.dynamodbv2.model.ReturnValue;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.service.request.ChangeFollowStateRequest;
-import edu.byu.cs.tweeter.shared.service.request.FollowerCountRequest;
 import edu.byu.cs.tweeter.shared.service.request.FollowerRequest;
-import edu.byu.cs.tweeter.shared.service.request.FollowingCountRequest;
 import edu.byu.cs.tweeter.shared.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.shared.service.request.IsFollowingRequest;
 import edu.byu.cs.tweeter.shared.service.response.ChangeFollowStateResponse;
-import edu.byu.cs.tweeter.shared.service.response.FollowerCountResponse;
-import edu.byu.cs.tweeter.shared.service.response.FollowerResponse;
-import edu.byu.cs.tweeter.shared.service.response.FollowingCountResponse;
-import edu.byu.cs.tweeter.shared.service.response.FollowingResponse;
 import edu.byu.cs.tweeter.shared.service.response.IsFollowingResponse;
 
 public class FollowsDAO {

@@ -11,7 +11,6 @@ import com.amazonaws.services.dynamodbv2.document.spec.GetItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.UpdateItemSpec;
 import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 
-import org.apache.commons.text.Builder;
 import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
 
@@ -19,10 +18,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import edu.byu.cs.tweeter.shared.domain.AuthToken;
-import edu.byu.cs.tweeter.shared.domain.User;
-import edu.byu.cs.tweeter.shared.service.request.LoginRequest;
 import edu.byu.cs.tweeter.shared.service.request.LogoutRequest;
-import edu.byu.cs.tweeter.shared.service.response.LoginResponse;
 import edu.byu.cs.tweeter.shared.service.response.LogoutResponse;
 
 public class AuthTokenDAO {

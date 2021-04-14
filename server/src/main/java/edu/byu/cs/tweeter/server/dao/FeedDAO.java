@@ -10,11 +10,7 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.TableWriteItems;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 
-import org.graalvm.compiler.lir.gen.ArithmeticLIRGenerator;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,12 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 import edu.byu.cs.tweeter.shared.domain.Status;
-import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.service.request.FeedRequest;
-import edu.byu.cs.tweeter.shared.service.request.PostRequest;
 import edu.byu.cs.tweeter.shared.service.response.FeedResponse;
-import edu.byu.cs.tweeter.shared.service.response.PostResponse;
-import edu.byu.cs.tweeter.shared.service.response.StoryResponse;
 
 public class FeedDAO {
     private static final String TABLE_NAME = "feed";

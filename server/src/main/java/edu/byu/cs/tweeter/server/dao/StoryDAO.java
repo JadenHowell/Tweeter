@@ -10,8 +10,6 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.QuerySpec;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import edu.byu.cs.tweeter.shared.domain.Status;
-import edu.byu.cs.tweeter.shared.domain.User;
 import edu.byu.cs.tweeter.shared.service.request.PostRequest;
 import edu.byu.cs.tweeter.shared.service.request.StoryRequest;
 import edu.byu.cs.tweeter.shared.service.response.PostResponse;
